@@ -1,4 +1,4 @@
-package org.paradaise.horus_sense.launcher
+package org.paradaise.horussense.launcher
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("org.paradaise.horus_sense.launcher", appContext.packageName)
+        assertEquals("org.paradaise.horussense.launcher", appContext.packageName)
     }
 }
