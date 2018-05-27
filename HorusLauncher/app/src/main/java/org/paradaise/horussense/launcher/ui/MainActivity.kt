@@ -1,4 +1,4 @@
-package org.paradaise.horussense.launcher
+package org.paradaise.horussense.launcher.ui
 
 import android.support.design.widget.TabLayout
 import android.support.design.widget.Snackbar
@@ -16,6 +16,7 @@ import android.view.ViewGroup
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
+import org.paradaise.horussense.launcher.R
 
 class MainActivity : AppCompatActivity() {
 

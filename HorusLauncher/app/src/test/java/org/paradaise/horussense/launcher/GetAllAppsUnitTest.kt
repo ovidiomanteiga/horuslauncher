@@ -7,9 +7,11 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
+import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.infrastructure.AllAppsRepository
 
 
 /**
@@ -22,17 +24,17 @@ class GetAllAppsUnitTest {
 
 	// region Properties
 
-	private lateinit var interactor: GetAllAppsInteractor
+	private lateinit var interactor: GetAllActionsInteractor
 
 	@Mock
-	private lateinit var service: AllAppsService
+	private lateinit var repository: AllAppsRepository
 
 	// endregion
 	// region Setup
 
     @Before
     fun setUp() {
-        this.interactor = GetAllAppsInteractor(service = this.service)
+        this.interactor = GetAllActionsInteractor(repository = this.repository)
     }
 
 	// endregion
@@ -48,7 +50,8 @@ class GetAllAppsUnitTest {
 
     @Test
     fun someAppsAvailable() {
-	    `when`(this.service.get()).thenReturn(listOf("Google"))
+	    val actions = listOf(HorusAction())
+	    `when`(this.repository.get()).thenReturn(actions)
         this.interactor.perform()
         val allApps = this.interactor.allApps
         assertEquals(1, allApps.size)
