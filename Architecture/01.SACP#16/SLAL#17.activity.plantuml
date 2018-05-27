@@ -1,0 +1,26 @@
+
+@startuml SLAL#17.activity
+
+skinparam monochrome true
+
+|User|
+start
+:Unlock device>
+|System|
+:Unlock device<
+if (**HorusLauncher** is the default launcher?) then (yes)
+else (no)
+    |System|
+    :Show default launcher>
+    |User|
+    :Show default launcher<
+    :Select **HorusLauncher**;
+endif
+|System|
+:Show **HorusLauncher**;
+|App|
+:Show list of all launchable apps;
+|App|
+stop
+
+@enduml
