@@ -14,13 +14,13 @@ open class GetAllActionsInteractor {
 	//endregion
 	// region Public Properties
 
-    var allApps: AllActions = ArrayList()
+    var allActions: AllActions = ArrayList()
 
 	// endregion
 	// region Public Methods
 
     internal fun perform() {
-	    this.allApps = this.getAllAvailableActions()
+	    this.allActions = this.getAllAvailableActions()
     }
 
 	// endregion
@@ -32,7 +32,8 @@ open class GetAllActionsInteractor {
 	// region Private Methods
 
 	private fun getAllAvailableActions(): AllActions {
-		return this.repository.get()
+		val actions = this.repository.get()
+		return actions.sortedBy { it.name }
 	}
 
 	// endregion

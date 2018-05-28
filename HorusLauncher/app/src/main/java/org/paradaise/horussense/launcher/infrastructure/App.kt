@@ -10,7 +10,7 @@ import org.paradaise.horussense.launcher.domain.LocalizableString
 
 class App: HorusAction {
 
-	constructor(name: LocalizableString, intent: Intent) {
+	constructor(name: LocalizableString, intent: Intent): super(name) {
 		this.name = name
 		this.intent = intent
 	}
