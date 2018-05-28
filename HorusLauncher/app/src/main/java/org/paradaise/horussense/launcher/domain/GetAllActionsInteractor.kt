@@ -15,6 +15,7 @@ open class GetAllActionsInteractor {
 	// region Public Properties
 
     var allActions: AllActions = ArrayList()
+	var paging: Paging? = null
 
 	// endregion
 	// region Public Methods
@@ -33,8 +34,16 @@ open class GetAllActionsInteractor {
 
 	private fun getAllAvailableActions(): AllActions {
 		val actions = this.repository.get()
-		return actions.sortedBy { it.name }
+		val sortedActions = actions.sortedBy { it.name }
+		this.paging?.let {
+			return sortedActions.drop(it.startIndex).take(it.maxItems)
+		}
+		return sortedActions
 	}
 
 	// endregion
 }
+
+
+
+data class Paging(val startIndex: Int, val maxItems: Int)

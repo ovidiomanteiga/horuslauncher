@@ -9,9 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.AllActionsRepository
-import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.domain.*
 
 
 /**
@@ -26,6 +24,11 @@ class GetAllActionsUnitTest {
 
 	private lateinit var interactor: GetAllActionsInteractor
 
+	private lateinit var facebookAction: HorusAction
+	private lateinit var googleAction: HorusAction
+	private lateinit var someActions: AllActions
+	private lateinit var whatsAppAction: HorusAction
+
 	@Mock
 	private lateinit var repository: AllActionsRepository
 
@@ -35,6 +38,10 @@ class GetAllActionsUnitTest {
     @Before
     fun setUp() {
         this.interactor = GetAllActionsInteractor(repository = this.repository)
+	    this.facebookAction = HorusAction(name = "Facebook")
+	    this.googleAction = HorusAction(name = "Google")
+	    this.whatsAppAction = HorusAction(name = "WhatsApp")
+	    this.someActions = listOf(this.facebookAction, this.googleAction, this.whatsAppAction)
     }
 
 	// endregion
@@ -60,27 +67,32 @@ class GetAllActionsUnitTest {
 
 	@Test
 	fun manyActionsAvailable() {
-		val actions = listOf(
-				HorusAction(name = "Facebook"),
-				HorusAction(name = "Google"),
-				HorusAction(name = "WhatsApp"))
+		val actions = this.someActions
 		`when`(this.repository.get()).thenReturn(actions)
 		this.interactor.perform()
 		val allActions = this.interactor.allActions
-		assertEquals(3, allActions.size)
+		assertEquals(actions.size, allActions.size)
 	}
 
 
 	@Test
 	fun defaultAvailableActionsOrdering() {
-		val facebook = HorusAction(name = "Facebook")
-		val google = HorusAction(name = "Google")
-		val whatsApp = HorusAction(name = "WhatsApp")
-		val actions = listOf(whatsApp, google, facebook)
+		val actions = listOf(this.whatsAppAction, this.googleAction, this.facebookAction)
 		`when`(this.repository.get()).thenReturn(actions)
 		this.interactor.perform()
 		val allActions = this.interactor.allActions
-		assertEquals(allActions, listOf(facebook, google, whatsApp))
+		assertEquals(this.someActions, allActions)
+	}
+
+
+	@Test
+	fun getPagedAvailableActions() {
+		val actions = this.someActions
+		`when`(this.repository.get()).thenReturn(actions)
+		this.interactor.paging = Paging(startIndex = 0, maxItems = 2)
+		this.interactor.perform()
+		val allActions = this.interactor.allActions
+		assertEquals(actions.take(2), allActions)
 	}
 
 	// endregion
