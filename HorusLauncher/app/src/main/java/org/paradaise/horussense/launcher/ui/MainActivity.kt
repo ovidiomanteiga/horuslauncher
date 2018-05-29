@@ -1,19 +1,15 @@
 package org.paradaise.horussense.launcher.ui
 
-import android.support.design.widget.TabLayout
+import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.RecyclerView
+import android.view.*
+import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import org.paradaise.horussense.launcher.R
@@ -100,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                                   savedInstanceState: Bundle?): View? {
             val rootView = inflater.inflate(R.layout.fragment_main, container, false)
             rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
+            rootView.recyclerView.adapter = ActionsAdapter(listOf("Facebook", "Google", "WhatsApp"))
             return rootView
         }
 
@@ -123,4 +120,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+}
+
+class ActionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+	fun bind(item: String) = with(itemView) {
+		itemView.findViewById<TextView>(android.R.id.text1).text = item
+	}
+}
+
+class ActionsAdapter(val items: List<String>) : RecyclerView.Adapter<ActionViewHolder>() {
+	
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
+		val v = LayoutInflater.from(parent.context)
+				.inflate(android.R.layout.simple_list_item_1, parent, false)
+		return ActionViewHolder(v)
+	}
+
+	override fun getItemCount(): Int {
+		return this.items.count()
+	}
+
+	override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
+		holder.bind(items[position])
+	}
+
 }
