@@ -12,7 +12,7 @@ open class AllAppsRepository: AllActionsRepository {
 
 	// region Lifecycle
 
-	constructor(context: Context) {
+	constructor(context: Context?) {
 		this.context = context
 	}
 
@@ -20,7 +20,7 @@ open class AllAppsRepository: AllActionsRepository {
 	// region AllActionsRepository Override
 
 	override fun get(): AllActions {
-		val packageManager = this.context.packageManager
+		val packageManager = this.context?.packageManager ?: return listOf()
 		val packages = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
 		return this.mapToApps(packages, packageManager)
 	}
@@ -28,7 +28,7 @@ open class AllAppsRepository: AllActionsRepository {
 	// endregion
 	// region Private Properties
 
-	private var context: Context
+	private var context: Context?
 
 	// endregion
 	// region Private Methods
@@ -37,9 +37,9 @@ open class AllAppsRepository: AllActionsRepository {
 	                      packageManager: PackageManager): List<App> {
 		return packages.map {
 			val icon = it.loadIcon(packageManager)
-			val packageName = it.packageName
-			val intent = packageManager.getLaunchIntentForPackage(packageName)
-			App(icon = icon, intent = intent, name = packageName)
+			var name = it.loadLabel(packageManager)?.toString() ?: it.packageName
+			val intent = packageManager.getLaunchIntentForPackage(name)
+			App(icon = icon, intent = intent, name = name)
 		}
 	}
 

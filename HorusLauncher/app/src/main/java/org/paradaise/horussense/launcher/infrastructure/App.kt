@@ -11,11 +11,11 @@ import org.paradaise.horussense.launcher.domain.LocalizableString
 
 class App: HorusAction {
 
-	constructor(icon: Drawable, intent: Intent, name: LocalizableString): super(icon, name) {
+	constructor(icon: Drawable, intent: Intent?, name: LocalizableString): super(icon, name) {
 		this.intent = intent
 	}
 
 
-	private var intent: Intent
+	private var intent: Intent?
 
 }
