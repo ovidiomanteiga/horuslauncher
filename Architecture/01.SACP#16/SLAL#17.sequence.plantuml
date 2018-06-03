@@ -1,0 +1,43 @@
+
+@startuml SLAL#17.sequence
+
+skinparam monochrome true
+autonumber
+
+MainActivity -> AllAppsFragment
+
+participant GetAllActionsInteractor
+participant AllAppsRepository
+participant PackageManager <<AndroidSDK>>
+
+activate AllAppsFragment
+create AllAppsRepository
+AllAppsFragment -> AllAppsRepository: <<create>>
+
+create GetAllActionsInteractor
+AllAppsFragment -> GetAllActionsInteractor: <<create>>
+AllAppsFragment -> GetAllActionsInteractor: perform()
+activate GetAllActionsInteractor
+
+GetAllActionsInteractor -> AllAppsRepository: get()
+activate AllAppsRepository
+
+AllAppsRepository -> PackageManager : queryIntentActivities()
+activate PackageManager
+AllAppsRepository <-- PackageManager : applicationInfos
+deactivate PackageManager
+
+AllAppsRepository -> AllAppsRepository : map()
+AllAppsRepository --> GetAllActionsInteractor : allApps
+deactivate AllAppsRepository
+
+GetAllActionsInteractor -> GetAllActionsInteractor : sort()
+GetAllActionsInteractor --> AllAppsFragment: allActions
+deactivate GetAllActionsInteractor
+
+create ActionsAdapter
+AllAppsFragment -> ActionsAdapter : <<create>>, allActions
+
+AllAppsFragment -> AllAppsFragment : setAdapter()
+
+@enduml
