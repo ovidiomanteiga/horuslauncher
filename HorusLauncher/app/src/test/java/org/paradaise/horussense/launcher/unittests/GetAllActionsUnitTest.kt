@@ -1,4 +1,5 @@
-package org.paradaise.horussense.launcher
+
+package org.paradaise.horussense.launcher.unittests
 
 
 import org.junit.Test
