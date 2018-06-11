@@ -16,6 +16,6 @@ class App: HorusAction {
 	}
 
 
-	private var intent: Intent?
+	var intent: Intent?
 
 }

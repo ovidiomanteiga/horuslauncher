@@ -1,0 +1,19 @@
+
+@startuml PAAA#34.activity
+
+skinparam monochrome true
+
+|User|
+|App|
+start
+:Show list of all launchable apps;
+|User|
+:Select an app>
+|App|
+:Select an app<
+:Launch selected app;
+|System|
+:Launch app;
+stop
+
+@enduml

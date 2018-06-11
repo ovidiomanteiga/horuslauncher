@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         this.setSupportActionBar(toolbar)
     }
 
+
+    override fun onBackPressed() { }
+
 	// endregion
 
 }

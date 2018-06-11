@@ -23,7 +23,8 @@ open class AllAppsRepository: AllActionsRepository {
 
 	override fun get(): AllActions {
 		val packageManager = this.context?.packageManager ?: return listOf()
-		val apps = this.getAllInstalledApps(packageManager)
+		var apps = this.getAllInstalledApps(packageManager)
+		apps = this.filterThisApp(apps)
 		return this.mapToApps(apps, packageManager)
 	}
 
@@ -51,9 +52,15 @@ open class AllAppsRepository: AllActionsRepository {
 		return packages.map {
 			val icon = it.loadIcon(packageManager)
 			var name = it.loadLabel(packageManager)?.toString() ?: it.packageName
-			val intent = packageManager.getLaunchIntentForPackage(name)
+			val intent = packageManager.getLaunchIntentForPackage(it.packageName)
 			App(icon = icon, intent = intent, name = name)
 		}
+	}
+
+	
+	private fun filterThisApp(apps: List<ApplicationInfo>): List<ApplicationInfo> {
+		val packageName = this.context?.packageName ?: return apps
+		return apps.filter { it.packageName != packageName }
 	}
 
 	// endregion

@@ -1,0 +1,82 @@
+
+@startuml PAAA#34.class.1
+
+skinparam monochrome true
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class AllActionsFragment <<Fragment>> {
+    }
+
+    MainActivity -u-> AllActionsFragment
+
+}
+
+package Domain {
+
+    class GetAllActions <<Interactor>> {
+    }
+
+    interface AllActionsRepository <<Repository>> {
+    }
+
+    GetAllActions -r-> AllActionsRepository
+
+}
+
+package Infrastructure {
+
+    class AllAppsRepository {
+        + AllActions getAll()
+    }
+
+}
+
+package Android_SDK {
+
+    class Context {
+    }
+
+}
+
+package Composition {
+
+    interface MainFactory {
+        + Context provideContext()
+        + GetAllActions provideGetAllActions()
+        + AllActionsRepository provideAllActionsRepository()
+    }
+
+
+    class DefaultMainFactory {
+        + Context provideContext()
+        + GetAllActions provideGetAllActions()
+        + AllActionsRepository provideAllActionsRepository()
+    }
+
+    DefaultMainFactory .u.|> MainFactory
+
+}
+
+
+AllActionsFragment -u-> GetAllActions
+AllActionsFragment .r.> MainFactory
+AllAppsRepository .u.|> AllActionsRepository
+AllAppsRepository -d-> Context
+
+MainFactory .d.> Context
+MainFactory .u.> GetAllActions : <<create>>
+MainFactory .u.> AllActionsRepository : <<create>>
+DefaultMainFactory .r.> AllAppsRepository : <<create>>
+DefaultMainFactory .d.> Context
+
+UI -[hidden]l-> Composition
+Composition -[hidden]u-> Domain
+Composition -[hidden]d-> Android_SDK
+
+hide empty members
+
+@enduml

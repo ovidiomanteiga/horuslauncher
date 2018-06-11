@@ -1,0 +1,88 @@
+
+@startuml PAAA#34.class
+
+skinparam monochrome true
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class AllActionsFragment <<Fragment>> {
+        void userWantsToPerform(HorusAction)
+    }
+
+    MainActivity -u-> AllActionsFragment
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class AllActions <<Aggregate>> {
+    }
+
+    class GetAllActions <<Interactor>> {
+        + AllActions actions
+        + void perform()
+    }
+
+    interface AllActionsRepository <<Repository>> {
+        + AllActions getAll()
+    }
+
+    AllActionsRepository .u.> AllActions
+    GetAllActions .u.> AllActions
+    GetAllActions -r-> AllActionsRepository
+    AllActions o-u-> "*" HorusAction
+
+}
+
+package Infrastructure {
+
+    class AllAppsRepository {
+        + AllActions getAll()
+    }
+
+    class App <<Adapter>> {
+        void perform()
+    }
+
+    class AllApps {
+    }
+
+    AllApps o-u-> "*" App
+
+}
+
+package Android_SDK {
+
+    class Intent {
+    }
+
+    class Context {
+    }
+
+}
+
+AllActionsFragment -u-> GetAllActions
+AllActionsFragment .u.> GetAllActions: <<create>>
+AllActionsFragment .r.> AllAppsRepository: <<create>>
+AllApps -u-|> AllActions
+AllAppsRepository .u.|> AllActionsRepository
+AllAppsRepository .u.> AllApps
+AllAppsRepository -u-> Context
+App -u-|> HorusAction
+App -d-> "1" Intent
+App -d-> "1" Context
+Context -[hidden]u-> Intent
+
+hide empty members
+
+@enduml

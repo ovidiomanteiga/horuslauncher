@@ -98,6 +98,22 @@ class MainActivityTest {
 		assertEquals(apps, apps.sorted())
 	}
 
+
+	@Test
+	fun notLaunchApp() {
+		assertEquals(this.appPackageName, this.mDevice.currentPackageName)
+	}
+
+
+	@Test
+	fun launchApp() {
+		val resourceId = this.appPackageName + ":id/textView"
+		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
+		val item = items.getChildByText(UiSelector().resourceId(resourceId), "Phone")
+		item.click()
+		assertNotEquals(this.appPackageName, this.mDevice.currentPackageName)
+	}
+
 	// endregion
 
 }
