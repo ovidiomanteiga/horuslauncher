@@ -1,10 +1,10 @@
-# Acceptance Test Report 2
+# Acceptance Test Report 3
 
 ## Metadata
 
 | Property | Value|
 |:--|--:|
-| Serial number | 2 |
+| Serial number | 3 |
 | Tester | Ovidio Manteiga Moar |
 | Method | Manual |
 | Device type | Android Emulator |
@@ -26,4 +26,4 @@
 1. **[PASSED ✅]** Feature:  Perform an action. 
     1. **[PASSED ✅]** Scenario: Launch an app selected from all the available ones.
     2. **[PASSED ✅]** Scenario: Navigate back from a launched app.
-    3. **[FAILED 🛑]** Scenario: Navigate back until possible from any activity.
+    3. **[FAILED ✅]** Scenario: Navigate back until possible from any activity.
