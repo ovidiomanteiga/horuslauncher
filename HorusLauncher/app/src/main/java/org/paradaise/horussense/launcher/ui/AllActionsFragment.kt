@@ -14,10 +14,10 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_all_actions.view.*
 import kotlinx.android.synthetic.main.item_app.view.*
 import org.paradaise.horussense.launcher.R
+import org.paradaise.horussense.launcher.composition.Factories
 import org.paradaise.horussense.launcher.domain.AllActions
 import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
-import org.paradaise.horussense.launcher.infrastructure.AllAppsRepository
 import org.paradaise.horussense.launcher.infrastructure.App
 
 
@@ -26,7 +26,7 @@ class AllActionsFragment : Fragment() {
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
-		this.interactor = GetAllActionsInteractor(AllAppsRepository(context))
+		this.interactor = Factories.main(this.requireContext()).provideGetAllActionsInteractor()
 		this.interactor.perform()
 	}
 
