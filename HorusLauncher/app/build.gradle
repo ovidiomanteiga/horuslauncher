@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -35,4 +37,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
     androidTestImplementation 'com.android.support.test.uiautomator:uiautomator-v18:2.1.3'
+    implementation 'com.google.dagger:dagger:2.16'
+    implementation 'com.google.dagger:dagger-android-support:2.16'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
+    implementation 'com.google.dagger:dagger-android:2.16'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
+    kapt 'com.google.dagger:dagger-android-processor:2.16'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
 }

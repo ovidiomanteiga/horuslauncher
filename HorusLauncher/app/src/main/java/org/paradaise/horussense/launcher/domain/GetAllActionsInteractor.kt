@@ -1,12 +1,15 @@
 
 package org.paradaise.horussense.launcher.domain
 
+import javax.inject.Inject
+
 
 
 open class GetAllActionsInteractor {
 
 	// region Lifecycle
 
+	@Inject
 	constructor(repository: AllActionsRepository) {
 		this.repository = repository
 	}

@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import dagger.android.AndroidInjection
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_all_actions.view.*
 import kotlinx.android.synthetic.main.item_app.view.*
 import org.paradaise.horussense.launcher.R
@@ -19,14 +21,15 @@ import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.infrastructure.AllAppsRepository
 import org.paradaise.horussense.launcher.infrastructure.App
+import javax.inject.Inject
 
 
 
 class AllActionsFragment : Fragment() {
 
 	override fun onAttach(context: Context?) {
+		AndroidSupportInjection.inject(this)
 		super.onAttach(context)
-		this.interactor = GetAllActionsInteractor(AllAppsRepository(context))
 		this.interactor.perform()
 	}
 
@@ -58,7 +61,8 @@ class AllActionsFragment : Fragment() {
 	}
 
 
-	private lateinit var interactor: GetAllActionsInteractor
+	@Inject
+	lateinit var interactor: GetAllActionsInteractor
 
 }
 

@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import org.paradaise.horussense.launcher.domain.*
 import android.content.Intent
+import javax.inject.Inject
 
 
 
@@ -14,6 +15,7 @@ open class AllAppsRepository: AllActionsRepository {
 
 	// region Lifecycle
 
+	@Inject
 	constructor(context: Context?) {
 		this.context = context
 	}
