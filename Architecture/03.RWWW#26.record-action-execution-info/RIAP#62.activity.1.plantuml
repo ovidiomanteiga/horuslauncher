@@ -1,0 +1,15 @@
+
+@startuml RIAP#62.activity.1
+
+skinparam monochrome true
+
+|App|
+|System|
+start
+:Every day>
+|App|
+:Every day<
+:Delete app launch info older than a week;
+stop
+
+@enduml

@@ -1,0 +1,73 @@
+
+@startuml RIAP#62.class
+
+skinparam monochrome true
+
+package Main {
+
+    class TimeReceiver <<BroadcastReceiver>> {
+        + void onReceive()
+    }
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+    }
+
+    class ActionExecution <<VO>> {
+        DateTime time
+        String userIdentifier
+        String deviceIdentifier
+    }
+
+    class ClearOldActionExecutions <<Interactor>> {
+        + void perform()
+        + void notify(DayEvent)
+    }
+
+    interface ActionExecutionRepository <<Repository>> {
+        + void add(ActionExecution)
+        + void remove(Criteria)
+    }
+
+    interface DayEventObserver <<Observer>> {
+        + void notify(DayEvent)
+    }
+
+    class DayEvent <<Event>> <<Observable>> {
+        + void fire()
+    }
+
+    ActionExecution -l-> HorusAction
+    ActionExecutionRepository .u.> ActionExecution
+    ClearOldActionExecutions .u.|> DayEventObserver
+    ClearOldActionExecutions -r-> ActionExecutionRepository
+    DayEvent .u.> "*" DayEventObserver : <<notify>>
+
+}
+
+package Infrastructure {
+
+    class AppExecutionRepository <<Repository>> {
+        + void add(ActionExecution)
+        + void remove(Criteria)
+    }
+
+    class AppExecutionDAO <<DAO>> {
+        + void create(ActionExecution)
+        + void delete(Criteria)
+    }
+
+    AppExecutionRepository -r-> AppExecutionDAO
+
+}
+
+AppExecutionRepository .u.|> ActionExecutionRepository
+Infrastructure -[hidden]u-> Domain
+TimeReceiver -u-> DayEvent
+
+hide empty members
+
+@enduml
