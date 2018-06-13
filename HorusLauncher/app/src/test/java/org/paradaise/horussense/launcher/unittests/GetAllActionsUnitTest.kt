@@ -7,6 +7,7 @@ import org.junit.Test
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.runner.RunWith
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
@@ -23,6 +24,7 @@ class GetAllActionsUnitTest {
 
 	// region Properties
 
+	@InjectMocks
 	private lateinit var interactor: GetAllActionsInteractor
 
 	private lateinit var facebookAction: HorusAction
@@ -38,7 +40,6 @@ class GetAllActionsUnitTest {
 
     @Before
     fun setUp() {
-        this.interactor = GetAllActionsInteractor(repository = this.repository)
 	    this.facebookAction = HorusAction(name = "Facebook")
 	    this.googleAction = HorusAction(name = "Google")
 	    this.whatsAppAction = HorusAction(name = "WhatsApp")

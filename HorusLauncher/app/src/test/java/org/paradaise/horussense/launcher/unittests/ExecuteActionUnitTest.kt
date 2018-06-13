@@ -2,99 +2,83 @@
 package org.paradaise.horussense.launcher.unittests
 
 
-import org.junit.Test
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.*
+import org.mockito.Mockito.*
 import org.mockito.runners.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.ActionExecution
+import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
+import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.HorusAction
 
 
 /**
- * Tests related to the get all apps feature.
+ * Tests related to the execute action feature.
  *
  * See [feature @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/16).
  */
 @RunWith(MockitoJUnitRunner::class)
-class GetAllActionsUnitTest {
+class ExecuteActionUnitTest {
 
 	// region Properties
 
-	private lateinit var interactor: GetAllActionsInteractor
-
-	private lateinit var facebookAction: HorusAction
-	private lateinit var googleAction: HorusAction
-	private lateinit var someActions: AllActions
-	private lateinit var whatsAppAction: HorusAction
+	@InjectMocks
+	private lateinit var interactor: ExecuteActionInteractor
 
 	@Mock
-	private lateinit var repository: AllActionsRepository
+	private lateinit var action: HorusAction
+
+	@Mock
+	private lateinit var repository: ActionExecutionRepository
 
 	// endregion
 	// region Setup
 
     @Before
-    fun setUp() {
-        this.interactor = GetAllActionsInteractor(repository = this.repository)
-	    this.facebookAction = HorusAction(name = "Facebook")
-	    this.googleAction = HorusAction(name = "Google")
-	    this.whatsAppAction = HorusAction(name = "WhatsApp")
-	    this.someActions = listOf(this.facebookAction, this.googleAction, this.whatsAppAction)
-    }
+    fun setUp() { }
 
 	// endregion
 	// region Tests
 
     @Test
-    fun noActionsAvailable() {
-        this.interactor.perform()
-        val allActions = this.interactor.allActions
-        assertEquals(0, allActions.size)
-    }
-
-
-    @Test
-    fun someActionsAvailable() {
-	    val actions = listOf(HorusAction())
-	    `when`(this.repository.get()).thenReturn(actions)
-        this.interactor.perform()
-        val allActions = this.interactor.allActions
-        assertEquals(1, allActions.size)
+    fun testActionExecutedCorrectly() {
+	    // Arrange
+	    this.interactor.action = this.action
+	    // Act
+	    this.interactor.perform()
+	    // Assert
+        verify(this.action, times(1)).perform()
     }
 
 
 	@Test
-	fun manyActionsAvailable() {
-		val actions = this.someActions
-		`when`(this.repository.get()).thenReturn(actions)
+	fun testActionExecutedAndLogged() {
+		// Arrange
+		this.interactor.action = this.action
+		// Act
 		this.interactor.perform()
-		val allActions = this.interactor.allActions
-		assertEquals(actions.size, allActions.size)
+		// Assert
+		verify(this.action, times(1)).perform()
+		val argument = ArgumentCaptor.forClass(ActionExecution::class.java)
+		verify(this.repository, times(1)).add(argument.capture())
+		assertEquals(this.action, argument.value.action)
 	}
 
 
 	@Test
-	fun defaultAvailableActionsOrdering() {
-		val actions = listOf(this.whatsAppAction, this.googleAction, this.facebookAction)
-		`when`(this.repository.get()).thenReturn(actions)
+	fun testNullAction() {
+		// Arrange
+		this.interactor.action = null
+		// Act
 		this.interactor.perform()
-		val allActions = this.interactor.allActions
-		assertEquals(this.someActions, allActions)
+		// Assert
+		verify(this.action, times(0)).perform()
+		verify(this.repository, times(0)).add(Matchers.any())
 	}
 
-
-	@Test
-	fun getPagedAvailableActions() {
-		val actions = this.someActions
-		`when`(this.repository.get()).thenReturn(actions)
-		this.interactor.paging = Paging(startIndex = 0, maxItems = 2)
-		this.interactor.perform()
-		val allActions = this.interactor.allActions
-		assertEquals(actions.take(2), allActions)
-	}
 
 	// endregion
 
