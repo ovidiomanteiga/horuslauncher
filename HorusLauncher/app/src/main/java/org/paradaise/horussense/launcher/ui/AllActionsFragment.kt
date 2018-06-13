@@ -47,14 +47,9 @@ class AllActionsFragment : Fragment() {
 
 	private fun onActionClicked(action: HorusAction) {
 		if (action is App) {
-			action.intent?.let {
-				this.startActivity(it)
-				return
-			}
+			action.context = this.context
+			action.perform()
 		}
-		Toast.makeText(this.context,
-				"Action clicked: " + action.name,
-				Toast.LENGTH_LONG).show()
 	}
 
 

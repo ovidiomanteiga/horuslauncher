@@ -19,6 +19,9 @@ open class HorusAction {
 		this.name = name
 	}
 
+
+	open fun perform() { }
+
 }
 
 
