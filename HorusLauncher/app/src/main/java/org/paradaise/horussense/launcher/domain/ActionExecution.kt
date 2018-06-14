@@ -6,13 +6,12 @@ import java.util.*
 
 open class ActionExecution {
 
-	constructor(action: HorusAction) {
+	constructor(action: HorusAction, moment: Date) {
 		this.action = action
+		this.moment = moment
 	}
 
 	var action: HorusAction
-	var deviceIdentifier: String? = null
-	var moment: Date? = null
-	var userIdentifier: String? = null
+	var moment: Date
 
 }

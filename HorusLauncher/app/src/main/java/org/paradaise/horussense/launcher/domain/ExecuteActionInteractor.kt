@@ -1,6 +1,8 @@
 
 package org.paradaise.horussense.launcher.domain
 
+import java.util.*
+
 
 open class ExecuteActionInteractor {
 
@@ -34,7 +36,8 @@ open class ExecuteActionInteractor {
 	// region Public Methods
 
 	private fun getExecution(action: HorusAction): ActionExecution {
-		return ActionExecution(action)
+		val moment = Calendar.getInstance().time
+		return ActionExecution(action, moment)
 	}
 
 	// endregion

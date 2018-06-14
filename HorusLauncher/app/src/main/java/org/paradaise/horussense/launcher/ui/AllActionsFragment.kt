@@ -2,7 +2,9 @@
 package org.paradaise.horussense.launcher.ui
 
 
+import android.content.AsyncTaskLoader
 import android.content.Context
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -10,12 +12,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_all_actions.view.*
 import kotlinx.android.synthetic.main.item_app.view.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.Factories
+import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.domain.AllActions
+import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
 import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.infrastructure.App
@@ -26,8 +29,9 @@ class AllActionsFragment : Fragment() {
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
-		this.interactor = Factories.main(this.requireContext()).provideGetAllActionsInteractor()
-		this.interactor.perform()
+		this.factory = Factories.main(this.requireContext())
+		this.getAllActionsInteractor = this.factory.provideGetAllActionsInteractor()
+		this.getAllActionsInteractor.perform()
 	}
 
 
@@ -35,7 +39,7 @@ class AllActionsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_all_actions, container, false)
 	    val recyclerView = rootView.recyclerView
-	    val actions = this.interactor.allActions
+	    val actions = this.getAllActionsInteractor.allActions
 	    recyclerView.adapter = ActionsAdapter(actions, this::onActionClicked)
 	    val layoutManager = recyclerView.layoutManager
 	    if (layoutManager is GridLayoutManager) {
@@ -46,14 +50,18 @@ class AllActionsFragment : Fragment() {
 
 
 	private fun onActionClicked(action: HorusAction) {
+		this.executeActionInteractor = this.factory.provideExecuteActionInteractor()
 		if (action is App) {
-			action.context = this.context
-			action.perform()
+			action.context = this.requireContext()
 		}
+		this.executeActionInteractor.action = action
+		this.executeActionInteractor.perform()
 	}
 
 
-	private lateinit var interactor: GetAllActionsInteractor
+	private lateinit var executeActionInteractor: ExecuteActionInteractor
+	private lateinit var factory: MainFactory
+	private lateinit var getAllActionsInteractor: GetAllActionsInteractor
 
 }
 
