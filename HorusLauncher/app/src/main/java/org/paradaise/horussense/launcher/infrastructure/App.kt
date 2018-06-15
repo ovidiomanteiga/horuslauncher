@@ -21,6 +21,10 @@ class App: HorusAction {
 	var intent: Intent?
 
 
+	override var url: String? = null
+		get() = this.intent?.toUri(0)
+
+
 	override fun perform() {
 		super.perform()
 		this.intent?.let {
