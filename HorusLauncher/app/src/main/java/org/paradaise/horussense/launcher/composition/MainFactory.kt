@@ -9,6 +9,7 @@ import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
 import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.infrastructure.AllAppsRepository
 import org.paradaise.horussense.launcher.infrastructure.DBActionExecutionRepository
+import org.paradaise.horussense.launcher.infrastructure.ExecuteAppInteractor
 
 
 interface MainFactory {
@@ -50,8 +51,9 @@ class DefaultMainFactory(private val context: Context) : MainFactory {
 
 
 	override fun provideExecuteActionInteractor(): ExecuteActionInteractor {
+		val context = this.provideContext()
 		val repository = this.provideActionExecutionRepository()
-		return ExecuteActionInteractor(repository)
+		return ExecuteAppInteractor(context, repository)
 	}
 
 }

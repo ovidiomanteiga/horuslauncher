@@ -51,9 +51,6 @@ class AllActionsFragment : Fragment() {
 
 	private fun onActionClicked(action: HorusAction) {
 		this.executeActionInteractor = this.factory.provideExecuteActionInteractor()
-		if (action is App) {
-			action.context = this.requireContext()
-		}
 		this.executeActionInteractor.action = action
 		this.executeActionInteractor.perform()
 	}

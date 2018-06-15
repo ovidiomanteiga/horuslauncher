@@ -20,7 +20,7 @@ open class ExecuteActionInteractor {
 	// endregion
 	// region Public Methods
 
-	fun perform() {
+	open fun perform() {
 		val action = this.action ?: return
 		action.perform()
 		val execution = this.getExecution(action = action)
