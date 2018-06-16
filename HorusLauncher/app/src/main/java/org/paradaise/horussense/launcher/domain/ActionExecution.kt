@@ -11,7 +11,7 @@ open class ActionExecution {
 		this.moment = moment
 	}
 
-	var action: HorusAction
-	var moment: Date
+	open var action: HorusAction
+	open var moment: Date
 
 }

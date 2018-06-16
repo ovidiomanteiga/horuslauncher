@@ -8,7 +8,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
-import org.mockito.runners.MockitoJUnitRunner
+import org.mockito.junit.MockitoJUnitRunner
 import org.paradaise.horussense.launcher.domain.ActionExecution
 import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
 import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor

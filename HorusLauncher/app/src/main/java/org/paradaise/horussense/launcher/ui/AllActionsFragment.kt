@@ -52,7 +52,9 @@ class AllActionsFragment : Fragment() {
 	private fun onActionClicked(action: HorusAction) {
 		this.executeActionInteractor = this.factory.provideExecuteActionInteractor()
 		this.executeActionInteractor.action = action
-		this.executeActionInteractor.perform()
+		AsyncTask.execute {
+			this.executeActionInteractor.perform()
+		}
 	}
 
 
