@@ -10,12 +10,11 @@ Feature: Record action execution information.
         Then the information of that launching is stored.
             And that info includes the app identifier.
             And that info includes the timestamp.
-            And that info includes a user identifier.
-            And that info includes a device identifier.
+            # And that info includes a user identifier. => POSTPONED
+            # And that info includes a device identifier. => POSTPONED
 
-    Scenario: Keep just last week's data to save space.
-        Given some info about app launches has been stored.
-        When once a day.
-        Then the info older than a week must be deleted.
-    
-
+    # POSTPONED
+    # Scenario: Keep just last week's data to save space.
+        # Given some info about app launches has been stored.
+        # When once a day.
+        # Then the info older than a week must be deleted.
