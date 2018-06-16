@@ -1,0 +1,39 @@
+
+@startuml RIAP#62.sequence
+
+skinparam monochrome true
+autonumber
+
+participant User
+participant MainActivity
+participant AllActionsFragment
+participant ExecuteAction <<Interactor>>
+participant App
+participant AppExecutionRepository
+
+User -> MainActivity : select app
+MainActivity -> AllActionsFragment : select app
+
+activate AllActionsFragment
+AllActionsFragment -> AllActionsFragment : get selected app
+AllActionsFragment -> ExecuteAction: perform()
+activate ExecuteAction
+
+par 
+    ExecuteAction -> App: perform()
+    activate App
+    App -> App : get intent
+    App ->> MainActivity : start activity
+    deactivate App
+else
+    ExecuteAction -> AppExecutionRepository: add(ActionExecution)
+    AppExecutionRepository --> ExecuteAction: added
+    AppExecutionRepository ->] : DB create
+    AppExecutionRepository <--] : DB created
+end
+ExecuteAction --> AllActionsFragment
+deactivate ExecuteAction
+
+AllActionsFragment --> MainActivity : ?
+
+@enduml

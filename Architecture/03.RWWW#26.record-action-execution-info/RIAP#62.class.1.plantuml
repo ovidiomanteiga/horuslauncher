@@ -1,0 +1,71 @@
+
+@startuml RIAP#62.class.1
+
+skinparam monochrome true
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class AllActionsFragment <<Fragment>> {
+        void userWantsToExecute(HorusAction)
+    }
+
+    MainActivity -u-> AllActionsFragment
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class ActionExecution <<VO>> {
+        DateTime time
+        String userIdentifier
+        String deviceIdentifier
+    }
+
+    class ExecuteAction <<Interactor>> {
+        void perform()
+    }
+
+    interface ActionExecutionRepository <<Repository>> {
+        + void add(ActionExecution)
+    }
+
+    ActionExecution -l-> HorusAction
+    ActionExecutionRepository .u.> ActionExecution
+    ExecuteAction -u-> HorusAction
+    ExecuteAction -u-> ActionExecution
+    ExecuteAction -r-> ActionExecutionRepository
+
+}
+
+package Infrastructure {
+
+    class AppExecutionRepository <<Repository>> {
+        + void add(ActionExecution)
+    }
+
+    class AppExecutionDAO <<DAO>> {
+        + void create(ActionExecution)
+    }
+
+    AppExecutionRepository -r-> AppExecutionDAO
+
+}
+
+AllActionsFragment -u-> ExecuteAction
+AppExecutionRepository .u.|> ActionExecutionRepository
+Infrastructure -[hidden]u-> Domain
+Infrastructure -[hidden]l-> UI
+
+hide empty members
+
+@enduml

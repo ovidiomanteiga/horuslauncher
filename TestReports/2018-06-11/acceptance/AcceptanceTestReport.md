@@ -14,7 +14,7 @@
 
 ## Related work items
 
-1. [PAA#34](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/34)
+1. [PAAA#34](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/34)
     1. [VAL#129](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/129)
 
 ## Features tested

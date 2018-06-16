@@ -1,0 +1,25 @@
+
+@startuml RIAP#62.activity
+
+skinparam monochrome true
+
+|User|
+|App|
+start
+:Show list of all launchable apps;
+
+|User|
+:Select an app>
+|App|
+:Select an app<
+:Launch selected app;
+fork
+    :Record app launch;
+fork again
+    |System|
+    :Launch app;
+end fork
+
+stop
+
+@enduml
