@@ -1,7 +1,7 @@
 
 package org.paradaise.horussense.launcher.infrastructure
 
-import android.os.AsyncTask
+import android.content.Intent
 import org.paradaise.horussense.launcher.domain.ActionExecution
 import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
 import java.util.*
@@ -17,6 +17,12 @@ class DBActionExecutionRepository : ActionExecutionRepository {
 
 	// endregion
 	// region ActionExecutionRepository Implementation
+
+	override val all: List<ActionExecution>
+		get() {
+			return this.map(this.db.actionExecutionDAO().all)
+		}
+
 
 	override fun add(execution: ActionExecution?) {
 		val actionExecution = execution ?: return
@@ -38,6 +44,15 @@ class DBActionExecutionRepository : ActionExecutionRepository {
 		dto.moment = execution.moment
 		dto.url = execution.action.url
 		return dto
+	}
+
+
+	private fun map(executionDTOs: List<ActionExecutionDTO>): List<ActionExecution> {
+		return executionDTOs.map {
+			val intent = Intent.parseUri(it.url, 0)
+			val app = App(null, intent, "")
+			ActionExecution(app, it.moment!!)
+		}
 	}
 
 	// endregion
