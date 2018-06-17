@@ -59,7 +59,7 @@ class GetHorusListUnitTest {
 		// Act
 		this.interactor.perform()
 		// Assert
-		val predictedActions = this.interactor.actions
+		val predictedActions = this.interactor.horusList
 		assertEquals(0, predictedActions.size)
 	}
 
@@ -77,7 +77,7 @@ class GetHorusListUnitTest {
 		// Act
 		this.interactor.perform()
 		// Assert
-		val predictedActions = this.interactor.actions
+		val predictedActions = this.interactor.horusList
 		assertEquals(3, predictedActions.size)
 	}
 
@@ -97,7 +97,7 @@ class GetHorusListUnitTest {
 		// Act
 		this.interactor.perform()
 		// Assert
-		val predictedActions = this.interactor.actions
+		val predictedActions = this.interactor.horusList
 		assertEquals(2, predictedActions.size)
 	}
 
@@ -117,7 +117,7 @@ class GetHorusListUnitTest {
 		// Act
 		this.interactor.perform()
 		// Assert
-		val predictedActions = this.interactor.actions
+		val predictedActions = this.interactor.horusList
 		assertEquals(2, predictedActions.size)
 		assertEquals(action2times, predictedActions[0])
 		assertEquals(action1time, predictedActions[1])

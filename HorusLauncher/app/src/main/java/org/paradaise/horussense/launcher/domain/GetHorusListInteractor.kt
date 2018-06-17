@@ -15,24 +15,14 @@ class GetHorusListInteractor {
 	// endregion
 	// region Public Properties
 
-	lateinit var actions: PredictedActions
+	lateinit var horusList: HorusList
 
 	// endregion
 	// region Public Methods
 
 	internal fun perform() {
-		val executions = this.repository.all
-		val lastWeek = Calendar.getInstance()
-		lastWeek.add(Calendar.DATE, -7)
-		val lastWeekMoment = lastWeek.time
-		val recentExecutions = executions.filter {
-			it.moment.after(lastWeekMoment)
-		}
-		val grouped = recentExecutions.groupBy { it.action.url }
-		val sorted = grouped.map {
-			Pair(it.value.first().action, it.value.count())
-		} .sortedByDescending { it.second }
-		this.actions = sorted.map { it.first }
+		val allActionExecutions = this.repository.all
+		this.buildHorusList(allActionExecutions)
 	}
 
 	// endregion
@@ -41,8 +31,32 @@ class GetHorusListInteractor {
 	private var repository: ActionExecutionRepository
 
 	// endregion
+	// region Private Methods
+
+	private fun buildHorusList(executions: List<ActionExecution>) {
+		val lastWeekMoment = this.lastWeekMoment()
+		this.horusList = executions.filter {
+			it.moment.after(lastWeekMoment)
+		} .groupBy {
+			it.action.url
+		} .map {
+			Pair(it.value.first().action, it.value.count())
+		} .sortedByDescending {
+			it.second
+		} .map {
+			it.first
+		}
+	}
+
+	private fun lastWeekMoment(): Date? {
+		val lastWeek = Calendar.getInstance()
+		lastWeek.add(Calendar.DATE, -7)
+		return lastWeek.time
+	}
+
+	// endregion
 
 }
 
 
-typealias  PredictedActions = List<HorusAction>
+typealias  HorusList = List<HorusAction>
