@@ -50,7 +50,7 @@ class GetAllActionsUnitTest {
 	// region Tests
 
     @Test
-    fun noActionsAvailable() {
+    fun testNoActionsAvailable() {
         this.interactor.perform()
         val allActions = this.interactor.allActions
         assertEquals(0, allActions.size)
@@ -58,7 +58,7 @@ class GetAllActionsUnitTest {
 
 
     @Test
-    fun someActionsAvailable() {
+    fun testSomeActionsAvailable() {
 	    val actions = listOf(HorusAction())
 	    `when`(this.repository.get()).thenReturn(actions)
         this.interactor.perform()
@@ -68,7 +68,7 @@ class GetAllActionsUnitTest {
 
 
 	@Test
-	fun manyActionsAvailable() {
+	fun testManyActionsAvailable() {
 		val actions = this.someActions
 		`when`(this.repository.get()).thenReturn(actions)
 		this.interactor.perform()
@@ -78,7 +78,7 @@ class GetAllActionsUnitTest {
 
 
 	@Test
-	fun defaultAvailableActionsOrdering() {
+	fun testDefaultAvailableActionsOrdering() {
 		val actions = listOf(this.whatsAppAction, this.googleAction, this.facebookAction)
 		`when`(this.repository.get()).thenReturn(actions)
 		this.interactor.perform()
@@ -88,7 +88,7 @@ class GetAllActionsUnitTest {
 
 
 	@Test
-	fun getPagedAvailableActions() {
+	fun testGetPagedAvailableActions() {
 		val actions = this.someActions
 		`when`(this.repository.get()).thenReturn(actions)
 		this.interactor.paging = Paging(startIndex = 0, maxItems = 2)

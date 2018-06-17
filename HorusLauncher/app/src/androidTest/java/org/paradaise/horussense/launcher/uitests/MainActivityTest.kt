@@ -53,13 +53,13 @@ class MainActivityTest {
 	// region Tests
 
 	@Test
-	fun useAppContext() {
+	fun testAppContextIsUsed() {
 		assertEquals("org.paradaise.horussense.launcher", this.appPackageName)
 	}
 
 
 	@Test
-	fun checkAppCount() {
+	fun testNumberOfApps() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val actionItems =  this.mDevice.findObjects(By.res(resourceId))
 		val count = actionItems?.size ?: 0
@@ -68,7 +68,7 @@ class MainActivityTest {
 
 
 	@Test
-	fun checkCertainAppsArePresent() {
+	fun testCertainAppsArePresent() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val someExpectedActions = listOf("Calculator", "Calendar", "Camera",
 				"Chrome", "Clock", "Contacts", "Maps", "Phone", "YouTube")
@@ -81,7 +81,7 @@ class MainActivityTest {
 
 
 	@Test
-	fun checkAppsOrdering() {
+	fun testAppsOrdering() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		var instance = 0
@@ -100,13 +100,13 @@ class MainActivityTest {
 
 
 	@Test
-	fun notLaunchApp() {
+	fun testAppNotLaunched() {
 		assertEquals(this.appPackageName, this.mDevice.currentPackageName)
 	}
 
 
 	@Test
-	fun launchApp() {
+	fun testLaunchApp() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		val item = items.getChildByText(UiSelector().resourceId(resourceId), "Phone")

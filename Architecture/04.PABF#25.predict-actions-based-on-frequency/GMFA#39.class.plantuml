@@ -1,0 +1,70 @@
+
+@startuml GMFA#39.class
+
+skinparam monochrome true
+
+package UI {
+
+    class HorusListFragment <<Fragment>> {
+    }
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class ActionExecution <<VO>> {
+        DateTime time
+        String userIdentifier
+        String deviceIdentifier
+    }
+
+    class GetHorusList <<Interactor>> {
+        + HorusList horusList
+        + void perform()
+    }
+
+    class HorusList {
+    }
+
+    interface ActionExecutionRepository <<Repository>> {
+        + List<ActionExecution> all
+    }
+
+    ActionExecution -l-> HorusAction
+    ActionExecutionRepository .u.> ActionExecution
+    GetHorusList -u-> HorusList
+    GetHorusList -u-> "*"ActionExecution
+    GetHorusList -r-> ActionExecutionRepository
+    HorusList o-> "*"HorusAction
+
+}
+
+package Infrastructure {
+
+    class AppExecutionRepository <<Repository>> {
+        + List<ActionExecution> all
+    }
+
+    class AppExecutionDAO <<DAO>> {
+        + List<ActionExecution> all
+    }
+
+    AppExecutionRepository -r-> AppExecutionDAO
+
+}
+
+HorusListFragment .u.> GetHorusList
+AppExecutionRepository .u.|> ActionExecutionRepository
+Infrastructure -[hidden]u-> Domain
+Infrastructure -[hidden]l-> UI
+
+hide empty members
+
+@enduml
