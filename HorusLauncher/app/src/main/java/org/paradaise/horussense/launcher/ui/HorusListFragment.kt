@@ -59,7 +59,7 @@ private class HorusListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(
 	fun bind(item: HorusAction) = with(itemView) {
 		itemView.imageView.setImageDrawable(item.icon)
 		itemView.titleView.text = item.name
-		itemView.subtitleView.text = item.url
+		itemView.subtitleView.text = "<Launched 34 times so far this week>"
 	}
 
 }

@@ -33,12 +33,14 @@ class DefaultMainFactory : MainFactory {
 
 
 	override fun provideActionExecutionRepository(): ActionExecutionRepository {
-		return DBActionExecutionRepository(this.provideLocalDatabase())
+		val db = this.provideLocalDatabase()
+		val repository = this.provideAllActionsRepository()
+		return DBActionExecutionRepository(repository, db)
 	}
 
 
 	override fun provideAllActionsRepository(): AllActionsRepository {
-		return AllAppsRepository(this.context)
+		return AllAppsRepository(this.provideContext())
 	}
 
 
