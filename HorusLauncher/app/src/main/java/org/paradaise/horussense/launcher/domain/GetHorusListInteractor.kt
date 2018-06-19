@@ -4,7 +4,7 @@ package org.paradaise.horussense.launcher.domain
 import java.util.*
 
 
-class GetHorusListInteractor {
+open class GetHorusListInteractor {
 
 	// region Lifecycle
 
@@ -15,12 +15,12 @@ class GetHorusListInteractor {
 	// endregion
 	// region Public Properties
 
-	lateinit var horusList: HorusList
+	open lateinit var horusList: HorusList
 
 	// endregion
 	// region Public Methods
 
-	internal fun perform() {
+	open fun perform() {
 		val allActionExecutions = this.repository.all
 		this.buildHorusList(allActionExecutions)
 	}

@@ -7,7 +7,7 @@ import android.graphics.drawable.Drawable
 open class HorusAction {
 
 	var icon: Drawable? = null
-	var name: LocalizableString? = null
+	open var name: LocalizableString? = null
 	open var url: String? = null
 
 

@@ -1,16 +1,14 @@
 
 package org.paradaise.horussense.launcher.composition
 
-
 import android.content.Context
-import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
-import org.paradaise.horussense.launcher.domain.AllActionsRepository
-import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
-import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.*
 import org.paradaise.horussense.launcher.infrastructure.*
 
 
 interface MainFactory {
+
+	var context: Context
 
 	fun provideActionExecutionRepository(): ActionExecutionRepository
 
@@ -22,12 +20,17 @@ interface MainFactory {
 
 	fun provideGetAllActionsInteractor(): GetAllActionsInteractor
 
+	fun provideGetHorusListInteractor(): GetHorusListInteractor
+
 	fun provideLocalDatabase(): LocalDatabase
 
 }
 
 
-class DefaultMainFactory(private val context: Context) : MainFactory {
+class DefaultMainFactory : MainFactory {
+
+	override lateinit var context: Context
+
 
 	override fun provideActionExecutionRepository(): ActionExecutionRepository {
 		return DBActionExecutionRepository(this.provideLocalDatabase())
@@ -57,17 +60,14 @@ class DefaultMainFactory(private val context: Context) : MainFactory {
 	}
 
 
-	override fun provideLocalDatabase(): LocalDatabase {
-		return 	Databases.main(this.context)
+	override fun provideGetHorusListInteractor(): GetHorusListInteractor{
+		val repository = this.provideActionExecutionRepository()
+		return GetHorusListInteractor(repository)
 	}
 
-}
 
-
-class Factories {
-
-	companion object {
-		fun main(context: Context): MainFactory = DefaultMainFactory(context)
+	override fun provideLocalDatabase(): LocalDatabase {
+		return 	Databases.main(this.context)
 	}
 
 }
