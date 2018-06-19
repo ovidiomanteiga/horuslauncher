@@ -119,8 +119,8 @@ class GetHorusListUnitTest {
 		// Assert
 		val predictedActions = this.interactor.horusList
 		assertEquals(2, predictedActions.size)
-		assertEquals(action2times, predictedActions[0])
-		assertEquals(action1time, predictedActions[1])
+		assertEquals(action2times, predictedActions[0].action)
+		assertEquals(action1time, predictedActions[1].action)
 	}
 
 	// endregion

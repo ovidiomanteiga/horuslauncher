@@ -2,6 +2,7 @@
 package org.paradaise.horussense.launcher.ui
 
 import android.content.Context
+import android.graphics.Typeface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -17,6 +18,7 @@ import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
 import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.domain.HorusList
+import org.paradaise.horussense.launcher.domain.HorusListItem
 
 
 class HorusListFragment : Fragment(), NeedsGetHorusListInteractor {
@@ -56,10 +58,16 @@ class HorusListFragment : Fragment(), NeedsGetHorusListInteractor {
 
 private class HorusListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-	fun bind(item: HorusAction) = with(itemView) {
-		itemView.imageView.setImageDrawable(item.icon)
-		itemView.titleView.text = item.name
-		itemView.subtitleView.text = "<Launched 34 times so far this week>"
+	fun bind(item: HorusListItem, isFirst: Boolean) = with(itemView) {
+		itemView.apply {
+			imageView.setImageDrawable(item.icon)
+			val times = item.numberOfExecutionsLastWeek
+			subtitleView.text = "Launched %d times so far this week".format(times)
+			titleView.text = item.name
+			val typeface = if (isFirst) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+			subtitleView.typeface = typeface
+			titleView.typeface = typeface
+		}
 	}
 
 }
@@ -78,7 +86,7 @@ private class HorusListAdapter(val list: HorusList) : RecyclerView.Adapter<Horus
 	}
 
 	override fun onBindViewHolder(holder: HorusListItemViewHolder, position: Int) {
-		holder.bind(this.list[position])
+		holder.bind(this.list[position], isFirst = position == 0)
 	}
 
 }

@@ -23,9 +23,8 @@ import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.domain.HorusListItem
 import org.paradaise.horussense.launcher.ui.HorusListActivity
-import java.util.*
 
 
 /**
@@ -46,11 +45,11 @@ class HorusListActivityTest() {
 	@Mock
 	private lateinit var interactor: GetHorusListInteractor
 	@Mock
-	private lateinit var action1: HorusAction
+	private lateinit var action1: HorusListItem
 	@Mock
-	private lateinit var action2: HorusAction
+	private lateinit var action2: HorusListItem
 	@Mock
-	private lateinit var action3: HorusAction
+	private lateinit var action3: HorusListItem
 
 	// endregion
 	// region Setup
@@ -63,11 +62,11 @@ class HorusListActivityTest() {
 		MockitoAnnotations.initMocks(this)
 		MainInjector.setFactory(this.factory)
 		`when`(this.action1.name).thenReturn("Calendar")
-		`when`(this.action1.url).thenReturn(UUID.randomUUID().toString())
+		`when`(this.action1.numberOfExecutionsLastWeek).thenReturn(3)
 		`when`(this.action2.name).thenReturn("Phone")
-		`when`(this.action2.url).thenReturn(UUID.randomUUID().toString())
+		`when`(this.action2.numberOfExecutionsLastWeek).thenReturn(2)
 		`when`(this.action3.name).thenReturn("Facebook")
-		`when`(this.action3.url).thenReturn(UUID.randomUUID().toString())
+		`when`(this.action3.numberOfExecutionsLastWeek).thenReturn(1)
 		val horusList = listOf(this.action1, this.action2, this.action3)
 		doNothing().`when`(this.interactor).perform()
 		`when`(this.interactor.horusList).thenReturn(horusList)

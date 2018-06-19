@@ -1,6 +1,7 @@
 
 package org.paradaise.horussense.launcher.domain
 
+import android.graphics.drawable.Drawable
 import java.util.*
 
 
@@ -40,11 +41,9 @@ open class GetHorusListInteractor {
 		} .groupBy {
 			it.action.url
 		} .map {
-			Pair(it.value.first().action, it.value.count())
+			HorusListItem(it.value.first().action, it.value.count())
 		} .sortedByDescending {
-			it.second
-		} .map {
-			it.first
+			it.numberOfExecutionsLastWeek
 		}
 	}
 
@@ -59,4 +58,19 @@ open class GetHorusListInteractor {
 }
 
 
-typealias  HorusList = List<HorusAction>
+typealias HorusList = List<HorusListItem>
+
+
+open class HorusListItem(action: HorusAction, numberOfExecutionsLastWeek: Int) {
+
+	open val action = action
+
+	open val icon: Drawable?
+		get() = this.action.icon
+
+	open val name: String?
+		get() = this.action.name
+
+	open val numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
+
+}
