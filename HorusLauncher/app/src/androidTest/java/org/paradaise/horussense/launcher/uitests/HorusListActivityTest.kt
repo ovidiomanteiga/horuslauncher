@@ -31,7 +31,7 @@ import org.paradaise.horussense.launcher.ui.HorusListActivity
  * UI test to check Horus list presentation.
  */
 @RunWith(AndroidJUnit4::class)
-class HorusListActivityTest() {
+class HorusListActivityTest {
 
 	// region Properties
 

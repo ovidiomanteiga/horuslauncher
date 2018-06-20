@@ -28,11 +28,13 @@
             </intent-filter>
 
         </activity>
-
-        <activity android:name=".ui.AllAppsActivity"
+        <activity
+            android:name=".ui.AllActionsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             />
 
         <activity android:name=".ui.HorusListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             />
 
     </application>
