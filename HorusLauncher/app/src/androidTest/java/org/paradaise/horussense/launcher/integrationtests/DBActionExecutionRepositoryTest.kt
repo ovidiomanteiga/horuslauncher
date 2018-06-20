@@ -14,6 +14,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.domain.ActionExecution
+import org.paradaise.horussense.launcher.domain.AllActionsRepository
 import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.infrastructure.DBActionExecutionRepository
 import org.paradaise.horussense.launcher.infrastructure.LocalDatabase
@@ -30,6 +31,8 @@ class DBActionExecutionRepositoryTest {
 	private lateinit var action: HorusAction
 	@Mock
 	private lateinit var execution: ActionExecution
+	@Mock
+	private lateinit var allActionsRepository: AllActionsRepository
 
 	private lateinit var db: LocalDatabase
 	private lateinit var repository: DBActionExecutionRepository
@@ -39,10 +42,10 @@ class DBActionExecutionRepositoryTest {
 
 	@Before
 	fun setup() {
+		MockitoAnnotations.initMocks(this)
 		val context = InstrumentationRegistry.getTargetContext()
 		this.db = Room.inMemoryDatabaseBuilder(context, LocalDatabase::class.java).build()
-		this.repository = DBActionExecutionRepository(this.db)
-		MockitoAnnotations.initMocks(this)
+		this.repository = DBActionExecutionRepository(this.allActionsRepository, this.db)
 	}
 
 

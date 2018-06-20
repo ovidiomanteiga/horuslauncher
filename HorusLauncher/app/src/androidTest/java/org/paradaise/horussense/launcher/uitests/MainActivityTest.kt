@@ -1,7 +1,6 @@
 
 package org.paradaise.horussense.launcher.uitests
 
-
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.InstrumentationRegistry.getInstrumentation
@@ -18,7 +17,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.paradaise.horussense.launcher.ui.MainActivity
-
 
 
 /**
@@ -85,7 +83,7 @@ class MainActivityTest {
 		val resourceId = this.appPackageName + ":id/textView"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		var instance = 0
-		var apps = ArrayList<String>()
+		val apps = ArrayList<String>()
 		while (true) {
 			try {
 				val app = items.getChildByInstance(UiSelector().resourceId(resourceId), instance)

@@ -2,7 +2,6 @@
 package org.paradaise.horussense.launcher.ui
 
 
-import android.content.AsyncTaskLoader
 import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
@@ -15,23 +14,21 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_all_actions.view.*
 import kotlinx.android.synthetic.main.item_app.view.*
 import org.paradaise.horussense.launcher.R
-import org.paradaise.horussense.launcher.composition.Factories
-import org.paradaise.horussense.launcher.composition.MainFactory
+import org.paradaise.horussense.launcher.composition.*
 import org.paradaise.horussense.launcher.domain.AllActions
 import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
 import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
-import org.paradaise.horussense.launcher.infrastructure.App
 
 
 
-class AllActionsFragment : Fragment() {
+class AllActionsFragment : Fragment(),
+		NeedsGetAllActionsInteractor, NeedsExecuteActionInteractor
+{
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
-		this.factory = Factories.main(this.requireContext())
-		this.getAllActionsInteractor = this.factory.provideGetAllActionsInteractor()
-		this.getAllActionsInteractor.perform()
+		MainInjector.inject(this)
 	}
 
 
@@ -39,6 +36,7 @@ class AllActionsFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_all_actions, container, false)
 	    val recyclerView = rootView.recyclerView
+	    this.getAllActionsInteractor.perform()
 	    val actions = this.getAllActionsInteractor.allActions
 	    recyclerView.adapter = ActionsAdapter(actions, this::onActionClicked)
 	    val layoutManager = recyclerView.layoutManager
@@ -50,7 +48,6 @@ class AllActionsFragment : Fragment() {
 
 
 	private fun onActionClicked(action: HorusAction) {
-		this.executeActionInteractor = this.factory.provideExecuteActionInteractor()
 		this.executeActionInteractor.action = action
 		AsyncTask.execute {
 			this.executeActionInteractor.perform()
@@ -58,9 +55,8 @@ class AllActionsFragment : Fragment() {
 	}
 
 
-	private lateinit var executeActionInteractor: ExecuteActionInteractor
-	private lateinit var factory: MainFactory
-	private lateinit var getAllActionsInteractor: GetAllActionsInteractor
+	override lateinit var executeActionInteractor: ExecuteActionInteractor
+	override lateinit var getAllActionsInteractor: GetAllActionsInteractor
 
 }
 

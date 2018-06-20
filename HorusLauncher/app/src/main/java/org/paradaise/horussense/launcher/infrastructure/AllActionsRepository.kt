@@ -8,7 +8,6 @@ import org.paradaise.horussense.launcher.domain.*
 import android.content.Intent
 
 
-
 open class AllAppsRepository: AllActionsRepository {
 
 	// region Lifecycle
@@ -40,8 +39,8 @@ open class AllAppsRepository: AllActionsRepository {
 		main.addCategory(Intent.CATEGORY_LAUNCHER)
 		val packages = packageManager.queryIntentActivities(main, 0)
 		return packages.map { resolveInfo ->
-				val packageName = resolveInfo.activityInfo.packageName
-				packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+			val packageName = resolveInfo.activityInfo.packageName
+			packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
 		}
 	}
 

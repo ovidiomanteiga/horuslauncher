@@ -1,10 +1,11 @@
 
 package org.paradaise.horussense.launcher.domain
 
+import android.graphics.drawable.Drawable
 import java.util.*
 
 
-class GetHorusListInteractor {
+open class GetHorusListInteractor {
 
 	// region Lifecycle
 
@@ -15,12 +16,12 @@ class GetHorusListInteractor {
 	// endregion
 	// region Public Properties
 
-	lateinit var horusList: HorusList
+	open lateinit var horusList: HorusList
 
 	// endregion
 	// region Public Methods
 
-	internal fun perform() {
+	open fun perform() {
 		val allActionExecutions = this.repository.all
 		this.buildHorusList(allActionExecutions)
 	}
@@ -40,11 +41,9 @@ class GetHorusListInteractor {
 		} .groupBy {
 			it.action.url
 		} .map {
-			Pair(it.value.first().action, it.value.count())
+			HorusListItem(it.value.first().action, it.value.count())
 		} .sortedByDescending {
-			it.second
-		} .map {
-			it.first
+			it.numberOfExecutionsLastWeek
 		}
 	}
 
@@ -59,4 +58,19 @@ class GetHorusListInteractor {
 }
 
 
-typealias  HorusList = List<HorusAction>
+typealias HorusList = List<HorusListItem>
+
+
+open class HorusListItem(action: HorusAction, numberOfExecutionsLastWeek: Int) {
+
+	open val action = action
+
+	open val icon: Drawable?
+		get() = this.action.icon
+
+	open val name: String?
+		get() = this.action.name
+
+	open val numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
+
+}

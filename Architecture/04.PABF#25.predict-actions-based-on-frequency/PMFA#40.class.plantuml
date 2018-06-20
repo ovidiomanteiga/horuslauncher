@@ -1,0 +1,90 @@
+
+@startuml PMFA#40.class
+
+skinparam monochrome true
+
+package UI {
+
+    class HorusListFragment <<Fragment>> {
+        + HorusList getHorusList()
+    }
+
+    class HorusListAdapter <<Adapter>> {
+    }
+
+    HorusListFragment -d-> HorusListAdapter
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class ActionExecution <<VO>> {
+        DateTime time
+    }
+
+    class GetHorusList <<Interactor>> {
+        + HorusList horusList
+        + void perform()
+    }
+
+    class HorusList {
+    }
+
+    class HorusListItem {
+        + Int numberOfExecutionsLastWeek
+    }
+
+    interface ActionExecutionRepository <<Repository>> {
+        + List<ActionExecution> all
+    }
+
+    interface AllActionsRepository <<Repository>> {
+        + List<HorusAction> all
+    }
+
+    ActionExecution -l-> HorusAction
+    ActionExecutionRepository .u.> ActionExecution
+    ActionExecutionRepository -u-> AllActionsRepository
+    GetHorusList -u-> HorusList
+    GetHorusList -u-> "*" ActionExecution
+    GetHorusList -r-> ActionExecutionRepository
+    HorusList o-u-> "*" HorusListItem
+    HorusListItem -> "1" HorusAction
+
+}
+
+package Infrastructure {
+
+    class AppExecutionRepository <<Repository>> {
+        + List<ActionExecution> all
+    }
+
+    class AppExecutionDAO <<DAO>> {
+        + List<ActionExecution> all
+    }
+
+    class AllAppsRepository <<Repository>> {
+        + List<HorusAction> all
+    }
+
+    AppExecutionRepository -d-> AppExecutionDAO
+
+}
+
+AllAppsRepository -u-|> AllActionsRepository
+AppExecutionRepository .u.|> ActionExecutionRepository
+AppExecutionRepository -> AllAppsRepository
+HorusListFragment -u-> GetHorusList
+Infrastructure -[hidden]u-> Domain
+Infrastructure -[hidden]l-> UI
+
+hide empty members
+
+@enduml
