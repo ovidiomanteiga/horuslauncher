@@ -16,7 +16,6 @@ import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
 import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.domain.HorusList
 import org.paradaise.horussense.launcher.domain.HorusListItem
 

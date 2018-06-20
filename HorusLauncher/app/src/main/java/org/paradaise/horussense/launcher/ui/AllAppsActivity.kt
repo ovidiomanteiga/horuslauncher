@@ -6,14 +6,14 @@ import android.support.v7.app.AppCompatActivity
 import org.paradaise.horussense.launcher.R
 
 
-open class HorusListActivity : AppCompatActivity() {
+open class AllAppsActivity : AppCompatActivity() {
 
 	// region Lifecycle
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		this.setContentView(R.layout.activity_horus_list)
-	}
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        this.setContentView(R.layout.activity_all_apps)
+    }
 
 
 	override fun onBackPressed() { }
@@ -21,3 +21,4 @@ open class HorusListActivity : AppCompatActivity() {
 	// endregion
 
 }
+

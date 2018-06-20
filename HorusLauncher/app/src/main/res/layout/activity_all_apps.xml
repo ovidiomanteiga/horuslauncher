@@ -7,15 +7,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.HorusListActivity" >
+    tools:context=".ui.AllAppsActivity" >
 
     <include layout="@layout/toolbar" />
 
     <fragment
-        android:name="org.paradaise.horussense.launcher.ui.HorusListFragment"
-        android:id="@+id/horus_list_fragment"
+        android:name="org.paradaise.horussense.launcher.ui.AllActionsFragment"
+        android:id="@+id/all_apps_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>
