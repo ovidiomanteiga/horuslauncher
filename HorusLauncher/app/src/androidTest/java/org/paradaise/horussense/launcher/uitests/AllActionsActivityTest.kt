@@ -16,14 +16,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.paradaise.horussense.launcher.ui.MainActivity
+import org.paradaise.horussense.launcher.ui.AllActionsActivity
 
 
 /**
  * UI test to check all apps are presented on screen.
  */
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class AllActionsActivityTest {
 
 	// region Properties
 
@@ -38,7 +38,7 @@ class MainActivityTest {
 	// region Setup
 
 	@get:Rule
-	var mActivityRule = ActivityTestRule(MainActivity::class.java)
+	var mActivityRule = ActivityTestRule(AllActionsActivity::class.java)
 
 
 	@Before
