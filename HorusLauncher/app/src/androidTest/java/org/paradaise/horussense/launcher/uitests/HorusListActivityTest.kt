@@ -2,6 +2,8 @@
 package org.paradaise.horussense.launcher.uitests
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -11,19 +13,17 @@ import android.support.test.uiautomator.UiSelector
 import android.support.v7.widget.RecyclerView
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
+import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doNothing
 import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
-import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusListItem
+import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.infrastructure.App
 import org.paradaise.horussense.launcher.ui.HorusListActivity
 
 
@@ -43,7 +43,9 @@ class HorusListActivityTest {
 	@Mock
 	private lateinit var factory: MainFactory
 	@Mock
-	private lateinit var interactor: GetHorusListInteractor
+	private lateinit var executeActionInteractor: ExecuteActionInteractor
+	@Mock
+	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
 	private lateinit var action1: HorusListItem
 	@Mock
@@ -68,9 +70,16 @@ class HorusListActivityTest {
 		`when`(this.action3.name).thenReturn("Facebook")
 		`when`(this.action3.numberOfExecutionsLastWeek).thenReturn(1)
 		val horusList = listOf(this.action1, this.action2, this.action3)
-		doNothing().`when`(this.interactor).perform()
-		`when`(this.interactor.horusList).thenReturn(horusList)
-		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.interactor)
+		doNothing().`when`(this.getHorusListInteractor).perform()
+		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
+		`when`(this.executeActionInteractor.perform()).then {
+			val intent = Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://paradaise.org"));
+			this.appContext.startActivity(intent)
+		}
+		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.getHorusListInteractor)
+		`when`(this.factory.provideExecuteActionInteractor())
+				.thenReturn(this.executeActionInteractor)
 	}
 
 
@@ -105,6 +114,23 @@ class HorusListActivityTest {
 		assertEquals("Calendar", item0Title.text)
 		assertEquals("Phone", item1Title.text)
 		assertEquals("Facebook", item2Title.text)
+	}
+
+
+	@Test
+	fun testAppNotLaunched() {
+		Assert.assertEquals(this.appPackageName, this.mDevice.currentPackageName)
+	}
+
+
+	@Test
+	fun testLaunchApp() {
+		val resourceId = this.appPackageName + ":id/horusItem"
+		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
+		val item = items.getChildByText(UiSelector().resourceId(resourceId), "Calendar")
+		item.click()
+		this.mDevice.waitForIdle()
+		Assert.assertNotEquals(this.appPackageName, this.mDevice.currentPackageName)
 	}
 
 	// endregion
