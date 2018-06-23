@@ -1,0 +1,75 @@
+
+@startuml PPDA#37.class
+
+skinparam monochrome true
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class HorusListFragment <<Fragment>> {
+        void userWantsToExecute(HorusListItem)
+    }
+
+    MainActivity -u-> HorusListFragment
+
+}
+
+package Domain {
+
+    class HorusAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class ActionExecution <<VO>> {
+        DateTime time
+        String userIdentifier
+        String deviceIdentifier
+    }
+
+    class ExecuteAction <<Interactor>> {
+        void perform()
+    }
+
+
+    class HorusList {
+    }
+
+    class HorusListItem {
+        + Int numberOfExecutionsLastWeek
+    }
+
+
+    ActionExecution -l-> HorusAction
+    HorusList o-u-> "*" HorusListItem
+    HorusListItem -> "1" HorusAction
+    ExecuteAction -u-> HorusAction
+    ExecuteAction -u-> ActionExecution
+    ExecuteAction -r-> ActionExecutionRepository
+
+}
+
+package Infrastructure {
+
+    class App {
+        + void perform()
+    }
+
+    AppExecutionRepository -d-> AppExecutionDAO
+
+}
+
+App -u-|> HorusAction
+HorusListFragment -u-> ExecuteAction
+HorusListFragment -u-> HorusList
+AppExecutionRepository .u.|> ActionExecutionRepository
+Infrastructure -[hidden]u-> Domain
+Infrastructure -[hidden]l-> UI
+
+hide empty members
+
+@enduml
