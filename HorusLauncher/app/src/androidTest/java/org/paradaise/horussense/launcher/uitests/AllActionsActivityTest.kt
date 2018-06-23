@@ -1,7 +1,6 @@
 
 package org.paradaise.horussense.launcher.uitests
 
-
 import android.content.Context
 import android.support.test.InstrumentationRegistry
 import android.support.test.InstrumentationRegistry.getInstrumentation
@@ -17,15 +16,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.paradaise.horussense.launcher.ui.MainActivity
-
+import org.paradaise.horussense.launcher.ui.AllActionsActivity
 
 
 /**
  * UI test to check all apps are presented on screen.
  */
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class AllActionsActivityTest {
 
 	// region Properties
 
@@ -40,7 +38,7 @@ class MainActivityTest {
 	// region Setup
 
 	@get:Rule
-	var mActivityRule = ActivityTestRule(MainActivity::class.java)
+	var mActivityRule = ActivityTestRule(AllActionsActivity::class.java)
 
 
 	@Before
@@ -53,13 +51,13 @@ class MainActivityTest {
 	// region Tests
 
 	@Test
-	fun useAppContext() {
+	fun testAppContextIsUsed() {
 		assertEquals("org.paradaise.horussense.launcher", this.appPackageName)
 	}
 
 
 	@Test
-	fun checkAppCount() {
+	fun testNumberOfApps() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val actionItems =  this.mDevice.findObjects(By.res(resourceId))
 		val count = actionItems?.size ?: 0
@@ -68,7 +66,7 @@ class MainActivityTest {
 
 
 	@Test
-	fun checkCertainAppsArePresent() {
+	fun testCertainAppsArePresent() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val someExpectedActions = listOf("Calculator", "Calendar", "Camera",
 				"Chrome", "Clock", "Contacts", "Maps", "Phone", "YouTube")
@@ -81,11 +79,11 @@ class MainActivityTest {
 
 
 	@Test
-	fun checkAppsOrdering() {
+	fun testAppsOrdering() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		var instance = 0
-		var apps = ArrayList<String>()
+		val apps = ArrayList<String>()
 		while (true) {
 			try {
 				val app = items.getChildByInstance(UiSelector().resourceId(resourceId), instance)
@@ -100,13 +98,13 @@ class MainActivityTest {
 
 
 	@Test
-	fun notLaunchApp() {
+	fun testAppNotLaunched() {
 		assertEquals(this.appPackageName, this.mDevice.currentPackageName)
 	}
 
 
 	@Test
-	fun launchApp() {
+	fun testLaunchApp() {
 		val resourceId = this.appPackageName + ":id/textView"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		val item = items.getChildByText(UiSelector().resourceId(resourceId), "Phone")

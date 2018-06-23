@@ -1,0 +1,38 @@
+
+@startuml SAPA#60.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+start
+:Unlock device;
+|System|
+:Unlock device;
+if (**HorusLauncher** is the default launcher?) then (yes)
+else (no)
+    |System|
+    :Show default launcher;
+    |User|
+    :Browse default launcher;
+    :Select **HorusLauncher** app;
+endif
+|System|
+:Show **HorusLauncher**;
+|App|
+:Show list of predicted apps\n**Horus List**;
+|User|
+:Browse list of predicted apps\n**Horus List**;
+if (Intended action found?) then (yes)
+    :Select intended action;
+    detach
+else (no)
+    :Switch to **all actions list**;
+    |App|
+    :Show list of **all actions list**;
+endif
+|User|
+:Browse list of **all actions list**;
+stop
+
+@enduml

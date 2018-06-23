@@ -1,0 +1,44 @@
+
+@startuml SAPA#60.activity.1
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+start
+|App|
+:Show list of predicted apps\n**Horus List**;
+|User|
+:Browse list of predicted apps\n**Horus List**;
+if (Intended action found?) then (yes)
+    :Select intended action;
+    detach
+else (no)
+    :Switch to **all actions list**;
+    |App|
+    :Show list of **all actions list**;
+endif
+|User|
+:Browse list of **all actions list**;
+:Select an action;
+|App|
+:Perform selected action>
+detach
+:Come back from selected action<
+:Show list of **all actions list**;
+|User|
+:Browse list of **all actions list**;
+if (Want to see predicted actions?) then (no)
+    |User|
+    :...;
+else (yes)
+    :Switch to list of predicted apps\n**Horus List**;
+    |App|
+    :Show list of predicted apps\n**Horus List**;
+    detach
+endif
+
+|User|
+stop
+
+@enduml
