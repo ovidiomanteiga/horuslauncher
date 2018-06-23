@@ -86,7 +86,7 @@ class GetHorusListUnitTest {
 	fun testPredictedActionsJustLastWeek() {
 		// Arrange
 		val now = Calendar.getInstance().time
-		var momentMoreThanOneWeekAgo = Calendar.getInstance()
+		val momentMoreThanOneWeekAgo = Calendar.getInstance()
 		momentMoreThanOneWeekAgo.add(Calendar.DATE, -10)
 		val executions = listOf(
 				ActionExecution(this.action1, moment = now),

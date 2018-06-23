@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_horus_list.*
 import kotlinx.android.synthetic.main.item_horus.view.*
 import org.paradaise.horussense.launcher.R
+import org.paradaise.horussense.launcher.R.id.*
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.composition.NeedsExecuteActionInteractor
 import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
@@ -70,7 +71,9 @@ private class HorusListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(
 	fun bind(item: HorusListItem, isFirst: Boolean, listener: (HorusListItem) -> Unit) = with(itemView) {
 		imageView.setImageDrawable(item.icon)
 		val times = item.numberOfExecutionsLastWeek
-		subtitleView.text = "Launched %d times so far this week".format(times)
+		val subtitleRID = R.plurals.times_launched_so_far_this_week
+		val subtitle = this.context.resources.getQuantityString(subtitleRID, times, times)
+		subtitleView.text = subtitle
 		titleView.text = item.name
 		val typeface = if (isFirst) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
 		subtitleView.typeface = typeface

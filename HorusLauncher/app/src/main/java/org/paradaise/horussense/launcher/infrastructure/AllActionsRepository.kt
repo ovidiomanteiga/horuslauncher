@@ -49,7 +49,7 @@ open class AllAppsRepository: AllActionsRepository {
 	                      packageManager: PackageManager): List<App> {
 		return packages.map {
 			val icon = it.loadIcon(packageManager)
-			var name = it.loadLabel(packageManager)?.toString() ?: it.packageName
+			val name = it.loadLabel(packageManager)?.toString() ?: it.packageName
 			val intent = packageManager.getLaunchIntentForPackage(it.packageName)
 			App(icon = icon, intent = intent, name = name)
 		}

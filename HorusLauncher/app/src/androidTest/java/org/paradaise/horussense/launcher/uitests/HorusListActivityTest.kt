@@ -74,7 +74,7 @@ class HorusListActivityTest {
 		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
 		`when`(this.executeActionInteractor.perform()).then {
 			val intent = Intent(Intent.ACTION_VIEW,
-					Uri.parse("http://paradaise.org"));
+					Uri.parse("http://paradaise.org"))
 			this.appContext.startActivity(intent)
 		}
 		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.getHorusListInteractor)
