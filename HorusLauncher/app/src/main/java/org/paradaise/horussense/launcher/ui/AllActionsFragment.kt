@@ -26,6 +26,10 @@ class AllActionsFragment : Fragment(),
 		NeedsGetAllActionsInteractor, NeedsExecuteActionInteractor
 {
 
+	override lateinit var executeActionInteractor: ExecuteActionInteractor
+	override lateinit var getAllActionsInteractor: GetAllActionsInteractor
+
+
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
 		MainInjector.inject(this)
@@ -53,10 +57,6 @@ class AllActionsFragment : Fragment(),
 			this.executeActionInteractor.perform()
 		}
 	}
-
-
-	override lateinit var executeActionInteractor: ExecuteActionInteractor
-	override lateinit var getAllActionsInteractor: GetAllActionsInteractor
 
 }
 

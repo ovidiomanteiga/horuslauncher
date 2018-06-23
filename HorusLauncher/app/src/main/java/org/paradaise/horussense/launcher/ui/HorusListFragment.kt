@@ -14,13 +14,18 @@ import kotlinx.android.synthetic.main.fragment_horus_list.*
 import kotlinx.android.synthetic.main.item_horus.view.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainInjector
+import org.paradaise.horussense.launcher.composition.NeedsExecuteActionInteractor
 import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusList
-import org.paradaise.horussense.launcher.domain.HorusListItem
+import org.paradaise.horussense.launcher.domain.*
 
 
-class HorusListFragment : Fragment(), NeedsGetHorusListInteractor {
+class HorusListFragment : Fragment(),
+		NeedsGetHorusListInteractor, NeedsExecuteActionInteractor
+{
+
+	override lateinit var executeActionInteractor: ExecuteActionInteractor
+	override lateinit var getHorusListInteractor: GetHorusListInteractor
+
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
@@ -44,35 +49,44 @@ class HorusListFragment : Fragment(), NeedsGetHorusListInteractor {
 			this.getHorusListInteractor.perform()
 			this.activity?.runOnUiThread {
 				val actions = this.getHorusListInteractor.horusList
-				this.recyclerView.adapter = HorusListAdapter(actions)
+				this.recyclerView.adapter = HorusListAdapter(actions, this::onItemClicked)
 			}
 		}
 	}
 
 
-	override lateinit var getHorusListInteractor: GetHorusListInteractor
+	private fun onItemClicked(item: HorusListItem) {
+		this.executeActionInteractor.action = item.action
+		AsyncTask.execute {
+			this.executeActionInteractor.perform()
+		}
+	}
 
 }
 
 
 private class HorusListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-	fun bind(item: HorusListItem, isFirst: Boolean) = with(itemView) {
-		itemView.apply {
-			imageView.setImageDrawable(item.icon)
-			val times = item.numberOfExecutionsLastWeek
-			subtitleView.text = "Launched %d times so far this week".format(times)
-			titleView.text = item.name
-			val typeface = if (isFirst) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
-			subtitleView.typeface = typeface
-			titleView.typeface = typeface
-		}
+	fun bind(item: HorusListItem, isFirst: Boolean, listener: (HorusListItem) -> Unit) = with(itemView) {
+		imageView.setImageDrawable(item.icon)
+		val times = item.numberOfExecutionsLastWeek
+		subtitleView.text = "Launched %d times so far this week".format(times)
+		titleView.text = item.name
+		val typeface = if (isFirst) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
+		subtitleView.typeface = typeface
+		titleView.typeface = typeface
+		setOnClickListener { listener(item) }
 	}
 
 }
 
 
-private class HorusListAdapter(val list: HorusList) : RecyclerView.Adapter<HorusListItemViewHolder>() {
+private class HorusListAdapter : RecyclerView.Adapter<HorusListItemViewHolder> {
+
+	constructor(list: HorusList, listener: (HorusListItem) -> Unit) : super() {
+		this.list = list
+		this.listener = listener
+	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorusListItemViewHolder {
 		val itemView = LayoutInflater.from(parent.context)
@@ -85,7 +99,11 @@ private class HorusListAdapter(val list: HorusList) : RecyclerView.Adapter<Horus
 	}
 
 	override fun onBindViewHolder(holder: HorusListItemViewHolder, position: Int) {
-		holder.bind(this.list[position], isFirst = position == 0)
+		holder.bind(this.list[position], isFirst = position == 0, listener = this.listener)
 	}
+
+
+	private val list: HorusList
+	private val listener: (HorusListItem) -> Unit
 
 }

@@ -1,0 +1,23 @@
+
+@startuml PPDA#37.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+|App|
+start
+:Show list of predicted actions\n**Horus List**;
+|User|
+:Browse list of predicted actions\n**Horus List**;
+:Select an action;
+|App|
+:Perform the selected action;
+if (Selected action is app launching?) then (yes)
+    |System|
+    :Launch app;
+endif
+|App|
+stop
+
+@enduml
