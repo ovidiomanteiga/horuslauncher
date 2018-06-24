@@ -2,4 +2,9 @@
     <string name="app_name">Horus Launcher</string>
     <string name="tab_text_1">Horus List</string>
     <string name="tab_text_2">All Actions</string>
+    <plurals name="times_launched_so_far_this_week">
+        <item quantity="one">Launched once so far this week.</item>
+        <item quantity="two">Launched twice so far this week.</item>
+        <item quantity="other">Launched %1$d times so far this week.</item>
+    </plurals>
 </resources>
