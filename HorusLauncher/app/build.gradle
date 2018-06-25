@@ -26,13 +26,11 @@ android {
         flavorDimensions 'version'
         alpha {
             dimension 'version'
-            minSdkVersion 19
-            applicationId 'org.paradaise.horussense.launcher'
-            targetSdkVersion 27
-            testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-            versionCode 1
-            versionName '1.0.0'
             versionNameSuffix 'alpha'
+        }
+        beta {
+            dimension 'version'
+            versionNameSuffix 'beta'
         }
     }
 }
