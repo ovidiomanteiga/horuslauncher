@@ -26,15 +26,15 @@ android {
         flavorDimensions 'version'
         dev {
             dimension 'version'
-            versionNameSuffix 'dev'
+            versionNameSuffix '-dev'
         }
         alpha {
             dimension 'version'
-            versionNameSuffix 'alpha'
+            versionNameSuffix '-alpha'
         }
         beta {
             dimension 'version'
-            versionNameSuffix 'beta'
+            versionNameSuffix '-beta'
         }
         pub {
             dimension 'version'
