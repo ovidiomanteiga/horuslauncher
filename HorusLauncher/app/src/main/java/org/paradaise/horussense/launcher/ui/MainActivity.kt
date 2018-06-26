@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
 	}
 
 
+	override fun onBackPressed() { }
+
+
 	private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
 
 

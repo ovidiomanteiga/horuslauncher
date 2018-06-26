@@ -24,6 +24,10 @@ android {
     }
     productFlavors {
         flavorDimensions 'version'
+        dev {
+            dimension 'version'
+            versionNameSuffix 'dev'
+        }
         alpha {
             dimension 'version'
             versionNameSuffix 'alpha'
@@ -31,6 +35,9 @@ android {
         beta {
             dimension 'version'
             versionNameSuffix 'beta'
+        }
+        pub {
+            dimension 'version'
         }
     }
 }
