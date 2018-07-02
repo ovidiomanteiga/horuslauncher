@@ -87,6 +87,7 @@ class HorusListActivityTest {
 	fun setup() {
 		this.mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 		this.appContext = InstrumentationRegistry.getTargetContext()
+		MainInjector.setFactory(this.factory)
 	}
 
 
