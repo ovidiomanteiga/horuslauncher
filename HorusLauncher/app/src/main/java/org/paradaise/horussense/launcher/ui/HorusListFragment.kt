@@ -3,6 +3,7 @@ package org.paradaise.horussense.launcher.ui
 
 import android.content.Context
 import android.graphics.Typeface
+import android.opengl.Visibility
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,7 +14,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_horus_list.*
 import kotlinx.android.synthetic.main.item_horus.view.*
 import org.paradaise.horussense.launcher.R
-import org.paradaise.horussense.launcher.R.id.*
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.composition.NeedsExecuteActionInteractor
 import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
@@ -23,10 +23,13 @@ import org.paradaise.horussense.launcher.domain.*
 class HorusListFragment : Fragment(),
 		NeedsGetHorusListInteractor, NeedsExecuteActionInteractor
 {
+	// region Public Properties
 
 	override lateinit var executeActionInteractor: ExecuteActionInteractor
 	override lateinit var getHorusListInteractor: GetHorusListInteractor
 
+	// endregion
+	// region Lifecycle
 
 	override fun onAttach(context: Context?) {
 		super.onAttach(context)
@@ -44,15 +47,44 @@ class HorusListFragment : Fragment(),
 		this.getHorusList()
 	}
 
+	// endregion
+	// region Private Properties
+
+	private var horusList: HorusList? = null
+	private val listener: HorusListFragmentListener?
+		get() = this.activity as? HorusListFragmentListener
+	private val nullOrEmptyHorusList: Boolean
+		get() = this.horusList?.isEmpty() ?: true
+
+	// endregion
+	// region Private Methods
 
 	private fun getHorusList() {
 		AsyncTask.execute {
 			this.getHorusListInteractor.perform()
 			this.activity?.runOnUiThread {
-				val actions = this.getHorusListInteractor.horusList
-				this.recyclerView.adapter = HorusListAdapter(actions, this::onItemClicked)
+				this.horusList = this.getHorusListInteractor.horusList
+				this.showHorusList()
 			}
 		}
+	}
+
+
+	private fun showHorusList() {
+		val noList = this.nullOrEmptyHorusList
+		this.emptyView.visibility = if (noList) View.VISIBLE else View.GONE
+		if (noList) {
+			this.onEmptyHorusList()
+			return
+		}
+		val horusList = this.horusList ?: return
+		val adapter = HorusListAdapter(horusList, this::onItemClicked)
+		this.recyclerView.adapter = adapter
+	}
+
+
+	private fun onEmptyHorusList() {
+		this.listener?.onEmptyHorusList()
 	}
 
 
@@ -63,8 +95,19 @@ class HorusListFragment : Fragment(),
 		}
 	}
 
+	// endregion
+
 }
 
+
+// region Public Interfaces
+
+interface HorusListFragmentListener {
+	fun onEmptyHorusList()
+}
+
+// endregion
+// region Private Classes
 
 private class HorusListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -110,3 +153,5 @@ private class HorusListAdapter : RecyclerView.Adapter<HorusListItemViewHolder> {
 	private val listener: (HorusListItem) -> Unit
 
 }
+
+// endregion

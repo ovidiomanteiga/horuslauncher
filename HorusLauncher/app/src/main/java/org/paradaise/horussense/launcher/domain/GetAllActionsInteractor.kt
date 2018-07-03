@@ -14,13 +14,13 @@ open class GetAllActionsInteractor {
 	//endregion
 	// region Public Properties
 
-    var allActions: AllActions = ArrayList()
-	var paging: Paging? = null
+    open var allActions: AllActions = ArrayList()
+	open var paging: Paging? = null
 
 	// endregion
 	// region Public Methods
 
-    internal fun perform() {
+    open fun perform() {
 	    this.allActions = this.getAllAvailableActions()
     }
 

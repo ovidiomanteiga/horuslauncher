@@ -3,6 +3,7 @@ package org.paradaise.horussense.launcher.domain
 
 import android.graphics.drawable.Drawable
 import java.util.*
+import kotlin.Comparator
 
 
 open class GetHorusListInteractor {
@@ -31,9 +32,13 @@ open class GetHorusListInteractor {
 
 	private var repository: ActionExecutionRepository
 
+	private val horusListItemComparator: Comparator<in HorusListItem>
+		get() = compareByDescending<HorusListItem> { it.numberOfExecutionsLastWeek }
+				.thenByDescending { it.lastExecutionMoment }
+
 	// endregion
 	// region Private Methods
-
+	
 	private fun buildHorusList(executions: List<ActionExecution>) {
 		val lastWeekMoment = this.lastWeekMoment()
 		this.horusList = executions.filter {
@@ -41,16 +46,23 @@ open class GetHorusListInteractor {
 		} .groupBy {
 			it.action.url
 		} .map {
-			HorusListItem(it.value.first().action, it.value.count())
-		} .sortedByDescending {
-			it.numberOfExecutionsLastWeek
-		}
+			this.mapToHorusListItem(it.value)
+		} .sortedWith(this.horusListItemComparator)
 	}
+
 
 	private fun lastWeekMoment(): Date? {
 		val lastWeek = Calendar.getInstance()
 		lastWeek.add(Calendar.DATE, -7)
 		return lastWeek.time
+	}
+
+
+	private fun mapToHorusListItem(executions: List<ActionExecution>): HorusListItem {
+		val action = executions.first().action
+		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
+		val numberOfExecutionsLastWeek = executions.count()
+		return HorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
 	}
 
 	// endregion
@@ -61,9 +73,17 @@ open class GetHorusListInteractor {
 typealias HorusList = List<HorusListItem>
 
 
-open class HorusListItem(action: HorusAction, numberOfExecutionsLastWeek: Int) {
+open class HorusListItem {
 
-	open val action = action
+	constructor(action: HorusAction, lastExecutionMoment: Date?,
+	            numberOfExecutionsLastWeek: Int)
+	{
+		this.action = action
+		this.lastExecutionMoment = lastExecutionMoment
+		this.numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
+	}
+
+	open val action: HorusAction
 
 	open val icon: Drawable?
 		get() = this.action.icon
@@ -71,6 +91,8 @@ open class HorusListItem(action: HorusAction, numberOfExecutionsLastWeek: Int) {
 	open val name: String?
 		get() = this.action.name
 
-	open val numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
+	open val lastExecutionMoment: Date?
+
+	open val numberOfExecutionsLastWeek: Int
 
 }
