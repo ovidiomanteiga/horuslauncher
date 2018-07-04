@@ -1,0 +1,27 @@
+
+@startuml PAAA#34.sequence
+
+skinparam monochrome true
+autonumber
+
+participant User
+participant MainActivity
+participant AllAppsFragment
+participant App
+participant AppIntent
+
+User -> MainActivity : select app
+MainActivity -> AllAppsFragment : select app
+
+activate AllAppsFragment
+AllAppsFragment -> AllAppsFragment : get selected app
+AllAppsFragment -> App: perform()
+
+App -> App : get intent
+App -> MainActivity : start activity
+MainActivity --> App : activity started?
+App --> AllAppsFragment : action performed?
+
+AllAppsFragment --> MainActivity : ?
+
+@enduml

@@ -1,0 +1,29 @@
+
+@startuml GMFA#39.sequence
+
+skinparam monochrome true
+autonumber
+
+participant HorusListFragment
+participant GetHorusList <<Interactor>>
+participant AppExecutionRepository
+participant AppExecutionDAO
+
+HorusListFragment -> GetHorusList : perform()
+activate GetHorusList
+GetHorusList -> AppExecutionRepository: all
+activate AppExecutionRepository
+AppExecutionRepository -> AppExecutionDAO: all
+activate AppExecutionDAO
+AppExecutionDAO ->] : DB select
+AppExecutionDAO <--] : DB select
+AppExecutionDAO -->> AppExecutionRepository : action executions DTOs
+deactivate AppExecutionDAO
+AppExecutionRepository -> AppExecutionRepository : map DTO to VO
+AppExecutionRepository ->> GetHorusList : action executions VOs
+deactivate AppExecutionRepository
+GetHorusList --> GetHorusList: build Horus list
+GetHorusList -->> HorusListFragment : Horus list
+deactivate GetHorusList
+
+@enduml
