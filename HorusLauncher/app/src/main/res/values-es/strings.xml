@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Horus Launcher</string>
+    <string name="empty_horus_list">¡Lista Horus vacía!</string>
     <string name="tab_text_1">Lista Horus</string>
     <string name="tab_text_2">Todas las acciones</string>
     <plurals name="times_launched_so_far_this_week">

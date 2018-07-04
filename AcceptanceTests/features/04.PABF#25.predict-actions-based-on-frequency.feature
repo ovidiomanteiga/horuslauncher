@@ -23,6 +23,19 @@ Feature: Predict actions based on usage frequency.
         When the user selects a predicted action.
         Then the action is executed (the same way as on the list of all actions).
 
+    Scenario: Show empty view over list of predicted actions if no predicted actions.
+        Given the list of predicted actions is to be shown.
+            And the list of predicted actions is empty.
+        When the list of predicted actions is to be shown.
+        Then an empty view indicating there are no predicted actions is shown.
+
+    Scenario: Show list of all actions if no predicted actions.
+        Given the list of predicted actions has been shown.
+            And the user come from unlock or another activity.
+            And the list of predicted actions is empty.
+        When immediately after.
+        Then the list of all actions is shown.
+
     Scenario: Switch to the list of all apps.
         Given the list of predicted apps has been shown.
         When the user selects the list of all apps.
