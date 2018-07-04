@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Horus Launcher</string>
+    <string name="empty_horus_list">Empty Horus List!</string>
     <string name="tab_text_1">Horus List</string>
     <string name="tab_text_2">All Actions</string>
     <plurals name="times_launched_so_far_this_week">
