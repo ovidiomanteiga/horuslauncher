@@ -1,0 +1,66 @@
+
+@startuml GRPD#31.class
+
+skinparam monochrome true
+
+package Domain {
+
+    class PromotedAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class PromotedActions <<Aggregate>> {
+    }
+
+    class GetPromotedActions <<Interactor>> {
+        + PromotedActions actions
+        + void perform()
+    }
+
+    class UserProfile <<VO>> {
+        + Gender gender
+        + Int yearOfBirth
+        + Location currentHomeLocation
+        + List<HorusAction> top10Apps
+    }
+
+    interface PromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+    }
+
+
+    GetPromotedActions -u-> PromotedActions
+    GetPromotedActions -r-> PromotedActionService
+    GetPromotedActions o-> "1" UserProfile
+    PromotedActions -r-> "*" PromotedAction
+    PromotedActionService -u-> "1" UserProfile
+
+}
+
+package Infrastructure {
+
+    class HorusSpotterPromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+    }
+
+    package HorusSpotterClient {
+
+        class HorusSpotterPromotedActions <<WebAPIResource>> {
+            + UserProfileDTO userProfile
+            + PromotedActionsDTO post()
+        }
+
+    }
+
+    HorusSpotterPromotedActionService .r.> HorusSpotterPromotedActions
+
+}
+
+HorusSpotterPromotedActionService .u.|> PromotedActionService
+
+hide empty members
+
+@enduml
