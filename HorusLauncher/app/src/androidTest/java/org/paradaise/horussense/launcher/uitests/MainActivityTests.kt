@@ -59,6 +59,8 @@ class MainActivityTest {
 	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
+	private lateinit var getPromotedActions: GetPromotedActions
+	@Mock
 	private lateinit var action1: HorusListItem
 
 
@@ -78,6 +80,8 @@ class MainActivityTest {
 				.thenReturn(this.getHorusListInteractor)
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
+		`when`(this.factory.provideGetPromotedActionsInteractor())
+				.thenReturn(this.getPromotedActions)
 		doNothing().`when`(this.getAllActionInteractor).perform()
 		`when`(this.getAllActionInteractor.allActions).thenReturn(allActions)
 		doNothing().`when`(this.getHorusListInteractor).perform()

@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 
 open class HorusAction : Action {
 
-	constructor(icon: Drawable?, name: LocalizableString) : super(icon, name)
+	constructor(icon: Drawable? = null, name: LocalizableString? = null): super(icon, name)
 
 }
 

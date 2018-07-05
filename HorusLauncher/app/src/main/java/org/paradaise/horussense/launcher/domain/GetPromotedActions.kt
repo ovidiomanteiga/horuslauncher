@@ -2,7 +2,7 @@
 package org.paradaise.horussense.launcher.domain
 
 
-class GetPromotedActions: Interactor {
+open class GetPromotedActions: Interactor {
 
 	constructor(service: PromotedActionsService, userProfileManager: UserProfileManager?) {
 		this.service = service
@@ -10,7 +10,7 @@ class GetPromotedActions: Interactor {
 	}
 
 
-	lateinit var actions: PromotedActions
+	open lateinit var actions: PromotedActions
 
 
 	override fun perform() {
