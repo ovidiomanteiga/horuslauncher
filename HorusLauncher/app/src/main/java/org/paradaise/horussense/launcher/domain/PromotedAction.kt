@@ -2,5 +2,6 @@
 package org.paradaise.horussense.launcher.domain
 
 
-open class PromotedAction {
+open class PromotedAction: Action() {
+
 }
