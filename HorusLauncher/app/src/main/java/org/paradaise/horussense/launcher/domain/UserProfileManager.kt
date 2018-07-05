@@ -16,9 +16,9 @@ class UserProfileManager {
 
 	fun getUserProfile(): UserProfile? {
 		val userProfile = UserProfile()
-		userProfile.currentLocation = this.locationManager.currentLocation
+		userProfile.currentLocation = this.locationManager.getCurrentLocation()
 		userProfile.top10actions = this.buildTopActionsList()
-		return null
+		return userProfile
 	}
 
 	// endregion

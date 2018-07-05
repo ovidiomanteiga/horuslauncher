@@ -61,4 +61,5 @@ dependencies {
     testImplementation "android.arch.persistence.room:testing:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     androidTestImplementation 'org.mockito:mockito-android:2.19.0'
+    implementation 'com.google.android.gms:play-services:12.0.1'
 }

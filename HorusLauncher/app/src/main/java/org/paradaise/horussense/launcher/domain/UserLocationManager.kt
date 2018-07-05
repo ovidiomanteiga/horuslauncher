@@ -6,6 +6,9 @@ import android.location.Location
 
 interface UserLocationManager {
 
-	val currentLocation: Location
+	fun getCurrentLocation(): Location?
 
 }
+
+
+class LocationPermissionNeededException : Exception()
