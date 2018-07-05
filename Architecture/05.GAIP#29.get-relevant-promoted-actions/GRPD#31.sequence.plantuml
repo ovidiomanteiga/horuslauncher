@@ -1,0 +1,32 @@
+
+@startuml GRPD#31.sequence
+
+skinparam monochrome true
+autonumber
+
+participant GetPromotedActions <<Interactor>>
+participant UserProfile
+participant HorusSpotterPromotedActionService
+participant HorusSpotterPromotedActions
+
+ -> GetPromotedActions : perform()
+activate GetPromotedActions
+GetPromotedActions -> GetPromotedActions: get user profile
+GetPromotedActions -> HorusSpotterPromotedActionService: getPromotedActionsFor
+activate HorusSpotterPromotedActionService
+create HorusSpotterPromotedActions
+HorusSpotterPromotedActionService -> HorusSpotterPromotedActions: create
+HorusSpotterPromotedActionService -> HorusSpotterPromotedActions: post
+activate HorusSpotterPromotedActions
+HorusSpotterPromotedActions ->] : Horus Spotter Web API request
+HorusSpotterPromotedActions <--] : Horus Spotter Web API response
+HorusSpotterPromotedActions -->> HorusSpotterPromotedActionService : promoted actions DTO
+deactivate HorusSpotterPromotedActions
+HorusSpotterPromotedActionService -> HorusSpotterPromotedActionService : map DTO to domain
+HorusSpotterPromotedActionService -->> GetPromotedActions : promoted actions
+deactivate HorusSpotterPromotedActionService
+GetPromotedActions --> GetPromotedActions: prepare promoted actions
+ <<-- GetPromotedActions : Promoted actions
+deactivate GetPromotedActions
+
+@enduml

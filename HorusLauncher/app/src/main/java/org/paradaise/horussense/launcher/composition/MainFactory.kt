@@ -22,6 +22,10 @@ interface MainFactory {
 
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
 
+	fun provideGetPromotedActionsInteractor(): GetPromotedActions
+
+	fun provideUserLocationManager(): UserLocationManager
+
 	fun provideLocalDatabase(): LocalDatabase
 
 }
@@ -68,8 +72,22 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideGetPromotedActionsInteractor(): GetPromotedActions {
+		val repository = this.provideActionExecutionRepository()
+		val service = FakePromotedActionsService()
+		val locationManager = this.provideUserLocationManager()
+		val manager = UserProfileManager(locationManager, repository)
+		return GetPromotedActions(service = service, userProfileManager = manager)
+	}
+
+
+	override fun provideUserLocationManager(): UserLocationManager {
+		return AndroidLocationManager(this.provideContext())
+	}
+
+
 	override fun provideLocalDatabase(): LocalDatabase {
-		return 	Databases.main(this.context)
+		return 	Databases.main(this.provideContext())
 	}
 
 }

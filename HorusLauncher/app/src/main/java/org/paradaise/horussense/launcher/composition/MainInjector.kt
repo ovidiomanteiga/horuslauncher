@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
 import org.paradaise.horussense.launcher.domain.GetAllActionsInteractor
 import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.GetPromotedActions
 
 
 class MainInjector {
@@ -14,7 +15,7 @@ class MainInjector {
 
 		fun inject(target: AppCompatActivity) {
 			this.factory.context = target
-			this.inject(target)
+			this.injectCommon(target)
 		}
 
 		fun inject(target: Fragment) {
@@ -40,6 +41,8 @@ class MainInjector {
 					factory.provideGetAllActionsInteractor()
 			(target as? NeedsExecuteActionInteractor)?.executeActionInteractor =
 					factory.provideExecuteActionInteractor()
+			(target as? NeedsGetPromotedActionsInteractor)?.getPromotedActionsInteractor =
+					factory.provideGetPromotedActionsInteractor()
 		}
 
 	}
@@ -60,6 +63,11 @@ interface NeedsGetAllActionsInteractor {
 
 interface NeedsGetHorusListInteractor {
 	var getHorusListInteractor: GetHorusListInteractor
+}
+
+
+interface NeedsGetPromotedActionsInteractor {
+	var getPromotedActionsInteractor: GetPromotedActions
 }
 
 // endregion
