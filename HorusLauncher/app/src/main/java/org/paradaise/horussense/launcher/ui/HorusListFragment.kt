@@ -89,7 +89,8 @@ class HorusListFragment : Fragment(),
 
 
 	private fun onItemClicked(item: HorusListItem) {
-		this.executeActionInteractor.action = item.action
+		val predictedItem = item as? PredictedHorusListItem ?: return
+		this.executeActionInteractor.action = predictedItem.horusAction
 		AsyncTask.execute {
 			this.executeActionInteractor.perform()
 		}

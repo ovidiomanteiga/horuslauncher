@@ -27,8 +27,8 @@ class UserProfileManager {
 	private var locationManager: UserLocationManager
 	private var repository: ActionExecutionRepository
 
-	private val horusListItemComparator: Comparator<in HorusListItem>
-		get() = compareByDescending<HorusListItem> { it.numberOfExecutionsLastWeek }
+	private val horusListItemComparator: Comparator<in PredictedHorusListItem>
+		get() = compareByDescending<PredictedHorusListItem> { it.numberOfExecutionsLastWeek }
 				.thenByDescending { it.lastExecutionMoment }
 
 	// endregion
@@ -40,15 +40,15 @@ class UserProfileManager {
 			it.action.url
 		} .map {
 			this.mapToHorusListItem(it.value)
-		} .sortedWith(this.horusListItemComparator) .map { it.action }
+		} .sortedWith(this.horusListItemComparator) .map { it.horusAction }
 	}
 
 
-	private fun mapToHorusListItem(executions: List<ActionExecution>): HorusListItem {
+	private fun mapToHorusListItem(executions: List<ActionExecution>): PredictedHorusListItem {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()
-		return HorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
+		return PredictedHorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
 	}
 
 	// endregion

@@ -1,7 +1,6 @@
 
 package org.paradaise.horussense.launcher.domain
 
-import android.graphics.drawable.Drawable
 import java.util.*
 import kotlin.Comparator
 
@@ -62,37 +61,9 @@ open class GetHorusListInteractor {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()
-		return HorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
+		return PredictedHorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
 	}
 
 	// endregion
-
-}
-
-
-typealias HorusList = List<HorusListItem>
-
-
-open class HorusListItem {
-
-	constructor(action: HorusAction, lastExecutionMoment: Date?,
-	            numberOfExecutionsLastWeek: Int)
-	{
-		this.action = action
-		this.lastExecutionMoment = lastExecutionMoment
-		this.numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
-	}
-
-	open val action: HorusAction
-
-	open val icon: Drawable?
-		get() = this.action.icon
-
-	open val name: String?
-		get() = this.action.name
-
-	open val lastExecutionMoment: Date?
-
-	open val numberOfExecutionsLastWeek: Int
 
 }
