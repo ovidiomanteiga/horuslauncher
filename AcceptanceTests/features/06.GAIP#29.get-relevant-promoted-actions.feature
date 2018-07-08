@@ -11,9 +11,14 @@ Feature: Get relevant promoted actions to be inserted amongst the predicted ones
             And the promoted action can be tell apart from predicted actions.
             And the promoted action is about the center of the list.
 
-    Scenario: No promoted actions in empty Horus List.
+    Scenario: Do not show promoted actions in empty Horus List.
         Given there are no predicted actions in the Horus List.
             And there are some promoted actions available to be shown.
         When the Horus List is shown.
         Then the Horus List empty view is shown.
             And no promoted actions are shown.
+
+    Scenario: No promoted actions available.
+        Given there are no promoted actions available to be shown.
+        When the Horus List is shown.
+        Then the Horus List is shown normally without any promoted actions.

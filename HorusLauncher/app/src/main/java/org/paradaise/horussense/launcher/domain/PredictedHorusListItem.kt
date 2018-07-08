@@ -10,7 +10,7 @@ open class PredictedHorusListItem: HorusListItem {
 	            numberOfExecutionsLastWeek: Int):
 			super(action, lastExecutionMoment, numberOfExecutionsLastWeek)
 
-	val horusAction: HorusAction
+	open val horusAction: HorusAction
 		get() = super.action as HorusAction
 
 }

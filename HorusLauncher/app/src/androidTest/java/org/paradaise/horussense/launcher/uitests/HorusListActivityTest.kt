@@ -46,30 +46,34 @@ class HorusListActivityTest {
 	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
-	private lateinit var action1: HorusListItem
+	private lateinit var action1: PredictedHorusListItem
 	@Mock
-	private lateinit var action2: HorusListItem
+	private lateinit var action2: PredictedHorusListItem
 	@Mock
-	private lateinit var action3: HorusListItem
+	private lateinit var action3: PredictedHorusListItem
 	@Mock
-	private lateinit var action4: HorusListItem
+	private lateinit var action4: PredictedHorusListItem
+	@Mock
+	private lateinit var horusAction: HorusAction
 
 	// endregion
 	// region Setup
 
 	@get:Rule
-	var mActivityRule = ActivityTestRule(HorusListActivity::class.java)
+	var mActivityRule = ActivityTestRule(HorusListActivity::class.java,
+			true, false)
 
 
-	init {
+	@Before
+	fun setup() {
 		MockitoAnnotations.initMocks(this)
-		MainInjector.setFactory(this.factory)
 		val now = Calendar.getInstance().time
 		val yesterdayCalendar = Calendar.getInstance()
 		yesterdayCalendar.add(Calendar.DATE, -1)
 		val yesterday = yesterdayCalendar.time
 		`when`(this.action1.name).thenReturn("Calendar")
 		`when`(this.action1.numberOfExecutionsLastWeek).thenReturn(3)
+		`when`(this.action1.horusAction).thenReturn(this.horusAction)
 		`when`(this.action2.name).thenReturn("Phone")
 		`when`(this.action2.numberOfExecutionsLastWeek).thenReturn(2)
 		`when`(this.action2.lastExecutionMoment).thenReturn(yesterday)
@@ -89,14 +93,10 @@ class HorusListActivityTest {
 		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.getHorusListInteractor)
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
-	}
-
-
-	@Before
-	fun setup() {
 		this.mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 		this.appContext = InstrumentationRegistry.getTargetContext()
 		MainInjector.setFactory(this.factory)
+		this.mActivityRule.launchActivity(null)
 	}
 
 
@@ -135,7 +135,7 @@ class HorusListActivityTest {
 		val resourceId = this.appPackageName + ":id/horusItem"
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		val item = items.getChildByText(UiSelector().resourceId(resourceId), "Calendar")
-		item.click()
+		item.clickAndWaitForNewWindow()
 		this.mDevice.waitForIdle()
 		Assert.assertNotEquals(this.appPackageName, this.mDevice.currentPackageName)
 	}
