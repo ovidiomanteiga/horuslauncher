@@ -11,7 +11,8 @@ class FakePromotedActionsService : PromotedActionsService {
 
 	override fun getPromotedActionsFor(profile: UserProfile?): PromotedActions {
 		val promotedAction = PromotedAction()
-		promotedAction.name = "Buy me!"
+		promotedAction.name = "Speak English Now"
+		promotedAction.description = "Keep Calm & Speak English Now!"
 		return listOf(promotedAction)
 	}
 

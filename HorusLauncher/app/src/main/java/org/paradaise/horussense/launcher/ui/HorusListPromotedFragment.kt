@@ -2,30 +2,30 @@
 package org.paradaise.horussense.launcher.ui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.horus_list.*
-import kotlinx.android.synthetic.main.item_horus.view.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.composition.NeedsExecuteActionInteractor
 import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
+import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
 import org.paradaise.horussense.launcher.domain.*
 
 
-class HorusListFragment : Fragment(),
-		NeedsGetHorusListInteractor, NeedsExecuteActionInteractor
+class HorusListPromotedFragment : Fragment(),
+		NeedsGetHorusListInteractor, NeedsExecuteActionInteractor,
+		NeedsGetPromotedActionsInteractor
 {
 	// region Public Properties
 
 	override lateinit var executeActionInteractor: ExecuteActionInteractor
 	override lateinit var getHorusListInteractor: GetHorusListInteractor
+	override lateinit var getPromotedActionsInteractor: GetPromotedActions
 
 	// endregion
 	// region Lifecycle
@@ -37,7 +37,7 @@ class HorusListFragment : Fragment(),
 
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		return inflater.inflate(R.layout.fragment_horus_list, container, false)
+		return inflater.inflate(R.layout.fragment_horus_list_promoted, container, false)
 	}
 
 
@@ -50,6 +50,7 @@ class HorusListFragment : Fragment(),
 	// region Private Properties
 
 	private var horusList: HorusList? = null
+	private var promotedActions: PromotedActions? = null
 	private val listener: HorusListFragmentListener?
 		get() = this.activity as? HorusListFragmentListener
 	private val nullOrEmptyHorusList: Boolean
@@ -61,8 +62,10 @@ class HorusListFragment : Fragment(),
 	private fun getHorusList() {
 		AsyncTask.execute {
 			this.getHorusListInteractor.perform()
+			this.getPromotedActionsInteractor.perform()
 			this.activity?.runOnUiThread {
 				this.horusList = this.getHorusListInteractor.horusList
+				this.promotedActions = this.getPromotedActionsInteractor.actions
 				this.showHorusList()
 			}
 		}
@@ -77,7 +80,8 @@ class HorusListFragment : Fragment(),
 			return
 		}
 		val horusList = this.horusList ?: return
-		val adapter = HorusListAdapter(horusList, this::onItemClicked)
+		val topPromotedAction = this.promotedActions?.first()
+		val adapter = HorusListPromotedAdapter(horusList, topPromotedAction, this::onItemClicked)
 		this.recyclerView.adapter = adapter
 	}
 
@@ -98,12 +102,3 @@ class HorusListFragment : Fragment(),
 	// endregion
 
 }
-
-
-// region Public Interfaces
-
-interface HorusListFragmentListener {
-	fun onEmptyHorusList()
-}
-
-// endregion

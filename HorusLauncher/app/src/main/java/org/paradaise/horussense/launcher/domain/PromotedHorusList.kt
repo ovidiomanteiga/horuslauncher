@@ -4,7 +4,7 @@ package org.paradaise.horussense.launcher.domain
 import java.util.*
 
 
-typealias PromotedHorusList= List<PromotedHorusListItem>
+typealias PromotedHorusList = List<PromotedHorusListItem>
 
 
 open class PromotedHorusListItem(action: Action,
