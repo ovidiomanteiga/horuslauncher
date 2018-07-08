@@ -44,13 +44,15 @@ class HorusListPromotedActivityTest {
 	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
+	private lateinit var getPromotedActions: GetPromotedActions
+	@Mock
 	private lateinit var predicted1: PredictedHorusListItem
 	@Mock
 	private lateinit var predicted2: PredictedHorusListItem
 	@Mock
 	private lateinit var predicted3: PredictedHorusListItem
 	@Mock
-	private lateinit var promoted: PromotedHorusListItem
+	private lateinit var promoted: PromotedAction
 
 	// endregion
 	// region Setup
@@ -74,12 +76,12 @@ class HorusListPromotedActivityTest {
 		`when`(this.predicted3.name).thenReturn("Facebook")
 		`when`(this.predicted3.numberOfExecutionsLastWeek).thenReturn(1)
 		`when`(this.promoted.name).thenReturn("English")
-		`when`(this.promoted.numberOfExecutionsLastWeek).thenReturn(2)
-		`when`(this.promoted.lastExecutionMoment).thenReturn(now)
 		doNothing().`when`(this.getHorusListInteractor).perform()
 		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.getHorusListInteractor)
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
+		`when`(this.factory.provideGetPromotedActionsInteractor())
+				.thenReturn(this.getPromotedActions)
 		this.device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 		this.context = InstrumentationRegistry.getTargetContext()
 	}
@@ -118,28 +120,33 @@ class HorusListPromotedActivityTest {
 	@Test
 	fun testSomePredictedActionsAndSomePromoted() {
 		// Arrange
-		val horusList = listOf(this.predicted1, this.promoted, this.predicted2, this.predicted3)
+		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
 		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
+		val promotedActions = listOf(this.promoted)
+		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
 		this.activityRule.launchActivity(null)
 		// Act
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
 		val horusItemRID = this.appPackageName + ":id/horusItem"
+		val promotedHorusItemRID = this.appPackageName + ":id/promotedHorusItem"
 		val textViewRID = this.appPackageName + ":id/titleView"
 		val count = items.childCount
 		val horusItemSelector = UiSelector().resourceId(horusItemRID)
+		val promotedHorusItemSelector = UiSelector().resourceId(promotedHorusItemRID)
 		val textViewSelector = UiSelector().resourceId(textViewRID)
 		var actualItems = listOf<String>()
-		for (i in 0..(count-1)) {
+		for (i in 0..(count-2)) {
 			val item = items.getChildByInstance(horusItemSelector, i)
 			val itemTitle = item.getChild(textViewSelector)
 			actualItems += itemTitle.text
 		}
+		var promotedItem = items.getChildByText(promotedHorusItemSelector, "English")
 		// Assert
-		assertTrue(count > 0)
+		assertTrue(count == 4)
 		assertTrue(actualItems.contains("Calendar"))
 		assertTrue(actualItems.contains("Phone"))
 		assertTrue(actualItems.contains("Facebook"))
-		assertTrue(actualItems.contains("English"))
+		assertTrue(promotedItem.exists())
 	}
 
 	// endregion

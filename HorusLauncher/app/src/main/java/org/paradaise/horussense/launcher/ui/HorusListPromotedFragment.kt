@@ -80,7 +80,7 @@ class HorusListPromotedFragment : Fragment(),
 			return
 		}
 		val horusList = this.horusList ?: return
-		val topPromotedAction = this.promotedActions?.first()
+		val topPromotedAction = this.promotedActions?.firstOrNull()
 		val adapter = HorusListPromotedAdapter(horusList, topPromotedAction, this::onItemClicked)
 		this.recyclerView.adapter = adapter
 	}
