@@ -20,7 +20,7 @@
 
 ## Features tested
 
-1. [`04.PABF#25.predict-actions-based-on-frequency`](../../../AcceptanceTests): Predict actions based on usage frequency..
+1. [`04.PABF#25.predict-actions-based-on-frequency`](../../../AcceptanceTests): Predict actions based on usage frequency.
 
 ## Results
 

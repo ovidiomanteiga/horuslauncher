@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 				if (position == this@MainActivity.allActionsTabIndex)
 					AllActionsFragment()
 				else
-					HorusListFragment()
+					HorusListPromotedFragment()
 
 		override fun getCount(): Int = 2
 
