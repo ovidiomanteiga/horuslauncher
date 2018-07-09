@@ -22,3 +22,24 @@ Feature: Get relevant promoted actions to be inserted amongst the predicted ones
         Given there are no promoted actions available to be shown.
         When the Horus List is shown.
         Then the Horus List is shown normally without any promoted actions.
+
+    Scenario: Select a promoted action.
+        Given the Horus List is shown.
+            And the Horus List contains at least one promoted action.
+        When the user selects the promoted action.
+        Then a confirmation dialog is shown to confirm the user really wants to execute that action.
+            And the dialog shows the information about the action to be performed.
+            And the dialog gives the user the choices of performing the action or canceling.
+
+    Scenario: Perform a promoted action.
+        Given a promoted action confirmation dialog has been shown.
+        When the user confirms they want to perform the promoted action.
+        Then that promoted action is executed.
+            And the promoted action service is notified about that execution.
+
+    Scenario: Cancel a promoted action.
+        Given a promoted action confirmation dialog has been shown.
+        When the user cancels.
+        Then that promoted action is not executed.
+            And the dialog is dismissed.
+            And the Horus List is shown again.
