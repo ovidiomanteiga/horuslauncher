@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.horus_list.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.*
 import org.paradaise.horussense.launcher.domain.*
+
 
 
 class HorusListPromotedFragment : Fragment(),
@@ -100,10 +102,27 @@ class HorusListPromotedFragment : Fragment(),
 
 
 	private fun onPromotedActionClicked(item: PromotedAction) {
-		this.executePromotedActionInteractor.action = item
+		this.showPromotedActionConfirmationDialog(item)
+	}
+
+
+	private fun performPromotedAction(action: PromotedAction) {
+		this.executePromotedActionInteractor.action = action
 		AsyncTask.execute {
 			this.executePromotedActionInteractor.perform()
 		}
+	}
+
+
+	private fun showPromotedActionConfirmationDialog(action: PromotedAction) {
+		val dialog = AlertDialog.Builder(this.requireContext())
+				.setTitle(action.name)
+				.setMessage(getString(R.string.promoted_action_dialog_confirmation))
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setPositiveButton(android.R.string.yes) {
+						_, _ -> this.performPromotedAction(action) }
+				.setNegativeButton(android.R.string.no, null)
+		dialog.show()
 	}
 
 	// endregion
