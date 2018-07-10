@@ -18,11 +18,15 @@ interface MainFactory {
 
 	fun provideExecuteActionInteractor(): ExecuteActionInteractor
 
+	fun provideExecutePromotedActionInteractor(): ExecutePromotedAction
+
 	fun provideGetAllActionsInteractor(): GetAllActionsInteractor
 
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
 
 	fun provideGetPromotedActionsInteractor(): GetPromotedActions
+
+	fun providePromotedActionsService(): PromotedActionsService
 
 	fun provideUserLocationManager(): UserLocationManager
 
@@ -60,6 +64,12 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideExecutePromotedActionInteractor(): ExecutePromotedAction {
+		val service = this.providePromotedActionsService()
+		return ExecutePromotedAction(service)
+	}
+
+
 	override fun provideGetAllActionsInteractor(): GetAllActionsInteractor {
 		val repository = this.provideAllActionsRepository()
 		return GetAllActionsInteractor(repository)
@@ -74,10 +84,15 @@ class DefaultMainFactory : MainFactory {
 
 	override fun provideGetPromotedActionsInteractor(): GetPromotedActions {
 		val repository = this.provideActionExecutionRepository()
-		val service = FakePromotedActionsService()
+		val service = this.providePromotedActionsService()
 		val locationManager = this.provideUserLocationManager()
 		val manager = UserProfileManager(locationManager, repository)
 		return GetPromotedActions(service = service, userProfileManager = manager)
+	}
+
+
+	override fun providePromotedActionsService(): PromotedActionsService {
+		return FakePromotedActionsService(this.provideContext())
 	}
 
 

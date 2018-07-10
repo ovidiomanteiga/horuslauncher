@@ -15,10 +15,12 @@ import org.paradaise.horussense.launcher.domain.PromotedAction
 class HorusListPromotedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	constructor(list: HorusList, promotedAction: PromotedAction?,
-	            listener: (HorusListItem) -> Unit) : super()
+	            predictedListener: (HorusListItem) -> Unit,
+	            promotedListener: (PromotedAction) -> Unit) : super()
 	{
 		this.list = list
-		this.listener = listener
+		this.predictedListener = predictedListener
+		this.promotedListener = promotedListener
 		this.promotedAction = promotedAction
 	}
 
@@ -48,7 +50,7 @@ class HorusListPromotedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 		if (holder is HorusListPromotedItemViewHolder) {
 			val promotedAction = this.promotedAction ?: return
-			holder.bind(promotedAction)
+			holder.bind(promotedAction, listener = this.promotedListener)
 		} else if (holder is HorusListItemViewHolder) {
 			var itemPosition =  position
 			val promotedPosition = this.promotedItemPosition
@@ -56,13 +58,14 @@ class HorusListPromotedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				itemPosition--
 			}
 			val item = this.list[itemPosition]
-			holder.bind(item, isFirst = position == 0, listener = this.listener)
+			holder.bind(item, isFirst = position == 0, listener = this.predictedListener)
 		}
 
 	}
 
 	private val list: HorusList
-	private val listener: (HorusListItem) -> Unit
+	private val predictedListener: (HorusListItem) -> Unit
+	private val promotedListener: (PromotedAction) -> Unit
 	private val promotedAction: PromotedAction?
 
 	private val horusItemViewType = 0
@@ -75,11 +78,14 @@ class HorusListPromotedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 class HorusListPromotedItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-	fun bind(item: PromotedAction) = with(itemView) {
+	fun bind(item: PromotedAction, listener: (PromotedAction) -> Unit) = with(itemView) {
 		imageView.setImageDrawable(item.icon)
 		imageView.visibility = if (item.icon != null) View.VISIBLE else View.GONE
 		subtitleView.text = item.description
 		titleView.text = item.name
+		setOnClickListener {
+			listener(item)
+		}
 	}
 
 }

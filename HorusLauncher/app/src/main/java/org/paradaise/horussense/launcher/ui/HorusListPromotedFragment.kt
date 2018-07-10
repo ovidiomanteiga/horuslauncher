@@ -10,20 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.horus_list.*
 import org.paradaise.horussense.launcher.R
-import org.paradaise.horussense.launcher.composition.MainInjector
-import org.paradaise.horussense.launcher.composition.NeedsExecuteActionInteractor
-import org.paradaise.horussense.launcher.composition.NeedsGetHorusListInteractor
-import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.composition.*
 import org.paradaise.horussense.launcher.domain.*
 
 
 class HorusListPromotedFragment : Fragment(),
 		NeedsGetHorusListInteractor, NeedsExecuteActionInteractor,
-		NeedsGetPromotedActionsInteractor
+		NeedsGetPromotedActionsInteractor, NeedsExecutePromotedActionInteractor
 {
 	// region Public Properties
 
 	override lateinit var executeActionInteractor: ExecuteActionInteractor
+	override lateinit var executePromotedActionInteractor: ExecutePromotedAction
 	override lateinit var getHorusListInteractor: GetHorusListInteractor
 	override lateinit var getPromotedActionsInteractor: GetPromotedActions
 
@@ -81,7 +79,8 @@ class HorusListPromotedFragment : Fragment(),
 		}
 		val horusList = this.horusList ?: return
 		val topPromotedAction = this.promotedActions?.firstOrNull()
-		val adapter = HorusListPromotedAdapter(horusList, topPromotedAction, this::onItemClicked)
+		val adapter = HorusListPromotedAdapter(horusList, topPromotedAction,
+				this::onItemClicked, promotedListener = this::onPromotedActionClicked)
 		this.recyclerView.adapter = adapter
 	}
 
@@ -96,6 +95,14 @@ class HorusListPromotedFragment : Fragment(),
 		this.executeActionInteractor.action = predictedItem.horusAction
 		AsyncTask.execute {
 			this.executeActionInteractor.perform()
+		}
+	}
+
+
+	private fun onPromotedActionClicked(item: PromotedAction) {
+		this.executePromotedActionInteractor.action = item
+		AsyncTask.execute {
+			this.executePromotedActionInteractor.perform()
 		}
 	}
 
