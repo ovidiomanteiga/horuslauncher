@@ -2,7 +2,7 @@
 package org.paradaise.horussense.launcher.domain
 
 
-open class ExecutePromotedAction : Interactor {
+open class ExecutePromotedActionInteractor : Interactor {
 
 
 	constructor(service: PromotedActionsService) {

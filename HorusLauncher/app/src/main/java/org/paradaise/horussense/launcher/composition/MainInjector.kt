@@ -55,7 +55,7 @@ interface NeedsExecuteActionInteractor {
 }
 
 interface NeedsExecutePromotedActionInteractor {
-	var executePromotedActionInteractor: ExecutePromotedAction
+	var executePromotedActionInteractor: ExecutePromotedActionInteractor
 }
 
 interface NeedsGetAllActionsInteractor {
@@ -69,7 +69,7 @@ interface NeedsGetHorusListInteractor {
 
 
 interface NeedsGetPromotedActionsInteractor {
-	var getPromotedActionsInteractor: GetPromotedActions
+	var getPromotedActionsInteractor: GetPromotedActionsInteractor
 }
 
 // endregion

@@ -4,7 +4,7 @@ package org.paradaise.horussense.launcher.domain
 import java.util.*
 
 
-open class ActionExecution {
+open class ActionExecutionVO {
 
 	constructor(action: HorusAction, moment: Date) {
 		this.action = action

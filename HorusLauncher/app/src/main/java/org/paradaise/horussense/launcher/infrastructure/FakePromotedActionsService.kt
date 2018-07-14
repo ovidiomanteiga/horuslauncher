@@ -8,7 +8,7 @@ import org.paradaise.horussense.launcher.domain.*
 
 class FakePromotedActionsService(private val context: Context? = null) : PromotedActionsService {
 
-	override fun getPromotedActionsFor(profile: UserProfile?): PromotedActions {
+	override fun getPromotedActionsFor(profile: UserProfileVO?): PromotedActions {
 		val promotedAction = OpenLinkPromotedAction(null, "Speak English Now",
 				description = "Keep Calm & Speak English Now!")
 		promotedAction.url = "http://www.google.com/search?q=Keep%20Calm"

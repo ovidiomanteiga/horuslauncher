@@ -1,35 +1,38 @@
 
 package org.paradaise.horussense.launcher.unittests
 
+
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.*
-import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.ActionExecutionVO
+import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
+import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.HorusAction
 
 
 /**
- * Tests related to the execution of a promoted action.
+ * Tests related to the execute action feature.
  *
- * See [story @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/38).
+ * See [feature @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/33).
  */
 @RunWith(MockitoJUnitRunner::class)
-class ExecutePromotedActionUnitTest {
+class ExecuteActionInteractorUnitTest {
 
 	// region Properties
 
 	@InjectMocks
-	private lateinit var interactor: ExecutePromotedAction
+	private lateinit var interactor: ExecuteActionInteractor
 
 	@Mock
-	private lateinit var action: PromotedAction
+	private lateinit var action: HorusAction
 
 	@Mock
-	private lateinit var service: PromotedActionsService
+	private lateinit var repository: ActionExecutionRepository
 
 	// endregion
 	// region Setup
@@ -52,16 +55,15 @@ class ExecutePromotedActionUnitTest {
 
 
 	@Test
-	fun testActionExecutedAndNotified() {
+	fun testActionExecutedAndLogged() {
 		// Arrange
 		this.interactor.action = this.action
 		// Act
 		this.interactor.perform()
 		// Assert
 		verify(this.action, times(1)).perform()
-		val argument = ArgumentCaptor.forClass(PromotedActionExecution::class.java)
-		verify(this.service, times(1))
-				.notifyActionExecuted(argument.capture())
+		val argument = ArgumentCaptor.forClass(ActionExecutionVO::class.java)
+		verify(this.repository, times(1)).add(argument.capture())
 		assertEquals(this.action, argument.value.action)
 	}
 
@@ -74,8 +76,9 @@ class ExecutePromotedActionUnitTest {
 		this.interactor.perform()
 		// Assert
 		verify(this.action, times(0)).perform()
-		verify(this.service, never()).notifyActionExecuted(any())
+		verify(this.repository, times(0)).add(Matchers.any())
 	}
+
 
 	// endregion
 

@@ -46,12 +46,12 @@ open class AllAppsRepository: AllActionsRepository {
 
 
 	private fun mapToApps(packages: List<ApplicationInfo>,
-	                      packageManager: PackageManager): List<App> {
+	                      packageManager: PackageManager): List<OpenAppAction> {
 		return packages.map {
 			val icon = it.loadIcon(packageManager)
 			val name = it.loadLabel(packageManager)?.toString() ?: it.packageName
 			val intent = packageManager.getLaunchIntentForPackage(it.packageName)
-			App(icon = icon, intent = intent, name = name)
+			OpenAppAction(icon = icon, intent = intent, name = name)
 		}
 	}
 

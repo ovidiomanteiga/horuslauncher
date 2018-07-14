@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
-import org.paradaise.horussense.launcher.domain.GetPromotedActions
+import org.paradaise.horussense.launcher.domain.GetPromotedActionsInteractor
 
 
 class MainActivity : AppCompatActivity(), HorusListFragmentListener,
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 
 	// region Injected Properties
 
-	override lateinit var getPromotedActionsInteractor: GetPromotedActions
+	override lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
 
 	// endregion
 	// region Lifecycle

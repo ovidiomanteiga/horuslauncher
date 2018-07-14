@@ -5,7 +5,7 @@ import android.location.Location
 import java.time.Year
 
 
-class UserProfile {
+class UserProfileVO {
 
 	var currentLocation: Location? = null
 	var gender: Gender? = null

@@ -12,7 +12,7 @@ import org.paradaise.horussense.launcher.domain.LocalizableString
 
 
 
-class App: HorusAction {
+class OpenAppAction: HorusAction {
 
 	constructor(icon: Drawable?, intent: Intent?, name: LocalizableString): super(icon, name) {
 		this.intent = intent

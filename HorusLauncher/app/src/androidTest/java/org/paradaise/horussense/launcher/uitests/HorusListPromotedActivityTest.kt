@@ -41,11 +41,11 @@ class HorusListPromotedActivityTest {
 	@Mock
 	private lateinit var executeActionInteractor: ExecuteActionInteractor
 	@Mock
-	private lateinit var executePromotedActionInteractor: ExecutePromotedAction
+	private lateinit var executePromotedActionInteractor: ExecutePromotedActionInteractor
 	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
-	private lateinit var getPromotedActions: GetPromotedActions
+	private lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
 	@Mock
 	private lateinit var predicted1: PredictedHorusListItem
 	@Mock
@@ -86,7 +86,7 @@ class HorusListPromotedActivityTest {
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
 		`when`(this.factory.provideGetPromotedActionsInteractor())
-				.thenReturn(this.getPromotedActions)
+				.thenReturn(this.getPromotedActionsInteractor)
 		`when`(this.factory.provideExecutePromotedActionInteractor())
 				.thenReturn(this.executePromotedActionInteractor)
 		this.device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -130,7 +130,7 @@ class HorusListPromotedActivityTest {
 		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
 		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
 		val promotedActions = listOf(this.promoted)
-		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
+		`when`(this.getPromotedActionsInteractor.actions).thenReturn(promotedActions)
 		this.activityRule.launchActivity(null)
 		// Act
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
@@ -162,7 +162,7 @@ class HorusListPromotedActivityTest {
 		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
 		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
 		val promotedActions = listOf(this.promoted)
-		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
+		`when`(this.getPromotedActionsInteractor.actions).thenReturn(promotedActions)
 		this.activityRule.launchActivity(null)
 		// Act & Assert
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
@@ -182,7 +182,7 @@ class HorusListPromotedActivityTest {
 		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
 		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
 		val promotedActions = listOf(this.promoted)
-		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
+		`when`(this.getPromotedActionsInteractor.actions).thenReturn(promotedActions)
 		this.activityRule.launchActivity(null)
 		// Act & Assert
 		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))

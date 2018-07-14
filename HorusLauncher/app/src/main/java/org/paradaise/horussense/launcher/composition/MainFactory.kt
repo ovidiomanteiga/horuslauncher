@@ -18,13 +18,13 @@ interface MainFactory {
 
 	fun provideExecuteActionInteractor(): ExecuteActionInteractor
 
-	fun provideExecutePromotedActionInteractor(): ExecutePromotedAction
+	fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor
 
 	fun provideGetAllActionsInteractor(): GetAllActionsInteractor
 
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
 
-	fun provideGetPromotedActionsInteractor(): GetPromotedActions
+	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
 
 	fun providePromotedActionsService(): PromotedActionsService
 
@@ -64,9 +64,9 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
-	override fun provideExecutePromotedActionInteractor(): ExecutePromotedAction {
+	override fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor {
 		val service = this.providePromotedActionsService()
-		return ExecutePromotedAction(service)
+		return ExecutePromotedActionInteractor(service)
 	}
 
 
@@ -82,12 +82,12 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
-	override fun provideGetPromotedActionsInteractor(): GetPromotedActions {
+	override fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor {
 		val repository = this.provideActionExecutionRepository()
 		val service = this.providePromotedActionsService()
 		val locationManager = this.provideUserLocationManager()
 		val manager = UserProfileManager(locationManager, repository)
-		return GetPromotedActions(service = service, userProfileManager = manager)
+		return GetPromotedActionsInteractor(service = service, userProfileManager = manager)
 	}
 
 

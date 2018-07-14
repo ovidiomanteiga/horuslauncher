@@ -23,9 +23,9 @@ class HorusListPromotedFragment : Fragment(),
 	// region Public Properties
 
 	override lateinit var executeActionInteractor: ExecuteActionInteractor
-	override lateinit var executePromotedActionInteractor: ExecutePromotedAction
+	override lateinit var executePromotedActionInteractor: ExecutePromotedActionInteractor
 	override lateinit var getHorusListInteractor: GetHorusListInteractor
-	override lateinit var getPromotedActionsInteractor: GetPromotedActions
+	override lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
 
 	// endregion
 	// region Lifecycle
