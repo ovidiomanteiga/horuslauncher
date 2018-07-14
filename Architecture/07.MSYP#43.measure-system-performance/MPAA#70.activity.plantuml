@@ -1,0 +1,35 @@
+
+@startuml MPAA#70.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+|App|
+start
+:Show Horus List;
+
+|User|
+:Browse Horus List;
+if (Selected **PREDICTED** action?) then (yes)
+    |App|
+    :Log selected PREDICTED action position;
+endif
+
+|User|
+if (Selected **PROMOTED** action?) then (yes)
+    |App|
+    :Log selected PROMOTED action position;
+endif
+
+|User|
+:Switch to All Actions;
+if (Selected action from **ALL ACTIONS**?) then (yes)
+    |App|
+    :Log user selected action from ALL ACTIONS;
+endif
+
+|User|
+stop
+
+@enduml
