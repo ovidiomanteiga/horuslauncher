@@ -9,7 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.ActionExecution
+import org.paradaise.horussense.launcher.domain.ActionExecutionVO
 import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
 import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
 import org.paradaise.horussense.launcher.domain.HorusAction
@@ -21,7 +21,7 @@ import org.paradaise.horussense.launcher.domain.HorusAction
  * See [feature @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/33).
  */
 @RunWith(MockitoJUnitRunner::class)
-class ExecuteActionUnitTest {
+class ExecuteActionInteractorUnitTest {
 
 	// region Properties
 
@@ -62,7 +62,7 @@ class ExecuteActionUnitTest {
 		this.interactor.perform()
 		// Assert
 		verify(this.action, times(1)).perform()
-		val argument = ArgumentCaptor.forClass(ActionExecution::class.java)
+		val argument = ArgumentCaptor.forClass(ActionExecutionVO::class.java)
 		verify(this.repository, times(1)).add(argument.capture())
 		assertEquals(this.action, argument.value.action)
 	}

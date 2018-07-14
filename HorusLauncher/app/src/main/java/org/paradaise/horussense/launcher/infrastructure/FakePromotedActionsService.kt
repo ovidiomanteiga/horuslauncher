@@ -1,19 +1,24 @@
 
 package org.paradaise.horussense.launcher.infrastructure
 
-import org.paradaise.horussense.launcher.domain.PromotedAction
-import org.paradaise.horussense.launcher.domain.PromotedActions
-import org.paradaise.horussense.launcher.domain.PromotedActionsService
-import org.paradaise.horussense.launcher.domain.UserProfile
+import android.content.Context
+import android.util.Log
+import org.paradaise.horussense.launcher.domain.*
 
 
-class FakePromotedActionsService : PromotedActionsService {
+class FakePromotedActionsService(private val context: Context? = null) : PromotedActionsService {
 
-	override fun getPromotedActionsFor(profile: UserProfile?): PromotedActions {
-		val promotedAction = PromotedAction()
-		promotedAction.name = "Speak English Now"
-		promotedAction.description = "Keep Calm & Speak English Now!"
+	override fun getPromotedActionsFor(profile: UserProfileVO?): PromotedActions {
+		val promotedAction = OpenLinkPromotedAction(null, "Speak English Now",
+				description = "Keep Calm & Speak English Now!")
+		promotedAction.url = "http://www.google.com/search?q=Keep%20Calm"
+		promotedAction.context = this.context
 		return listOf(promotedAction)
+	}
+
+
+	override fun notifyActionExecuted(execution: PromotedActionExecution?) {
+		Log.d("NOTIFY_ACTION_EXECUTED", execution?.action?.name)
 	}
 
 }

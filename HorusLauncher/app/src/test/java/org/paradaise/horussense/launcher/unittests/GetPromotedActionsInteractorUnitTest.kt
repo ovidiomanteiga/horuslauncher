@@ -18,12 +18,12 @@ import org.paradaise.horussense.launcher.domain.*
  * See [feature #29 @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/29).
  */
 @RunWith(MockitoJUnitRunner::class)
-class GetPromotedActionsUnitTest {
+class GetPromotedActionsInteractorUnitTest {
 
 	// region Properties
 
 	@InjectMocks
-	private lateinit var interactor: GetPromotedActions
+	private lateinit var interactor: GetPromotedActionsInteractor
 
 	@Mock
 	private lateinit var promotedAction1: PromotedAction
@@ -56,7 +56,7 @@ class GetPromotedActionsUnitTest {
 	@Test
 	fun testSomePromotedActions() {
 		// Arrange
-		val profile = Mockito.any<UserProfile>()
+		val profile = Mockito.any<UserProfileVO>()
 		val expectedPromotedActions = listOf(
 				this.promotedAction1,
 				this.promotedAction2

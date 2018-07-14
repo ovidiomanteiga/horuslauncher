@@ -19,7 +19,7 @@ class ExecuteAppInteractor : ExecuteActionInteractor {
 	// region ExecuteActionInteractor Override
 
 	override fun perform() {
-		val app = this.app ?: return
+		val app = this.openAppAction ?: return
 		app.context = this.context
 		super.perform()
 	}
@@ -27,8 +27,8 @@ class ExecuteAppInteractor : ExecuteActionInteractor {
 	// endregion
 	// region Private Properties
 
-	private val app: App?
-		get() = super.action as? App
+	private val openAppAction: OpenAppAction?
+		get() = super.action as? OpenAppAction
 
 	private var context: Context
 

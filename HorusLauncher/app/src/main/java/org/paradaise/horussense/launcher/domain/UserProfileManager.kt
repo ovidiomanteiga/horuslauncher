@@ -14,8 +14,8 @@ class UserProfileManager {
 	// endregion
 	// region Public Methods
 
-	fun getUserProfile(): UserProfile? {
-		val userProfile = UserProfile()
+	fun getUserProfile(): UserProfileVO? {
+		val userProfile = UserProfileVO()
 		userProfile.currentLocation = this.locationManager.getCurrentLocation()
 		userProfile.top10actions = this.buildTopActionsList()
 		return userProfile
@@ -44,7 +44,7 @@ class UserProfileManager {
 	}
 
 
-	private fun mapToHorusListItem(executions: List<ActionExecution>): PredictedHorusListItem {
+	private fun mapToHorusListItem(executions: List<ActionExecutionVO>): PredictedHorusListItem {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()

@@ -2,7 +2,7 @@
 package org.paradaise.horussense.launcher.domain
 
 
-open class GetPromotedActions: Interactor {
+open class GetPromotedActionsInteractor: Interactor {
 
 	constructor(service: PromotedActionsService, userProfileManager: UserProfileManager?) {
 		this.service = service

@@ -38,7 +38,7 @@ open class GetHorusListInteractor {
 	// endregion
 	// region Private Methods
 	
-	private fun buildHorusList(executions: List<ActionExecution>) {
+	private fun buildHorusList(executions: List<ActionExecutionVO>) {
 		val lastWeekMoment = this.lastWeekMoment()
 		this.horusList = executions.filter {
 			it.moment.after(lastWeekMoment)
@@ -57,7 +57,7 @@ open class GetHorusListInteractor {
 	}
 
 
-	private fun mapToHorusListItem(executions: List<ActionExecution>): HorusListItem {
+	private fun mapToHorusListItem(executions: List<ActionExecutionVO>): HorusListItem {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()

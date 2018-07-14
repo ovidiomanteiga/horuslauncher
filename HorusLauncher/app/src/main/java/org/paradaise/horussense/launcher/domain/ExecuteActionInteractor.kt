@@ -35,9 +35,9 @@ open class ExecuteActionInteractor {
 	// endregion
 	// region Public Methods
 
-	private fun getExecution(action: HorusAction): ActionExecution {
+	private fun getExecution(action: HorusAction): ActionExecutionVO {
 		val moment = Calendar.getInstance().time
-		return ActionExecution(action, moment)
+		return ActionExecutionVO(action, moment)
 	}
 
 	// endregion
