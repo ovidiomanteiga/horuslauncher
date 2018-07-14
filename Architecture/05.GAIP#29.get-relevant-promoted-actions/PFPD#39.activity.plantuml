@@ -1,0 +1,28 @@
+
+@startuml PFPD#39.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+|App|
+start
+:Show **Horus List**\nwith promoted actions;
+|User|
+:Browse Horus List\nwith promoted actions;
+:Select a promoted action;
+|App|
+:Request confirmation for promoted action execution;
+|User|
+if (Confirm promoted action execution?) then (yes)
+    |App|
+    :Perform the selected promoted action;
+else (no)
+    |App|
+    :Dismiss back to Horus List;
+    :Show **Horus List**\nwith promoted actions;
+endif
+|User|
+stop
+
+@enduml

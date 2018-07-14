@@ -1,7 +1,6 @@
 
 package org.paradaise.horussense.launcher.domain
 
-import android.graphics.drawable.Drawable
 import java.util.*
 import kotlin.Comparator
 
@@ -39,7 +38,7 @@ open class GetHorusListInteractor {
 	// endregion
 	// region Private Methods
 	
-	private fun buildHorusList(executions: List<ActionExecution>) {
+	private fun buildHorusList(executions: List<ActionExecutionVO>) {
 		val lastWeekMoment = this.lastWeekMoment()
 		this.horusList = executions.filter {
 			it.moment.after(lastWeekMoment)
@@ -58,41 +57,13 @@ open class GetHorusListInteractor {
 	}
 
 
-	private fun mapToHorusListItem(executions: List<ActionExecution>): HorusListItem {
+	private fun mapToHorusListItem(executions: List<ActionExecutionVO>): HorusListItem {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()
-		return HorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
+		return PredictedHorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
 	}
 
 	// endregion
-
-}
-
-
-typealias HorusList = List<HorusListItem>
-
-
-open class HorusListItem {
-
-	constructor(action: HorusAction, lastExecutionMoment: Date?,
-	            numberOfExecutionsLastWeek: Int)
-	{
-		this.action = action
-		this.lastExecutionMoment = lastExecutionMoment
-		this.numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
-	}
-
-	open val action: HorusAction
-
-	open val icon: Drawable?
-		get() = this.action.icon
-
-	open val name: String?
-		get() = this.action.name
-
-	open val lastExecutionMoment: Date?
-
-	open val numberOfExecutionsLastWeek: Int
 
 }

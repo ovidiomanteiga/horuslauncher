@@ -4,8 +4,8 @@ package org.paradaise.horussense.launcher.domain
 
 interface ActionExecutionRepository {
 
-	val all: List<ActionExecution>
+	val all: List<ActionExecutionVO>
 
-	fun add(execution: ActionExecution?)
+	fun add(execution: ActionExecutionVO?)
 
 }

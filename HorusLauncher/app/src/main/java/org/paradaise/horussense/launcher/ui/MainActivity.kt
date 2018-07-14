@@ -11,13 +11,24 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.paradaise.horussense.launcher.R
+import org.paradaise.horussense.launcher.composition.MainInjector
+import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.GetPromotedActionsInteractor
 
 
-class MainActivity : AppCompatActivity(), HorusListFragmentListener {
+class MainActivity : AppCompatActivity(), HorusListFragmentListener,
+		NeedsGetPromotedActionsInteractor
+{
 
+	// region Injected Properties
+
+	override lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
+
+	// endregion
 	// region Lifecycle
 
 	override fun onCreate(savedInstanceState: Bundle?) {
+		MainInjector.inject(this)
 		super.onCreate(savedInstanceState)
 		this.setContentView(R.layout.activity_main)
 		this.setSupportActionBar(this.toolbar)
@@ -54,7 +65,7 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener {
 				if (position == this@MainActivity.allActionsTabIndex)
 					AllActionsFragment()
 				else
-					HorusListFragment()
+					HorusListPromotedFragment()
 
 		override fun getCount(): Int = 2
 

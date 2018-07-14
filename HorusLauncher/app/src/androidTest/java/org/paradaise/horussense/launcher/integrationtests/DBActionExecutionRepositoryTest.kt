@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import org.paradaise.horussense.launcher.domain.ActionExecution
+import org.paradaise.horussense.launcher.domain.ActionExecutionVO
 import org.paradaise.horussense.launcher.domain.AllActionsRepository
 import org.paradaise.horussense.launcher.domain.HorusAction
 import org.paradaise.horussense.launcher.infrastructure.DBActionExecutionRepository
@@ -30,7 +30,7 @@ class DBActionExecutionRepositoryTest {
 	@Mock
 	private lateinit var action: HorusAction
 	@Mock
-	private lateinit var execution: ActionExecution
+	private lateinit var execution: ActionExecutionVO
 	@Mock
 	private lateinit var allActionsRepository: AllActionsRepository
 

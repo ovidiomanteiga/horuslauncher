@@ -2,8 +2,10 @@
 <resources>
     <string name="app_name">Horus Launcher</string>
     <string name="empty_horus_list">¡Lista Horus vacía!</string>
+    <string name="promoted">Promocionada 📣</string>
     <string name="tab_text_1">Lista Horus</string>
     <string name="tab_text_2">Todas las acciones</string>
+    <string name="promoted_action_dialog_confirmation">¿Seguro que quieres ejecutar esta acción promocionada?</string>
     <plurals name="times_launched_so_far_this_week">
         <item quantity="one">Abierta %1$d vez esta semana.</item>
         <item quantity="other">Abierta %1$d veces esta semana.</item>

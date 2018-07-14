@@ -18,9 +18,17 @@ interface MainFactory {
 
 	fun provideExecuteActionInteractor(): ExecuteActionInteractor
 
+	fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor
+
 	fun provideGetAllActionsInteractor(): GetAllActionsInteractor
 
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
+
+	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
+
+	fun providePromotedActionsService(): PromotedActionsService
+
+	fun provideUserLocationManager(): UserLocationManager
 
 	fun provideLocalDatabase(): LocalDatabase
 
@@ -56,6 +64,12 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor {
+		val service = this.providePromotedActionsService()
+		return ExecutePromotedActionInteractor(service)
+	}
+
+
 	override fun provideGetAllActionsInteractor(): GetAllActionsInteractor {
 		val repository = this.provideAllActionsRepository()
 		return GetAllActionsInteractor(repository)
@@ -68,8 +82,27 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor {
+		val repository = this.provideActionExecutionRepository()
+		val service = this.providePromotedActionsService()
+		val locationManager = this.provideUserLocationManager()
+		val manager = UserProfileManager(locationManager, repository)
+		return GetPromotedActionsInteractor(service = service, userProfileManager = manager)
+	}
+
+
+	override fun providePromotedActionsService(): PromotedActionsService {
+		return FakePromotedActionsService(this.provideContext())
+	}
+
+
+	override fun provideUserLocationManager(): UserLocationManager {
+		return AndroidLocationManager(this.provideContext())
+	}
+
+
 	override fun provideLocalDatabase(): LocalDatabase {
-		return 	Databases.main(this.context)
+		return 	Databases.main(this.provideContext())
 	}
 
 }
