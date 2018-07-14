@@ -2,12 +2,12 @@
 package org.paradaise.horussense.launcher.uitests
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.support.test.InstrumentationRegistry
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import android.support.test.uiautomator.UiDevice
-import android.support.test.uiautomator.UiScrollable
-import android.support.test.uiautomator.UiSelector
+import android.support.test.uiautomator.*
 import android.support.v7.widget.RecyclerView
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
@@ -15,7 +15,6 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.doNothing
 import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
@@ -41,6 +40,8 @@ class HorusListPromotedActivityTest {
 	private lateinit var factory: MainFactory
 	@Mock
 	private lateinit var executeActionInteractor: ExecuteActionInteractor
+	@Mock
+	private lateinit var executePromotedActionInteractor: ExecutePromotedAction
 	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
 	@Mock
@@ -76,12 +77,18 @@ class HorusListPromotedActivityTest {
 		`when`(this.predicted3.name).thenReturn("Facebook")
 		`when`(this.predicted3.numberOfExecutionsLastWeek).thenReturn(1)
 		`when`(this.promoted.name).thenReturn("English")
-		doNothing().`when`(this.getHorusListInteractor).perform()
+		`when`(this.promoted.perform()).then {
+			val intent = Intent(Intent.ACTION_VIEW,
+					Uri.parse("http://www.google.com/search?q=Keep%20Calm"))
+			this.context.startActivity(intent)
+		}
 		`when`(this.factory.provideGetHorusListInteractor()).thenReturn(this.getHorusListInteractor)
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
 		`when`(this.factory.provideGetPromotedActionsInteractor())
 				.thenReturn(this.getPromotedActions)
+		`when`(this.factory.provideExecutePromotedActionInteractor())
+				.thenReturn(this.executePromotedActionInteractor)
 		this.device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 		this.context = InstrumentationRegistry.getTargetContext()
 	}
@@ -147,6 +154,48 @@ class HorusListPromotedActivityTest {
 		assertTrue(actualItems.contains("Phone"))
 		assertTrue(actualItems.contains("Facebook"))
 		assertTrue(promotedItem.exists())
+	}
+
+	@Test
+	fun testSelectPromotedActionThenCancel() {
+		// Arrange
+		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
+		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
+		val promotedActions = listOf(this.promoted)
+		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
+		this.activityRule.launchActivity(null)
+		// Act & Assert
+		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
+		val promotedHorusItemRID = this.appPackageName + ":id/promotedHorusItem"
+		val promotedHorusItemSelector = UiSelector().resourceId(promotedHorusItemRID)
+		var promotedItem = items.getChildByText(promotedHorusItemSelector, "English")
+		assertTrue(promotedItem.exists())
+		promotedItem.clickAndWaitForNewWindow()
+		val cancel = this.device.findObject(UiSelector().textContains("CANCEL"))
+		assertTrue(cancel.exists())
+		cancel.click()
+	}
+
+	@Test
+	fun testSelectPromotedActionThenAccept() {
+		// Arrange
+		val horusList = listOf(this.predicted1, this.predicted2, this.predicted3)
+		`when`(this.getHorusListInteractor.horusList).thenReturn(horusList)
+		val promotedActions = listOf(this.promoted)
+		`when`(this.getPromotedActions.actions).thenReturn(promotedActions)
+		this.activityRule.launchActivity(null)
+		// Act & Assert
+		val items = UiScrollable(UiSelector().className(RecyclerView::class.java))
+		val promotedHorusItemRID = this.appPackageName + ":id/promotedHorusItem"
+		val promotedHorusItemSelector = UiSelector().resourceId(promotedHorusItemRID)
+		var promotedItem = items.getChildByText(promotedHorusItemSelector, "English")
+		assertTrue(promotedItem.exists())
+		promotedItem.clickAndWaitForNewWindow()
+		val accept = this.device.findObject(UiSelector().textContains("OK"))
+		assertTrue(accept.exists())
+		accept.click()
+		this.device.waitForIdle()
+		Assert.assertEquals(this.appPackageName, this.device.currentPackageName)
 	}
 
 	// endregion
