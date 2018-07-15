@@ -1,0 +1,106 @@
+
+@startuml MPAA#70.class
+
+skinparam monochrome true
+
+
+package Domain {
+
+    class LauncherPresentation <<VO>> {
+        UUID identifier
+        Date launchTime
+        Date actionTime
+        LauncherPresentationResult result
+    }
+
+    enum LauncherPresentationResult <<Enum>> {
+        NO_ACTION_PERFORMED
+        PERFORMED_ACTION_FROM_HORUS_LIST
+        PERFORMED_ACTION_FROM_ALL_ACTIONS
+        PERFORMED_PROMOTED_ACTION
+    }
+
+    class ExecuteAction <<Interactor>> {
+        + HorusAction action
+        + void perform()
+    }
+
+    class ExecutePromotedAction <<Interactor>> {
+        + PromotedAction action
+        + void perform()
+    }
+
+    class RecordDeviceLocking <<Interactor>> {
+        + Boolean lock
+        + void perform()
+    }
+
+    class LauncherPresentationManager <<Singleton>> {
+        + current: LauncherPresentation
+    }
+
+    class LauncherPresentationRepository <<Repository>> {
+        + add(LauncherPresentation)
+    }
+
+    ExecuteAction -[hidden]l-> RecordDeviceLocking
+
+    ExecuteAction .u.> LauncherPresentation
+    ExecutePromotedAction .u.> LauncherPresentation
+    ExecuteAction -r-> LauncherPresentationRepository
+    ExecuteAction .u.> LauncherPresentationManager
+    ExecutePromotedAction -r-> LauncherPresentationRepository
+    ExecutePromotedAction .u.> LauncherPresentationManager
+    LauncherPresentation -r-> "1" LauncherPresentationResult: result
+    LauncherPresentationManager -r-> "1" LauncherPresentation: current
+    LauncherPresentationRepository o-u-> "*" LauncherPresentation
+    RecordDeviceLocking -> LauncherPresentationRepository
+    RecordDeviceLocking .u.> LauncherPresentation: <<create>>
+    RecordDeviceLocking .u.> LauncherPresentationManager
+
+}
+
+
+package Infrastructure {
+
+    class DBLauncherPresentationRepository <<Repository>> {
+        + add(LauncherPresentation)
+    }
+
+    class LauncherPresentationDAO <<DAO>> {
+        + create(LauncherPresentationDTO)
+    }
+
+    DBLauncherPresentationRepository .u.|> LauncherPresentationRepository
+    DBLauncherPresentationRepository -r-> LauncherPresentationDAO
+
+}
+
+
+package UI {
+
+    class HorusListPromotedFragment <<Fragment>> {
+    }
+
+    class AllActionsFragment <<Fragment>> {
+    }
+
+    class MainActivity <<Activity>> {
+    }
+
+}
+
+
+AllActionsFragment -u-> ExecuteAction
+
+HorusListPromotedFragment -u-> ExecutePromotedAction
+HorusListPromotedFragment -u-> ExecuteAction
+
+MainActivity -u-> HorusListPromotedFragment
+MainActivity -u-> AllActionsFragment
+MainActivity -l-> RecordDeviceLocking
+
+
+hide empty members
+
+@enduml

@@ -5,8 +5,11 @@ skinparam monochrome true
 skinparam defaultTextAlignment center
 
 |User|
-|App|
 start
+:Unlock the device;
+
+|App|
+:Record instant when the device was unlocked;
 :Show Horus List;
 
 |User|
@@ -27,6 +30,12 @@ endif
 if (Selected action from **ALL ACTIONS**?) then (yes)
     |App|
     :Log user selected action from ALL ACTIONS;
+endif
+
+|User|
+if (Locked the device without performing actions?) then (yes)
+    |App|
+    :Log user locked the device without performing actions;
 endif
 
 |User|
