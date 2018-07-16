@@ -38,7 +38,7 @@ open class GetHorusListInteractor {
 	// endregion
 	// region Private Methods
 	
-	private fun buildHorusList(executions: List<ActionExecutionVO>) {
+	private fun buildHorusList(executions: Collection<ActionExecutionVO>) {
 		val lastWeekMoment = this.lastWeekMoment()
 		this.horusList = executions.filter {
 			it.moment.after(lastWeekMoment)

@@ -20,8 +20,7 @@ open class LauncherPresentationManager {
 		this.calendar = calendar
 	}
 
-	var current: LauncherPresentationVO? = null
-		private set
+	open var current: LauncherPresentationVO? = null
 
 	open fun finish(): LauncherPresentationVO {
 		val current = this.current ?: throw Exception()
