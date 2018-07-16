@@ -8,14 +8,18 @@ open class ExecuteActionInteractor {
 
 	// region Lifecycle
 
-	constructor(repository: ActionExecutionRepository) {
-		this.repository = repository
+	constructor(actionExecutionRepository: ActionExecutionRepository,
+	            launcherPresentationRepository: LauncherPresentationRepository)
+	{
+		this.actionExecutionRepository = actionExecutionRepository
+		this.launcherPresentationRepository = launcherPresentationRepository
 	}
 
 	// endregion
 	// region Public Properties
 
 	var action: HorusAction? = null
+	var fromHorusList: Boolean = false
 
 	// endregion
 	// region Public Methods
@@ -24,20 +28,39 @@ open class ExecuteActionInteractor {
 		val action = this.action ?: return
 		action.perform()
 		val execution = this.getExecution(action = action)
-		this.repository.add(execution)
+		this.actionExecutionRepository.add(execution)
+		this.notifyLauncherPresentationManager()
 	}
 
 	// endregion
 	// region Private Properties
 
-	private var repository: ActionExecutionRepository
+	private var actionExecutionRepository: ActionExecutionRepository
+	private val factory: DomainFactory
+		get() {
+			val factory = DomainFactory.current
+			factory.launcherPresentationRepository = this.launcherPresentationRepository
+			return factory
+		}
+	private var launcherPresentationRepository: LauncherPresentationRepository
+	private val manager: LauncherPresentationManager
+		get() = this.factory.provideLauncherPresentationManager()
 
 	// endregion
-	// region Public Methods
+	// region Private Methods
 
 	private fun getExecution(action: HorusAction): ActionExecutionVO {
 		val moment = Calendar.getInstance().time
 		return ActionExecutionVO(action, moment)
+	}
+
+
+	private fun notifyLauncherPresentationManager() {
+		if (this.fromHorusList) {
+			this.manager.notifyPredictedActionPerformed()
+		} else {
+			this.manager.notifyActionPerformed()
+		}
 	}
 
 	// endregion

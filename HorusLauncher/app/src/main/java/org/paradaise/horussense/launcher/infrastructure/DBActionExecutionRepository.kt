@@ -25,8 +25,8 @@ class DBActionExecutionRepository : ActionExecutionRepository {
 		}
 
 
-	override fun add(execution: ActionExecutionVO?) {
-		val actionExecution = execution ?: return
+	override fun add(item: ActionExecutionVO?) {
+		val actionExecution = item ?: return
 		val actionExecutionDTO = this.mapActionExecution(actionExecution)
 		this.db.actionExecutionDAO().insertAll(actionExecutionDTO)
 	}

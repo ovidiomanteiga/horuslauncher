@@ -42,6 +42,8 @@ class MainInjector {
 					factory.provideExecutePromotedActionInteractor()
 			(target as? NeedsGetPromotedActionsInteractor)?.getPromotedActionsInteractor =
 					factory.provideGetPromotedActionsInteractor()
+			(target as? NeedsDeviceLockingInteractor)?.deviceLockingInteractor =
+					factory.provideDeviceLockingInteractor()
 		}
 
 	}
@@ -62,14 +64,16 @@ interface NeedsGetAllActionsInteractor {
 	var getAllActionsInteractor: GetAllActionsInteractor
 }
 
-
 interface NeedsGetHorusListInteractor {
 	var getHorusListInteractor: GetHorusListInteractor
 }
 
-
 interface NeedsGetPromotedActionsInteractor {
 	var getPromotedActionsInteractor: GetPromotedActionsInteractor
+}
+
+interface NeedsDeviceLockingInteractor {
+	var deviceLockingInteractor: DeviceLockingInteractor
 }
 
 // endregion

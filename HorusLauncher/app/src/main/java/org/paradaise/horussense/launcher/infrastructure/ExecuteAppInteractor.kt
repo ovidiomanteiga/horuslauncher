@@ -5,13 +5,17 @@ package org.paradaise.horussense.launcher.infrastructure
 import android.content.Context
 import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
 import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.LauncherPresentationRepository
 
 
 class ExecuteAppInteractor : ExecuteActionInteractor {
 
 	// region Lifecycle
 
-	constructor(context: Context, repository: ActionExecutionRepository): super(repository) {
+	constructor(context: Context, actionExecutionRepository: ActionExecutionRepository,
+	            launcherPresentationRepository: LauncherPresentationRepository)
+			: super(actionExecutionRepository, launcherPresentationRepository)
+	{
 		this.context = context
 	}
 
