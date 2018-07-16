@@ -15,8 +15,8 @@ package Domain {
 
     enum LauncherPresentationResult <<Enum>> {
         NO_ACTION_PERFORMED
-        PERFORMED_ACTION_FROM_HORUS_LIST
-        PERFORMED_ACTION_FROM_ALL_ACTIONS
+        PERFORMED_ACTION
+        PERFORMED_PREDICTED_ACTION
         PERFORMED_PROMOTED_ACTION
     }
 
@@ -30,34 +30,37 @@ package Domain {
         + void perform()
     }
 
-    class RecordDeviceLocking <<Interactor>> {
-        + Boolean lock
+    class DeviceLocking <<Interactor>> {
+        + Boolean locking
         + void perform()
     }
 
     class LauncherPresentationManager <<Singleton>> {
         + current: LauncherPresentation
+        + repository: LauncherPresentationRepository
+        + finish()
+        + notifyActionPerformed()
+        + notifyPredictedActionPerformed()
+        + notifyPromotedActionPerformed()
+        + start()
     }
 
     class LauncherPresentationRepository <<Repository>> {
         + add(LauncherPresentation)
     }
-
-    ExecuteAction -[hidden]l-> RecordDeviceLocking
-
-    ExecuteAction .u.> LauncherPresentation
-    ExecutePromotedAction .u.> LauncherPresentation
-    ExecuteAction -r-> LauncherPresentationRepository
-    ExecuteAction .u.> LauncherPresentationManager
-    ExecutePromotedAction -r-> LauncherPresentationRepository
-    ExecutePromotedAction .u.> LauncherPresentationManager
+    
+    DeviceLocking -[hidden]l-> ExecutePromotedAction
+    ExecuteAction -u-> "1" LauncherPresentationManager
+    ExecuteAction .> "1" LauncherPresentationRepository
+    ExecutePromotedAction -u-> LauncherPresentationManager
+    ExecutePromotedAction .> "1" LauncherPresentationRepository
     LauncherPresentation -r-> "1" LauncherPresentationResult: result
     LauncherPresentationManager -r-> "1" LauncherPresentation: current
+    LauncherPresentationManager -d-> "1" LauncherPresentationRepository
     LauncherPresentationRepository o-u-> "*" LauncherPresentation
-    RecordDeviceLocking -> LauncherPresentationRepository
-    RecordDeviceLocking .u.> LauncherPresentation: <<create>>
-    RecordDeviceLocking .u.> LauncherPresentationManager
-
+    DeviceLocking -u-> "1" LauncherPresentationManager
+    DeviceLocking .r.> "1" LauncherPresentationRepository
+    
 }
 
 
@@ -90,6 +93,7 @@ package UI {
 
 }
 
+UI -[hidden]l-> Infrastructure
 
 AllActionsFragment -u-> ExecuteAction
 
@@ -98,7 +102,7 @@ HorusListPromotedFragment -u-> ExecuteAction
 
 MainActivity -u-> HorusListPromotedFragment
 MainActivity -u-> AllActionsFragment
-MainActivity -l-> RecordDeviceLocking
+MainActivity -u-> DeviceLocking
 
 
 hide empty members
