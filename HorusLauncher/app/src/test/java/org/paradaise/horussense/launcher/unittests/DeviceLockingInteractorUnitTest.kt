@@ -2,8 +2,7 @@
 package org.paradaise.horussense.launcher.unittests
 
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,6 +26,9 @@ class DeviceLockingInteractorUnitTest {
 	private lateinit var interactor: DeviceLockingInteractor
 
 	@Mock
+	private lateinit var domainFactory: DomainFactory
+
+	@Mock
 	private lateinit var manager: LauncherPresentationManager
 
 	@Mock
@@ -38,9 +40,12 @@ class DeviceLockingInteractorUnitTest {
 	// endregion
 	// region Setup
 
-    @Before
+
+	@Before
     fun setUp() {
-	    `when`(this.manager.current).thenReturn(this.presentation)
+		`when`(this.domainFactory.provideLauncherPresentationManager())
+				.thenReturn(this.manager)
+		DomainFactory.current = this.domainFactory
     }
 
 	// endregion
@@ -53,8 +58,7 @@ class DeviceLockingInteractorUnitTest {
 	    // Act
 	    this.interactor.perform()
 	    // Assert
-	    val manager = this.interactor.launcherPresentationManager
-	    verify(manager, times(1))?.start()
+	    verify(this.manager, times(1))?.start()
     }
 
 	@Test
@@ -64,13 +68,7 @@ class DeviceLockingInteractorUnitTest {
 		// Act
 		this.interactor.perform()
 		// Assert
-		val manager = this.interactor.launcherPresentationManager
-		verify(manager, times(1))?.finish()
-		val repository = this.interactor.repository
-		val argument = ArgumentCaptor.forClass(LauncherPresentationVO::class.java)
-		verify(repository, times(1)).add(argument.capture())
-		assertNotNull(manager?.current)
-		assertEquals(manager?.current, argument.value)
+		verify(this.manager, times(1))?.finish()
 	}
 
 	// endregion

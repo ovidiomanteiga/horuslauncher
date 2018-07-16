@@ -28,6 +28,9 @@ class ExecutePromotedActionInteractorUnitTest {
 	private lateinit var action: PromotedAction
 
 	@Mock
+	private lateinit var repository: LauncherPresentationRepository
+
+	@Mock
 	private lateinit var service: PromotedActionsService
 
 	// endregion

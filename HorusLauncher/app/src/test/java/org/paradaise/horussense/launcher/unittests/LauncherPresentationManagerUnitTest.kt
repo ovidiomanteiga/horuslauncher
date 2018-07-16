@@ -7,6 +7,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.*
+import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 import org.paradaise.horussense.launcher.domain.*
@@ -28,7 +29,10 @@ class LauncherPresentationManagerUnitTest {
 	private lateinit var manager: LauncherPresentationManager
 
 	@Mock
-	private lateinit var calendar: Calendar
+	private lateinit var launcherPresentationRepository: LauncherPresentationRepository
+
+	@Mock
+	private lateinit var timeProvider: TimeProvider
 
 	private lateinit var actionTime: Date
 	private lateinit var launchTime: Date
@@ -47,7 +51,7 @@ class LauncherPresentationManagerUnitTest {
     fun testStart() {
 	    // Arrange
 	    this.launchTime = Calendar.getInstance().time
-	    `when`(this.calendar.timeInMillis).thenReturn(this.launchTime.time)
+	    `when`(this.timeProvider.now).thenReturn(this.launchTime)
 	    // Act
 	    this.manager.start()
 	    // Assert
@@ -62,10 +66,10 @@ class LauncherPresentationManagerUnitTest {
 	fun testFinish() {
 		// Arrange
 		this.launchTime = Calendar.getInstance().time
-		`when`(this.calendar.timeInMillis).thenReturn(this.launchTime.time)
+		`when`(this.timeProvider.now).thenReturn(this.launchTime)
 		this.manager.start()
 		this.actionTime = Calendar.getInstance().time
-		`when`(this.calendar.timeInMillis).thenReturn(this.actionTime.time)
+		`when`(this.timeProvider.now).thenReturn(this.actionTime)
 		// Act
 		val actual = this.manager.finish()
 		// Assert
@@ -75,12 +79,13 @@ class LauncherPresentationManagerUnitTest {
 		assertEquals(NO_ACTION_PERFORMED, actual?.result)
 	}
 
-	@Test(expected = Exception::class)
+	@Test
 	fun testFinishBeforeStart() {
 		// Arrange
 		// Act
 		this.manager.finish()
 		// Assert
+		verify(this.launcherPresentationRepository, never()).add(ArgumentMatchers.any())
 	}
 
 	@Test
@@ -88,9 +93,8 @@ class LauncherPresentationManagerUnitTest {
 		// Arrange
 		this.manager.start()
 		// Act
-		this.manager.notifyActionPerformed()
+		val actual = this.manager.notifyActionPerformed()
 		// Assert
-		val actual = this.manager.current
 		assertNotNull(actual)
 		assertEquals(PERFORMED_ACTION, actual?.result)
 	}
@@ -100,9 +104,9 @@ class LauncherPresentationManagerUnitTest {
 		// Arrange
 		this.manager.start()
 		// Act
-		this.manager.notifyPredictedActionPerformed()
+		val actual = this.manager.notifyPredictedActionPerformed()
 		// Assert
-		val actual = this.manager.current
+		assertNull(this.manager.current)
 		assertNotNull(actual)
 		assertEquals(PERFORMED_PREDICTED_ACTION, actual?.result)
 	}
@@ -112,9 +116,9 @@ class LauncherPresentationManagerUnitTest {
 		// Arrange
 		this.manager.start()
 		// Act
-		this.manager.notifyPromotedActionPerformed()
+		val actual = this.manager.notifyPromotedActionPerformed()
 		// Assert
-		val actual = this.manager.current
+		assertNull(this.manager.current)
 		assertNotNull(actual)
 		assertEquals(PERFORMED_PROMOTED_ACTION, actual?.result)
 	}

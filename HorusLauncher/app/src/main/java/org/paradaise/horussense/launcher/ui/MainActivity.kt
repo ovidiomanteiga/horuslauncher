@@ -1,6 +1,7 @@
 
 package org.paradaise.horussense.launcher.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -12,16 +13,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainInjector
+import org.paradaise.horussense.launcher.composition.NeedsDeviceLockingInteractor
 import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.DeviceLockingInteractor
 import org.paradaise.horussense.launcher.domain.GetPromotedActionsInteractor
 
 
 class MainActivity : AppCompatActivity(), HorusListFragmentListener,
-		NeedsGetPromotedActionsInteractor
+		NeedsGetPromotedActionsInteractor, NeedsDeviceLockingInteractor
 {
 
 	// region Injected Properties
 
+	override lateinit var deviceLockingInteractor: DeviceLockingInteractor
 	override lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
 
 	// endregion
@@ -38,6 +42,21 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 		this.tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(this.container))
 	}
 
+	override fun onStart() {
+		super.onStart()
+		AsyncTask.execute {
+			this.deviceLockingInteractor.locking = false
+			this.deviceLockingInteractor.perform()
+		}
+	}
+
+	override fun onStop() {
+		super.onStop()
+		AsyncTask.execute {
+			this.deviceLockingInteractor.locking = true
+			this.deviceLockingInteractor.perform()
+		}
+	}
 
 	override fun onBackPressed() { }
 

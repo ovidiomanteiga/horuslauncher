@@ -5,33 +5,27 @@ package org.paradaise.horussense.launcher.domain
 open class DeviceLockingInteractor : Interactor {
 
 	constructor(repository: LauncherPresentationRepository) {
-		this.launcherPresentationManager = LauncherPresentationManager.shared
 		this.repository = repository
 	}
 
-	constructor(manager: LauncherPresentationManager,
-	            repository: LauncherPresentationRepository): this(repository)
-	{
-		this.launcherPresentationManager = manager
-	}
-
 	var locking: Boolean = false
-	var launcherPresentationManager: LauncherPresentationManager? = null
-	var repository: LauncherPresentationRepository
 
 	override fun perform() {
-		if (this.locking) this.onLocking()
-		else this.onUnlocking()
+		if (this.locking) {
+			this.launcherPresentationManager.finish()
+		}  else {
+			this.launcherPresentationManager.start()
+		}
 	}
 
-	private fun onLocking() {
-		this.launcherPresentationManager?.finish()
-		val currentPresentation = this.launcherPresentationManager?.current ?: return
-		this.repository.add(currentPresentation)
-	}
-
-	private fun onUnlocking() {
-		this.launcherPresentationManager?.start()
-	}
+	private val factory: DomainFactory
+		get() {
+			val factory = DomainFactory.current
+			factory.launcherPresentationRepository = this.repository
+			return factory
+		}
+	private val launcherPresentationManager: LauncherPresentationManager
+		get() = this.factory.provideLauncherPresentationManager()
+	private var repository: LauncherPresentationRepository
 
 }
