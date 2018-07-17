@@ -8,11 +8,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-@Database(entities = [(ActionExecutionDTO::class)], version = 1, exportSchema = false)
+@Database(
+		entities = [ActionExecutionDTO::class, LauncherPresentationDTO::class],
+		version = 1,
+		exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 
 	abstract fun actionExecutionDAO(): ActionExecutionDAO
+	abstract fun launcherPresentationDAO(): LauncherPresentationDAO
 
 }
 

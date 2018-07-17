@@ -55,6 +55,8 @@ class MainActivityTest {
 	@Mock
 	private lateinit var getAllActionInteractor: GetAllActionsInteractor
 	@Mock
+	private lateinit var deviceLockingInteractor: DeviceLockingInteractor
+	@Mock
 	private lateinit var executeActionInteractor: ExecuteActionInteractor
 	@Mock
 	private lateinit var executePromotedActionInteractor: ExecutePromotedActionInteractor
@@ -86,6 +88,8 @@ class MainActivityTest {
 				.thenReturn(this.executePromotedActionInteractor)
 		`when`(this.factory.provideGetPromotedActionsInteractor())
 				.thenReturn(this.getPromotedActionsInteractor)
+		`when`(this.factory.provideDeviceLockingInteractor())
+				.thenReturn(this.deviceLockingInteractor)
 		doNothing().`when`(this.getAllActionInteractor).perform()
 		`when`(this.getAllActionInteractor.allActions).thenReturn(allActions)
 		doNothing().`when`(this.getHorusListInteractor).perform()

@@ -16,6 +16,8 @@ interface MainFactory {
 
 	fun provideContext(): Context
 
+	fun provideDeviceLockingInteractor(): DeviceLockingInteractor
+
 	fun provideExecuteActionInteractor(): ExecuteActionInteractor
 
 	fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor
@@ -25,6 +27,8 @@ interface MainFactory {
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
 
 	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
+
+	fun provideLauncherPresentationRepository(): LauncherPresentationRepository
 
 	fun providePromotedActionsService(): PromotedActionsService
 
@@ -57,16 +61,24 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideDeviceLockingInteractor(): DeviceLockingInteractor {
+		return DeviceLockingInteractor(this.provideLauncherPresentationRepository())
+	}
+
+
 	override fun provideExecuteActionInteractor(): ExecuteActionInteractor {
 		val context = this.provideContext()
-		val repository = this.provideActionExecutionRepository()
-		return ExecuteAppInteractor(context, repository)
+		val actionExecutionRepository = this.provideActionExecutionRepository()
+		val launcherPresentationRepository = this.provideLauncherPresentationRepository()
+		return ExecuteAppInteractor(context, actionExecutionRepository,
+				launcherPresentationRepository)
 	}
 
 
 	override fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor {
+		val repository = this.provideLauncherPresentationRepository()
 		val service = this.providePromotedActionsService()
-		return ExecutePromotedActionInteractor(service)
+		return ExecutePromotedActionInteractor(repository, service)
 	}
 
 
@@ -76,9 +88,11 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
-	override fun provideGetHorusListInteractor(): GetHorusListInteractor{
-		val repository = this.provideActionExecutionRepository()
-		return GetHorusListInteractor(repository)
+	override fun provideGetHorusListInteractor(): GetHorusListInteractor {
+		val actionExecutionRepository = this.provideActionExecutionRepository()
+		val launcherPresentationRepository = this.provideLauncherPresentationRepository()
+		return GetHorusListInteractor(actionExecutionRepository,
+				launcherPresentationRepository)
 	}
 
 
@@ -88,6 +102,11 @@ class DefaultMainFactory : MainFactory {
 		val locationManager = this.provideUserLocationManager()
 		val manager = UserProfileManager(locationManager, repository)
 		return GetPromotedActionsInteractor(service = service, userProfileManager = manager)
+	}
+
+
+	override fun provideLauncherPresentationRepository(): LauncherPresentationRepository {
+		return DBLauncherPresentationRepository(this.provideLocalDatabase())
 	}
 
 

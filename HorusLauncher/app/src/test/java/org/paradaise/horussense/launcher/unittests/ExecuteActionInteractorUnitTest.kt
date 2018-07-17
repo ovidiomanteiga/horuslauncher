@@ -9,10 +9,7 @@ import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.ActionExecutionVO
-import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
-import org.paradaise.horussense.launcher.domain.ExecuteActionInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.domain.*
 
 
 /**
@@ -33,6 +30,9 @@ class ExecuteActionInteractorUnitTest {
 
 	@Mock
 	private lateinit var repository: ActionExecutionRepository
+
+	@Mock
+	private lateinit var launcherPresentationRepository: LauncherPresentationRepository
 
 	// endregion
 	// region Setup

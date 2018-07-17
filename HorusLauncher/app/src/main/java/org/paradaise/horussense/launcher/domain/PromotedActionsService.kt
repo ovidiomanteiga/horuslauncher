@@ -5,6 +5,6 @@ package org.paradaise.horussense.launcher.domain
 interface PromotedActionsService {
 
 	fun getPromotedActionsFor(profile: UserProfileVO?): PromotedActions
-	fun notifyActionExecuted(action: PromotedActionExecution?)
+	fun notifyActionExecuted(execution: PromotedActionExecution?)
 
 }
