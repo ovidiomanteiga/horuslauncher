@@ -18,9 +18,8 @@ open class LauncherPresentationManager {
 	}
 
 	open fun start() {
-		val current = LauncherPresentationVO()
-		current.launchTime = this.timeProvider.now
-		this.current = current
+		this.initializeCurrentPresentation()
+		this.current?.launchTime = this.timeProvider.now
 	}
 
 	open fun notifyActionPerformed(): LauncherPresentationVO? {
@@ -35,8 +34,17 @@ open class LauncherPresentationManager {
 		return this.saveResult(PERFORMED_PROMOTED_ACTION)
 	}
 
+	open fun notifyMillisecondsTakenToGetHorusList(milliseconds: Long) {
+		this.initializeCurrentPresentation()
+		this.current?.millisecondsTakenToGetHorusList = milliseconds
+	}
+
 	private var repository: LauncherPresentationRepository
 	private var timeProvider: TimeProvider
+
+	private fun initializeCurrentPresentation() {
+		this.current = this.current ?: LauncherPresentationVO()
+	}
 
 	private fun saveResult(result: LauncherPresentationResult): LauncherPresentationVO? {
 		val current = this.current ?: return null

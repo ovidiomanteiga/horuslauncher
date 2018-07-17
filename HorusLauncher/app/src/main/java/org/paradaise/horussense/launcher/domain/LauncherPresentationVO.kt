@@ -8,6 +8,7 @@ open class LauncherPresentationVO : ValueObject {
 
 	open var actionTime: Date? = null
 	open var launchTime: Date? = null
+	open var millisecondsTakenToGetHorusList: Long? = null
 	open var result: LauncherPresentationResult? = null
 
 }
