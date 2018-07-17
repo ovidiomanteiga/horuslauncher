@@ -2,7 +2,7 @@
 package org.paradaise.horussense.launcher.domain
 
 
-class GetStatsActionsInteractor : Interactor {
+class GetStatsInteractor : Interactor {
 
 	constructor(repository: LauncherPresentationRepository) {
 		this.repository = repository

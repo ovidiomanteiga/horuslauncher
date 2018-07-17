@@ -28,6 +28,8 @@ interface MainFactory {
 
 	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
 
+	fun provideGetStatsInteractor(): GetStatsInteractor
+
 	fun provideLauncherPresentationRepository(): LauncherPresentationRepository
 
 	fun providePromotedActionsService(): PromotedActionsService
@@ -102,6 +104,11 @@ class DefaultMainFactory : MainFactory {
 		val locationManager = this.provideUserLocationManager()
 		val manager = UserProfileManager(locationManager, repository)
 		return GetPromotedActionsInteractor(service = service, userProfileManager = manager)
+	}
+
+
+	override fun provideGetStatsInteractor(): GetStatsInteractor {
+		return GetStatsInteractor(this.provideLauncherPresentationRepository())
 	}
 
 

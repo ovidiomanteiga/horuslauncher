@@ -25,7 +25,7 @@ class GetStatsInteractorUnitTest {
 	// region Properties
 
 	@InjectMocks
-	private lateinit var interactor: GetStatsActionsInteractor
+	private lateinit var interactor: GetStatsInteractor
 
 	@Mock
 	private lateinit var repository: LauncherPresentationRepository
