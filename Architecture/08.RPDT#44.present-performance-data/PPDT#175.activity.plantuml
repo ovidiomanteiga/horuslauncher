@@ -1,0 +1,29 @@
+
+@startuml PPDT#175.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+start
+:Unlock the device;
+
+|App|
+:Show Horus Launcher;
+
+|User|
+:Select performance stats button;
+
+|App|
+:**Show performance stats view**;
+
+|User|
+:Go back to Horus Launcher;
+
+|App|
+:Dismiss performance stats view;
+:Show Horus Launcher;
+
+stop
+
+@enduml
