@@ -41,6 +41,7 @@ class DBLauncherPresentationRepository : LauncherPresentationRepository {
 		dto.identifier = UUID.randomUUID().toString()
 		dto.actionTime = presentation.actionTime
 		dto.launchTime = presentation.launchTime
+		dto.millisecondsGettingHorusList = presentation.millisecondsTakenToGetHorusList
 		dto.result = presentation.result?.name
 		return dto
 	}
@@ -51,6 +52,7 @@ class DBLauncherPresentationRepository : LauncherPresentationRepository {
 			val vo = LauncherPresentationVO()
 			vo.actionTime = dto.actionTime
 			vo.launchTime = dto.launchTime
+			vo.millisecondsTakenToGetHorusList = dto.millisecondsGettingHorusList
 			dto.result.let {
 				vo.result = LauncherPresentationResult.valueOf(it!!)
 			}

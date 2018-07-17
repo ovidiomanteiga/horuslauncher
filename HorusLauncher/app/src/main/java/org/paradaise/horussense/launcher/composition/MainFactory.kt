@@ -88,9 +88,11 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
-	override fun provideGetHorusListInteractor(): GetHorusListInteractor{
-		val repository = this.provideActionExecutionRepository()
-		return GetHorusListInteractor(repository)
+	override fun provideGetHorusListInteractor(): GetHorusListInteractor {
+		val actionExecutionRepository = this.provideActionExecutionRepository()
+		val launcherPresentationRepository = this.provideLauncherPresentationRepository()
+		return GetHorusListInteractor(actionExecutionRepository,
+				launcherPresentationRepository)
 	}
 
 

@@ -21,3 +21,13 @@ Feature: Measure system performance.
             And the user has switched to the all actions list.
         When the user selects an action from all actions.
         Then the fact the user has selected an action from all actions is recorded.
+    
+    Scenario: Record user left Horus List without performing action.
+        Given the Horus Launcher has been shown.
+        When the user lefts the Horus Launcher without performing any action within the launcher.
+        Then the fact the user has left without action is recorded.
+
+    Scenario: Record time taken to get the Horus List.
+        Given the Horus List is to be shown.
+        When the Horus List is shown.
+        Then the time it took to get the Horus List is recorded.

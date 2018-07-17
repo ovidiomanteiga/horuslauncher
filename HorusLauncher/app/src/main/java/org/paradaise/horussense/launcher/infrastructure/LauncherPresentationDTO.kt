@@ -25,4 +25,7 @@ class LauncherPresentationDTO {
 	@ColumnInfo(name = "result")
 	var result: String? = null
 
+	@ColumnInfo(name = "milliseconds_getting_horus_list")
+	var millisecondsGettingHorusList: Long? = null
+
 }

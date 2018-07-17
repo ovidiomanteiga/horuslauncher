@@ -5,15 +5,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.ActionExecutionVO
-import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
-import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.domain.*
 import java.util.*
 import java.util.UUID.*
 
@@ -32,7 +30,9 @@ class GetHorusListInteractorUnitTest {
 	private lateinit var interactor: GetHorusListInteractor
 
 	@Mock
-	private lateinit var repository: ActionExecutionRepository
+	private lateinit var actionExecutionRepository: ActionExecutionRepository
+	@Mock
+	private lateinit var launcherPresentationRepository: LauncherPresentationRepository
 	@Mock
 	private lateinit var action1: HorusAction
 	@Mock
@@ -73,7 +73,7 @@ class GetHorusListInteractorUnitTest {
 				ActionExecutionVO(this.action2, moment = now),
 				ActionExecutionVO(this.action3, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -93,7 +93,7 @@ class GetHorusListInteractorUnitTest {
 				ActionExecutionVO(this.action2, moment = momentMoreThanOneWeekAgo.time),
 				ActionExecutionVO(this.action3, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -113,7 +113,7 @@ class GetHorusListInteractorUnitTest {
 				ActionExecutionVO(action1time, moment = now),
 				ActionExecutionVO(action2times, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -140,7 +140,7 @@ class GetHorusListInteractorUnitTest {
 				ActionExecutionVO(actionTwice, moment = now),
 				ActionExecutionVO(actionOnceNow, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -149,6 +149,21 @@ class GetHorusListInteractorUnitTest {
 		assertEquals(actionTwice, predictedActions[0].action)
 		assertEquals(actionOnceNow, predictedActions[1].action)
 		assertEquals(actionOnceYesterday, predictedActions[2].action)
+	}
+
+
+	@Test
+	fun testMeasureTimeTakenGettingHorusList() {
+		// Arrange
+		val factory = mock(DomainFactory::class.java)
+		val manager = mock(LauncherPresentationManager::class.java)
+		`when`(factory.provideLauncherPresentationManager()).thenReturn(manager)
+		DomainFactory.current = factory
+		// Act
+		this.interactor.perform()
+		// Assert
+		verify(manager, times(1))
+				.notifyMillisecondsTakenToGetHorusList(ArgumentMatchers.anyLong())
 	}
 
 	// endregion
