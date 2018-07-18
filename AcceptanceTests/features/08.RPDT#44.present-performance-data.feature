@@ -19,3 +19,8 @@ Feature: Present performance data.
         Given the stats view is shown.
         When the user opts to go back.
         Then the Horus Launcher view is presented again.
+
+    Scenario: Send launcher stats to server every week.
+        Given a week has passed since the launcher was used for the first time.
+        When a week has passed since the last time the stats were sent.
+        Then the Horus Luncher stats are sent to the server.

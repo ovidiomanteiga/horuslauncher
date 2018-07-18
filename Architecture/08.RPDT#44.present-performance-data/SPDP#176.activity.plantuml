@@ -1,0 +1,33 @@
+
+@startuml SPDP#176.activity
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|User|
+start
+:Unlock the device;
+
+|App|
+if (Send stats event has been scheduled?) then (no)
+    :Schedule event for next night;
+    |System|
+    :Schedule event;
+endif
+|App|
+:Show Horus Launcher;
+
+|User|
+:Use Horus Launcher...;
+detach
+
+|System|
+:Fire scheduled event>
+
+|App|
+:Send stats event fired<
+:Send stats to server;
+
+stop
+
+@enduml
