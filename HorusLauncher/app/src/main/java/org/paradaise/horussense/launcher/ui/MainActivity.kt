@@ -1,6 +1,7 @@
 
 package org.paradaise.horussense.launcher.ui
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -17,6 +19,9 @@ import org.paradaise.horussense.launcher.composition.NeedsDeviceLockingInteracto
 import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
 import org.paradaise.horussense.launcher.domain.DeviceLockingInteractor
 import org.paradaise.horussense.launcher.domain.GetPromotedActionsInteractor
+import android.view.MenuInflater
+import android.view.MenuItem
+
 
 
 class MainActivity : AppCompatActivity(), HorusListFragmentListener,
@@ -58,6 +63,21 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 		}
 	}
 
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		this.menuInflater.inflate(R.menu.menu_main, menu)
+		return true
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+		return when (item?.itemId) {
+			R.id.action_stats -> {
+				this.showStatsActivity()
+				true
+			}
+			else -> super.onOptionsItemSelected(item)
+		}
+	}
+
 	override fun onBackPressed() { }
 
 	// endregion
@@ -74,6 +94,14 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 
 	private val allActionsTabIndex: Int = 1
 	private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+
+	// endregion
+	// region Inner Classes
+
+	private fun showStatsActivity() {
+		val statsIntent = Intent(this, StatsActivity::class.java)
+		this.startActivity(statsIntent)
+	}
 
 	// endregion
 	// region Inner Classes

@@ -44,6 +44,8 @@ class MainInjector {
 					factory.provideGetPromotedActionsInteractor()
 			(target as? NeedsDeviceLockingInteractor)?.deviceLockingInteractor =
 					factory.provideDeviceLockingInteractor()
+			(target as? NeedsGetStatsInteractor)?.getStatsInteractor =
+					factory.provideGetStatsInteractor()
 		}
 
 	}
@@ -70,6 +72,10 @@ interface NeedsGetHorusListInteractor {
 
 interface NeedsGetPromotedActionsInteractor {
 	var getPromotedActionsInteractor: GetPromotedActionsInteractor
+}
+
+interface NeedsGetStatsInteractor {
+	var getStatsInteractor: GetStatsInteractor
 }
 
 interface NeedsDeviceLockingInteractor {
