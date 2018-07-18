@@ -17,6 +17,8 @@
 1. [RPDT#44](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/44)
     1. [PPDT#175](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/175)
         1. [VAL#181](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/181)
+    1. [SPDP#176](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/176)
+        1. [VAL#186](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/186)
 
 ## Features tested
 
@@ -28,3 +30,4 @@
     1. **[PASSED ✅]** Scenario: Show stats view from Horus Launcher view.
     2. **[PASSED ✅]** Scenario: Show performance data on the stats view.
     3. **[PASSED ✅]** Scenario: Navigate back to the Horus Launcher view from the stats view.
+    4. **[PASSED ✅]** Scenario: Send launcher stats to server every day at night.
