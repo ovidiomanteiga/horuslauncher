@@ -1,0 +1,50 @@
+
+@startuml GRPD#31.sequence.1
+
+skinparam monochrome true
+autonumber
+
+participant GetPromotedActions <<Interactor>>
+participant UserProfileManager
+participant UserLocationManager
+participant ActionExecutionRepository
+participant HorusSpotterPromotedActionService
+participant PromotedActions
+
+ -> GetPromotedActions : perform
+activate GetPromotedActions
+
+    GetPromotedActions -> UserProfileManager : get user profile
+    activate UserProfileManager
+        UserProfileManager -> UserLocationManager : get current location
+        activate UserLocationManager
+            UserLocationManager -> UserLocationManager : calculate current location
+            UserLocationManager --> UserProfileManager : current location
+        deactivate UserLocationManager
+        UserProfileManager -> ActionExecutionRepository : get all action executions
+        activate ActionExecutionRepository
+            ActionExecutionRepository --> UserProfileManager : all action executions
+        deactivate ActionExecutionRepository
+        UserProfileManager -> UserProfileManager : compose user profile
+        UserProfileManager --> GetPromotedActions : user profile
+    deactivate UserProfileManager
+
+    GetPromotedActions -> HorusSpotterPromotedActionService: get promoted actions for user profile
+    activate HorusSpotterPromotedActionService
+        create PromotedActions
+        HorusSpotterPromotedActionService -> PromotedActions: create
+        HorusSpotterPromotedActionService -> PromotedActions: post
+        activate PromotedActions
+            PromotedActions ->] : Horus Spotter Web API request
+            PromotedActions <--] : Horus Spotter Web API response
+            PromotedActions -->> HorusSpotterPromotedActionService : promoted actions DTO
+        deactivate PromotedActions
+        HorusSpotterPromotedActionService -> HorusSpotterPromotedActionService : map DTO to domain
+        HorusSpotterPromotedActionService -->> GetPromotedActions : promoted actions
+    deactivate HorusSpotterPromotedActionService
+    GetPromotedActions --> GetPromotedActions: prepare promoted actions
+    <<-- GetPromotedActions : Promoted actions
+    
+deactivate GetPromotedActions
+
+@enduml

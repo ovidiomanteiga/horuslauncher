@@ -52,6 +52,7 @@ class AllActionsFragment : Fragment(),
 
 
 	private fun onActionClicked(action: HorusAction) {
+		this.executeActionInteractor.fromHorusList = false
 		this.executeActionInteractor.action = action
 		AsyncTask.execute {
 			this.executeActionInteractor.perform()

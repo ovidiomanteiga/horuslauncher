@@ -1,17 +1,20 @@
 
 package org.paradaise.horussense.launcher.domain
 
-import android.graphics.drawable.Drawable
 import java.util.*
 import kotlin.Comparator
+import kotlin.system.measureTimeMillis
 
 
 open class GetHorusListInteractor {
 
 	// region Lifecycle
 
-	constructor(repository: ActionExecutionRepository) {
-		this.repository = repository
+	constructor(actionExecutionRepository: ActionExecutionRepository,
+	            launcherPresentationRepository: LauncherPresentationRepository)
+	{
+		this.repository = actionExecutionRepository
+		this.launcherPresentationRepository = launcherPresentationRepository
 	}
 
 	// endregion
@@ -23,13 +26,24 @@ open class GetHorusListInteractor {
 	// region Public Methods
 
 	open fun perform() {
-		val allActionExecutions = this.repository.all
-		this.buildHorusList(allActionExecutions)
+		val millis = measureTimeMillis {
+			this.getHorusList()
+		}
+		this.recordTimeTakenToGetHorusList(millis)
 	}
 
 	// endregion
 	// region Private Properties
 
+	private val factory: DomainFactory
+		get() {
+			val factory = DomainFactory.current
+			factory.launcherPresentationRepository = this.launcherPresentationRepository
+			return factory
+		}
+	private var launcherPresentationRepository: LauncherPresentationRepository
+	private val manager: LauncherPresentationManager
+		get() = this.factory.provideLauncherPresentationManager()
 	private var repository: ActionExecutionRepository
 
 	private val horusListItemComparator: Comparator<in HorusListItem>
@@ -38,8 +52,14 @@ open class GetHorusListInteractor {
 
 	// endregion
 	// region Private Methods
-	
-	private fun buildHorusList(executions: List<ActionExecution>) {
+
+	private fun getHorusList() {
+		val allActionExecutions = this.repository.all
+		this.buildHorusList(allActionExecutions)
+	}
+
+
+	private fun buildHorusList(executions: Collection<ActionExecutionVO>) {
 		val lastWeekMoment = this.lastWeekMoment()
 		this.horusList = executions.filter {
 			it.moment.after(lastWeekMoment)
@@ -58,41 +78,18 @@ open class GetHorusListInteractor {
 	}
 
 
-	private fun mapToHorusListItem(executions: List<ActionExecution>): HorusListItem {
+	private fun mapToHorusListItem(executions: List<ActionExecutionVO>): HorusListItem {
 		val action = executions.first().action
 		val lastExecutionMoment = executions.maxBy { it.moment } ?.moment
 		val numberOfExecutionsLastWeek = executions.count()
-		return HorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
+		return PredictedHorusListItem(action, lastExecutionMoment,  numberOfExecutionsLastWeek)
+	}
+
+
+	private fun recordTimeTakenToGetHorusList(milliseconds: Long) {
+		this.manager.notifyMillisecondsTakenToGetHorusList(milliseconds)
 	}
 
 	// endregion
-
-}
-
-
-typealias HorusList = List<HorusListItem>
-
-
-open class HorusListItem {
-
-	constructor(action: HorusAction, lastExecutionMoment: Date?,
-	            numberOfExecutionsLastWeek: Int)
-	{
-		this.action = action
-		this.lastExecutionMoment = lastExecutionMoment
-		this.numberOfExecutionsLastWeek = numberOfExecutionsLastWeek
-	}
-
-	open val action: HorusAction
-
-	open val icon: Drawable?
-		get() = this.action.icon
-
-	open val name: String?
-		get() = this.action.name
-
-	open val lastExecutionMoment: Date?
-
-	open val numberOfExecutionsLastWeek: Int
 
 }
