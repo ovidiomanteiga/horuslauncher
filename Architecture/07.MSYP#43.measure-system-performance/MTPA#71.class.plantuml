@@ -1,0 +1,41 @@
+
+@startuml MTPA#71.class
+
+skinparam monochrome true
+
+
+package Domain {
+
+    class LauncherPresentation <<VO>> {
+        UUID identifier
+        Date launchTime
+        Date actionTime
+        Long millisecondsTakenToGetHorusList
+        LauncherPresentationResult result
+    }
+
+    class GetHorusList <<Interactor>> {
+        + HorusList horusList
+        + void perform()
+    }
+
+    class LauncherPresentationManager <<Singleton>> {
+        + current: LauncherPresentation
+        + repository: LauncherPresentationRepository
+        + finish()
+        + notifyActionPerformed()
+        + notifyPredictedActionPerformed()
+        + notifyPromotedActionPerformed()
+        + notifyMillisecondsTakenToGetHorusList(Long)
+        + start()
+    }
+
+    GetHorusList -u-> "1" LauncherPresentationManager
+    LauncherPresentationManager -r-> "1" LauncherPresentation: current
+    
+}
+
+
+hide empty members
+
+@enduml

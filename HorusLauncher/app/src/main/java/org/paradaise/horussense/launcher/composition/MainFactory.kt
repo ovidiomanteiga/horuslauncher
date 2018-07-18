@@ -16,11 +16,29 @@ interface MainFactory {
 
 	fun provideContext(): Context
 
+	fun provideDeviceLockingInteractor(): DeviceLockingInteractor
+
 	fun provideExecuteActionInteractor(): ExecuteActionInteractor
+
+	fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor
 
 	fun provideGetAllActionsInteractor(): GetAllActionsInteractor
 
 	fun provideGetHorusListInteractor(): GetHorusListInteractor
+
+	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
+
+	fun provideGetStatsInteractor(): GetStatsInteractor
+
+	fun provideLauncherPresentationRepository(): LauncherPresentationRepository
+
+	fun providePromotedActionsService(): PromotedActionsService
+
+	fun provideUserLocationManager(): UserLocationManager
+
+	fun provideSendStatsInteractor(): SendStatsInteractor
+
+	fun provideStatsService(): StatsService
 
 	fun provideLocalDatabase(): LocalDatabase
 
@@ -49,10 +67,24 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideDeviceLockingInteractor(): DeviceLockingInteractor {
+		return DeviceLockingInteractor(this.provideLauncherPresentationRepository())
+	}
+
+
 	override fun provideExecuteActionInteractor(): ExecuteActionInteractor {
 		val context = this.provideContext()
-		val repository = this.provideActionExecutionRepository()
-		return ExecuteAppInteractor(context, repository)
+		val actionExecutionRepository = this.provideActionExecutionRepository()
+		val launcherPresentationRepository = this.provideLauncherPresentationRepository()
+		return ExecuteAppInteractor(context, actionExecutionRepository,
+				launcherPresentationRepository)
+	}
+
+
+	override fun provideExecutePromotedActionInteractor(): ExecutePromotedActionInteractor {
+		val repository = this.provideLauncherPresentationRepository()
+		val service = this.providePromotedActionsService()
+		return ExecutePromotedActionInteractor(repository, service)
 	}
 
 
@@ -62,14 +94,56 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
-	override fun provideGetHorusListInteractor(): GetHorusListInteractor{
+	override fun provideGetHorusListInteractor(): GetHorusListInteractor {
+		val actionExecutionRepository = this.provideActionExecutionRepository()
+		val launcherPresentationRepository = this.provideLauncherPresentationRepository()
+		return GetHorusListInteractor(actionExecutionRepository,
+				launcherPresentationRepository)
+	}
+
+
+	override fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor {
 		val repository = this.provideActionExecutionRepository()
-		return GetHorusListInteractor(repository)
+		val service = this.providePromotedActionsService()
+		val locationManager = this.provideUserLocationManager()
+		val manager = UserProfileManager(locationManager, repository)
+		return GetPromotedActionsInteractor(service = service, userProfileManager = manager)
+	}
+
+
+	override fun provideGetStatsInteractor(): GetStatsInteractor {
+		return GetStatsInteractor(this.provideLauncherPresentationRepository())
+	}
+
+
+	override fun provideLauncherPresentationRepository(): LauncherPresentationRepository {
+		return DBLauncherPresentationRepository(this.provideLocalDatabase())
+	}
+
+
+	override fun providePromotedActionsService(): PromotedActionsService {
+		return FakePromotedActionsService(this.provideContext())
+	}
+
+
+	override fun provideUserLocationManager(): UserLocationManager {
+		return AndroidLocationManager(this.provideContext())
+	}
+
+
+	override fun provideSendStatsInteractor(): SendStatsInteractor {
+		return SendStatsInteractor(this.provideGetStatsInteractor(),
+				this.provideStatsService())
+	}
+
+
+	override fun provideStatsService(): StatsService {
+		return FakeStatsService()
 	}
 
 
 	override fun provideLocalDatabase(): LocalDatabase {
-		return 	Databases.main(this.context)
+		return 	Databases.main(this.provideContext())
 	}
 
 }
