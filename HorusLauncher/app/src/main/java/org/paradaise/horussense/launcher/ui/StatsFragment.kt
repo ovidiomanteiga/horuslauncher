@@ -16,7 +16,7 @@ import org.paradaise.horussense.launcher.domain.GetStatsInteractor
 import org.paradaise.horussense.launcher.domain.LauncherStatsVO
 
 
-class StatsActivityFragment : Fragment(), NeedsGetStatsInteractor {
+class StatsFragment : Fragment(), NeedsGetStatsInteractor {
 
 	// region Internal Properties
 
@@ -30,7 +30,7 @@ class StatsActivityFragment : Fragment(), NeedsGetStatsInteractor {
 		MainInjector.inject(this)
 	}
 
-	
+
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 		return inflater.inflate(R.layout.fragment_stats, container, false)
@@ -83,7 +83,7 @@ class StatsActivityFragment : Fragment(), NeedsGetStatsInteractor {
 
 	private fun getStatsHorusListAccuracyViewModel(stats: LauncherStatsVO): StatsItemViewModel {
 		val horusListAccuracyText = stats.horusListAccuracy?.let {
-			"%.2f".format(it)
+			"%.1f".format(it)
 		} ?: "?"
 		return StatsItemViewModel(
 				getString(R.string.stats_horus_list_accuracy_subtitle),

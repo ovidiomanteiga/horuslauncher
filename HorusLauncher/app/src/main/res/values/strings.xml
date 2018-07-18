@@ -10,8 +10,8 @@
     <string name="stats_average_time_getting_horus_list_title">Average Horus List time (milliseconds)</string>
     <string name="stats_horus_list_accuracy_subtitle">Percentage of times an action from the Horus List is selected.</string>
     <string name="stats_horus_list_accuracy_title">Horus List accuracy (%)</string>
-    <string name="tab_text_1">Horus List</string>
-    <string name="tab_text_2">All Actions</string>
+    <string name="tab_text_horus_list">Horus List</string>
+    <string name="tab_text_all_actions">All Actions</string>
     <plurals name="times_launched_so_far_this_week">
         <item quantity="one">Launched once so far this week.</item>
         <item quantity="two">Launched twice so far this week.</item>

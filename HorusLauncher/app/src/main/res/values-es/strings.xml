@@ -11,8 +11,8 @@
     <string name="stats_average_time_getting_horus_list_title">Tiempo medio Lista Horus (milisegundos)</string>
     <string name="stats_horus_list_accuracy_subtitle">Procentaje de veces que se selecciona una acción de la Lista Horus.</string>
     <string name="stats_horus_list_accuracy_title">Precisión de la Lista Horus (%)</string>
-    <string name="tab_text_1">Lista Horus</string>
-    <string name="tab_text_2">Todas las acciones</string>
+    <string name="tab_text_horus_list">Lista Horus</string>
+    <string name="tab_text_all_actions">Todas las acciones</string>
     <plurals name="times_launched_so_far_this_week">
         <item quantity="one">Abierta %1$d vez esta semana.</item>
         <item quantity="other">Abierta %1$d veces esta semana.</item>

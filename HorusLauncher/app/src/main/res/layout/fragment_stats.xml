@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.StatsActivityFragment"
+    tools:context=".ui.StatsFragment"
     tools:showIn="@layout/activity_stats">
 
     <android.support.v7.widget.RecyclerView

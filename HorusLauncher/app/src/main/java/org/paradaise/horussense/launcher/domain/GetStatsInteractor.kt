@@ -2,14 +2,13 @@
 package org.paradaise.horussense.launcher.domain
 
 
-class GetStatsInteractor : Interactor {
+open class GetStatsInteractor : Interactor {
 
 	constructor(repository: LauncherPresentationRepository) {
 		this.repository = repository
 	}
 
-	var stats: LauncherStatsVO? = null
-		private set
+	open var stats: LauncherStatsVO? = null
 
 	override fun perform() {
 		this.stats = this.buildStats()
