@@ -1,0 +1,75 @@
+
+@startuml MPAA#70.class.1
+
+skinparam monochrome true
+
+
+package Domain {
+
+    interface DomainFactory <<AbstractFactory>> {
+        {static} DomainFactory current
+        + LauncherPresentationRepository repository
+        + LauncherPresentationManager provide()
+        + TimeProvider provide()
+    }
+
+    class DefaultDomainFactory <<Factory>> {
+        + LauncherPresentationManager provide()
+        + TimeProvider provide()
+    }
+
+    DefaultDomainFactory .u.|> DomainFactory
+
+    class ExecuteAction <<Interactor>> {
+        + HorusAction action
+        + void perform()
+    }
+
+    class ExecutePromotedAction <<Interactor>> {
+        + PromotedAction action
+        + void perform()
+    }
+
+    class DeviceLocking <<Interactor>> {
+        + Boolean locking
+        + void perform()
+    }
+
+    class LauncherPresentationManager <<Singleton>> {
+        + LauncherPresentation current
+        + finish()
+        + notifyActionPerformed()
+        + notifyPredictedActionPerformed()
+        + notifyPromotedActionPerformed()
+        + start()
+    }
+
+    interface TimeProvider {
+        + Date now
+    }
+
+    class DefaultTimeProvider {
+        + Date now
+    }
+
+    DefaultTimeProvider .u.|> TimeProvider
+
+    class LauncherPresentationRepository <<Repository>> {
+        + add(LauncherPresentation)
+    }
+    
+    DomainFactory .u.> LauncherPresentationManager : <<provides>>
+    DomainFactory .u.-> TimeProvider : <<provides>>
+    DomainFactory .u.-> LauncherPresentationRepository : <<requires>>
+    DeviceLocking -u-> "1" DomainFactory
+    ExecuteAction -u-> "1" DomainFactory
+    ExecutePromotedAction -u-> "1" DomainFactory
+    LauncherPresentationManager -d-> "1" LauncherPresentationRepository
+    LauncherPresentationManager -l-> "1" TimeProvider
+    
+}
+
+
+hide empty members
+
+@enduml

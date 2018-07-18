@@ -20,7 +20,7 @@ import org.paradaise.horussense.launcher.domain.*
  * See [feature @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/16).
  */
 @RunWith(MockitoJUnitRunner::class)
-class GetAllActionsUnitTest {
+class GetAllActionsInteractorUnitTest {
 
 	// region Properties
 

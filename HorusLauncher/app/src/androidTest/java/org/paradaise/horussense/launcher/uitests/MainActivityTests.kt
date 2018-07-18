@@ -19,6 +19,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doNothing
 import org.mockito.MockitoAnnotations
+import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
 import org.paradaise.horussense.launcher.domain.*
@@ -34,37 +35,51 @@ class MainActivityTest {
 	// region Properties
 
 	private lateinit var appContext: Context
-	private lateinit var mDevice: UiDevice
+	private lateinit var device: UiDevice
 
 	private val appPackageName: String
 		get() = this.appContext.packageName
 
-	private val allActionsTabSelector =
-			UiSelector().text("ALL ACTIONS")
-	private val horusListTabSelector =
-			UiSelector().text("HORUS LIST")
+	private val allActionsTabSelector: UiSelector
+		get() {
+			val text = this.appContext.getString(R.string.tab_text_all_actions)
+			return UiSelector().text(text.toUpperCase())
+		}
+	private val horusListTabSelector: UiSelector
+		get() {
+			val text = this.appContext.getString(R.string.tab_text_horus_list)
+			return UiSelector().text(text.toUpperCase())
+		}
 
 	// endregion
 	// region Setup
 
 	@get:Rule
-	var mActivityRule = ActivityTestRule(MainActivity::class.java, true, false)
+	var activityRule = ActivityTestRule(MainActivity::class.java, true, false)
 
 	@Mock
 	private lateinit var factory: MainFactory
 	@Mock
 	private lateinit var getAllActionInteractor: GetAllActionsInteractor
 	@Mock
+	private lateinit var deviceLockingInteractor: DeviceLockingInteractor
+	@Mock
 	private lateinit var executeActionInteractor: ExecuteActionInteractor
 	@Mock
+	private lateinit var executePromotedActionInteractor: ExecutePromotedActionInteractor
+	@Mock
+	private lateinit var getStatsInteractor: GetStatsInteractor
+	@Mock
 	private lateinit var getHorusListInteractor: GetHorusListInteractor
+	@Mock
+	private lateinit var getPromotedActionsInteractor: GetPromotedActionsInteractor
 	@Mock
 	private lateinit var action1: HorusListItem
 
 
 	@Before
 	fun setup() {
-		this.mDevice = UiDevice.getInstance(getInstrumentation())
+		this.device = UiDevice.getInstance(getInstrumentation())
 		this.appContext = InstrumentationRegistry.getTargetContext()
 		MockitoAnnotations.initMocks(this)
 		MainInjector.setFactory(this.factory)
@@ -78,6 +93,14 @@ class MainActivityTest {
 				.thenReturn(this.getHorusListInteractor)
 		`when`(this.factory.provideExecuteActionInteractor())
 				.thenReturn(this.executeActionInteractor)
+		`when`(this.factory.provideExecutePromotedActionInteractor())
+				.thenReturn(this.executePromotedActionInteractor)
+		`when`(this.factory.provideGetPromotedActionsInteractor())
+				.thenReturn(this.getPromotedActionsInteractor)
+		`when`(this.factory.provideDeviceLockingInteractor())
+				.thenReturn(this.deviceLockingInteractor)
+		`when`(this.factory.provideGetStatsInteractor())
+				.thenReturn(this.getStatsInteractor)
 		doNothing().`when`(this.getAllActionInteractor).perform()
 		`when`(this.getAllActionInteractor.allActions).thenReturn(allActions)
 		doNothing().`when`(this.getHorusListInteractor).perform()
@@ -95,9 +118,9 @@ class MainActivityTest {
 
 	@Test
 	fun testHorusListFirst() {
-		this.mActivityRule.launchActivity(null)
-		val horusListTab = this.mDevice.findObject(this.horusListTabSelector)
-		val allActionsTab = this.mDevice.findObject(this.allActionsTabSelector)
+		this.activityRule.launchActivity(null)
+		val horusListTab = this.device.findObject(this.horusListTabSelector)
+		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
 		assertTrue(allActionsTab.exists())
 		assertTrue(horusListTab.isSelected)
@@ -107,9 +130,9 @@ class MainActivityTest {
 
 	@Test
 	fun testSwitchFromHorusListToAllActions() {
-		this.mActivityRule.launchActivity(null)
-		val horusListTab = this.mDevice.findObject(this.horusListTabSelector)
-		val allActionsTab = this.mDevice.findObject(this.allActionsTabSelector)
+		this.activityRule.launchActivity(null)
+		val horusListTab = this.device.findObject(this.horusListTabSelector)
+		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
 		assertTrue(allActionsTab.exists())
 		assertTrue(horusListTab.isSelected)
@@ -122,9 +145,9 @@ class MainActivityTest {
 
 	@Test
 	fun testSwitchFromHorusListToAllActionsAndBack() {
-		this.mActivityRule.launchActivity(null)
-		val horusListTab = this.mDevice.findObject(this.horusListTabSelector)
-		val allActionsTab = this.mDevice.findObject(this.allActionsTabSelector)
+		this.activityRule.launchActivity(null)
+		val horusListTab = this.device.findObject(this.horusListTabSelector)
+		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
 		assertTrue(allActionsTab.exists())
 		assertTrue(horusListTab.isSelected)
@@ -138,14 +161,27 @@ class MainActivityTest {
 	fun testSwitchToAllActionsIfEmptyHorusList() {
 		val emptyHorusList = listOf<HorusListItem>()
 		`when`(this.getHorusListInteractor.horusList).thenReturn(emptyHorusList)
-		this.mActivityRule.launchActivity(null)
-		val horusListTab = this.mDevice.findObject(this.horusListTabSelector)
-		val allActionsTab = this.mDevice.findObject(this.allActionsTabSelector)
+		this.activityRule.launchActivity(null)
+		val horusListTab = this.device.findObject(this.horusListTabSelector)
+		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
 		assertTrue(allActionsTab.exists())
-		this.mDevice.waitForIdle()
+		this.device.waitForIdle()
 		assertFalse(horusListTab.isSelected)
 		assertTrue(allActionsTab.isSelected)
+	}
+
+	@Test
+	fun testOpenStats() {
+		this.activityRule.launchActivity(null)
+		val actionStatsRID = this.appPackageName + ":id/action_stats"
+		val actionStatsSelector = UiSelector().resourceId(actionStatsRID)
+		val actionStatsButton = this.device.findObject(actionStatsSelector)
+		assertTrue(actionStatsButton.exists())
+		actionStatsButton.clickAndWaitForNewWindow()
+		val statsTitle = this.appContext.getString(R.string.title_activity_stats)
+		val title = this.device.findObject(UiSelector().textMatches(statsTitle))
+		assertTrue(title.exists())
 	}
 
 	// endregion

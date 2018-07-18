@@ -5,15 +5,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.ActionExecution
-import org.paradaise.horussense.launcher.domain.ActionExecutionRepository
-import org.paradaise.horussense.launcher.domain.GetHorusListInteractor
-import org.paradaise.horussense.launcher.domain.HorusAction
+import org.paradaise.horussense.launcher.domain.*
 import java.util.*
 import java.util.UUID.*
 
@@ -24,7 +22,7 @@ import java.util.UUID.*
  * See [feature @ VSTS](https://lateaint.visualstudio.com/HorusSense/_workitems/edit/25).
  */
 @RunWith(MockitoJUnitRunner::class)
-class GetHorusListUnitTest {
+class GetHorusListInteractorUnitTest {
 
 	// region Properties
 
@@ -32,7 +30,9 @@ class GetHorusListUnitTest {
 	private lateinit var interactor: GetHorusListInteractor
 
 	@Mock
-	private lateinit var repository: ActionExecutionRepository
+	private lateinit var actionExecutionRepository: ActionExecutionRepository
+	@Mock
+	private lateinit var launcherPresentationRepository: LauncherPresentationRepository
 	@Mock
 	private lateinit var action1: HorusAction
 	@Mock
@@ -69,11 +69,11 @@ class GetHorusListUnitTest {
 		// Arrange
 		val now = Calendar.getInstance().time
 		val executions = listOf(
-				ActionExecution(this.action1, moment = now),
-				ActionExecution(this.action2, moment = now),
-				ActionExecution(this.action3, moment = now)
+				ActionExecutionVO(this.action1, moment = now),
+				ActionExecutionVO(this.action2, moment = now),
+				ActionExecutionVO(this.action3, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -89,11 +89,11 @@ class GetHorusListUnitTest {
 		val momentMoreThanOneWeekAgo = Calendar.getInstance()
 		momentMoreThanOneWeekAgo.add(Calendar.DATE, -10)
 		val executions = listOf(
-				ActionExecution(this.action1, moment = now),
-				ActionExecution(this.action2, moment = momentMoreThanOneWeekAgo.time),
-				ActionExecution(this.action3, moment = now)
+				ActionExecutionVO(this.action1, moment = now),
+				ActionExecutionVO(this.action2, moment = momentMoreThanOneWeekAgo.time),
+				ActionExecutionVO(this.action3, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -109,11 +109,11 @@ class GetHorusListUnitTest {
 		val action2times = this.action2
 		val action1time = this.action1
 		val executions = listOf(
-				ActionExecution(action2times, moment = now),
-				ActionExecution(action1time, moment = now),
-				ActionExecution(action2times, moment = now)
+				ActionExecutionVO(action2times, moment = now),
+				ActionExecutionVO(action1time, moment = now),
+				ActionExecutionVO(action2times, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -135,12 +135,12 @@ class GetHorusListUnitTest {
 		val actionOnceYesterday = this.action1
 		val actionOnceNow = this.action3
 		val executions = listOf(
-				ActionExecution(actionTwice, moment = now),
-				ActionExecution(actionOnceYesterday, moment = yesterday),
-				ActionExecution(actionTwice, moment = now),
-				ActionExecution(actionOnceNow, moment = now)
+				ActionExecutionVO(actionTwice, moment = now),
+				ActionExecutionVO(actionOnceYesterday, moment = yesterday),
+				ActionExecutionVO(actionTwice, moment = now),
+				ActionExecutionVO(actionOnceNow, moment = now)
 		)
-		Mockito.`when`(this.repository.all).thenReturn(executions)
+		Mockito.`when`(this.actionExecutionRepository.all).thenReturn(executions)
 		// Act
 		this.interactor.perform()
 		// Assert
@@ -149,6 +149,21 @@ class GetHorusListUnitTest {
 		assertEquals(actionTwice, predictedActions[0].action)
 		assertEquals(actionOnceNow, predictedActions[1].action)
 		assertEquals(actionOnceYesterday, predictedActions[2].action)
+	}
+
+
+	@Test
+	fun testMeasureTimeTakenGettingHorusList() {
+		// Arrange
+		val factory = mock(DomainFactory::class.java)
+		val manager = mock(LauncherPresentationManager::class.java)
+		`when`(factory.provideLauncherPresentationManager()).thenReturn(manager)
+		DomainFactory.current = factory
+		// Act
+		this.interactor.perform()
+		// Assert
+		verify(manager, times(1))
+				.notifyMillisecondsTakenToGetHorusList(ArgumentMatchers.anyLong())
 	}
 
 	// endregion

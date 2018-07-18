@@ -1,0 +1,56 @@
+
+@startuml PFPD#39.sequence
+
+skinparam monochrome true
+autonumber
+
+participant HorusLauncherPromotedFragment <<Fragment>>
+participant HorusListPromotedTask <<AsyncTask>>
+participant ExecutePromotedActionTask <<AsyncTask>>
+
+participant GetHorusList <<Interactor>>
+participant GetPromotedActions <<Interactor>>
+participant ExecutePromotedAction <<Interactor>>
+
+participant PromotedActionService <<WebService>>
+
+ -> HorusLauncherPromotedFragment : present
+activate HorusLauncherPromotedFragment
+HorusLauncherPromotedFragment ->> HorusListPromotedTask : execute
+deactivate HorusLauncherPromotedFragment
+
+activate HorusListPromotedTask
+HorusListPromotedTask -> GetHorusList : perform
+HorusListPromotedTask <-- GetHorusList : Horus List
+HorusListPromotedTask -> GetPromotedActions : perform
+HorusListPromotedTask <-- GetPromotedActions : promoted actions
+HorusListPromotedTask -->> HorusLauncherPromotedFragment : finished
+deactivate HorusListPromotedTask
+
+activate HorusLauncherPromotedFragment
+HorusLauncherPromotedFragment ->> HorusLauncherPromotedFragment : show promoted Horus List
+<-- HorusLauncherPromotedFragment
+deactivate HorusLauncherPromotedFragment
+
+-> HorusLauncherPromotedFragment : selected promoted action
+activate HorusLauncherPromotedFragment
+HorusLauncherPromotedFragment ->> ExecutePromotedActionTask : execute
+deactivate HorusLauncherPromotedFragment
+
+activate ExecutePromotedActionTask
+ExecutePromotedActionTask -> ExecutePromotedAction : perform
+    activate ExecutePromotedAction
+    ExecutePromotedAction -> PromotedActionService : notify promoted action executed
+        activate PromotedActionService
+        PromotedActionService ->] : post to web service
+        PromotedActionService <--] : web service response
+        ExecutePromotedAction <-- PromotedActionService
+        deactivate PromotedActionService
+    ExecutePromotedActionTask <-- ExecutePromotedAction
+    deactivate ExecutePromotedAction
+ExecutePromotedActionTask --->> HorusLauncherPromotedFragment : executed promoted action
+deactivate ExecutePromotedActionTask
+
+
+
+@enduml

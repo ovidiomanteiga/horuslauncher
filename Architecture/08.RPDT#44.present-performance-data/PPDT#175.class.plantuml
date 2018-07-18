@@ -1,0 +1,74 @@
+
+@startuml PPDT#175.class
+
+skinparam monochrome true
+
+
+package Domain {
+
+    class LauncherPresentation <<VO>> {
+        UUID identifier
+        Date launchTime
+        Date actionTime
+        LauncherPresentationResult result
+    }
+
+    class LauncherStats <<VO>> {
+        Float averageActionTimeInSeconds
+        Long averageGettingHorusListTimeInMilliseconds
+        Float horusListAccuracyPercentage
+    }
+
+    class GetLauncherStats <<Interactor>> {
+        + LauncherStats LauncherStats
+        + void perform()
+    }
+
+
+    class LauncherPresentationRepository <<Repository>> {
+        + List<LauncherPresentation> all
+        + add(LauncherPresentation)
+    }
+    
+    GetLauncherStats -r-> "1" LauncherPresentationRepository
+    GetLauncherStats .u.> "1" LauncherStats : <<creates>>
+    GetLauncherStats .u.> LauncherPresentation
+    LauncherPresentationRepository o-u-> "*" LauncherPresentation
+    
+}
+
+
+package Infrastructure {
+
+    class DBLauncherPresentationRepository <<Repository>> {
+        + List<LauncherPresentation> all
+        + add(LauncherPresentation)
+    }
+
+    DBLauncherPresentationRepository .u.|> LauncherPresentationRepository
+
+}
+
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class StatsActivity <<Activity>> {
+    }
+    
+    class StatsFragment <<Fragment>> {
+    }
+
+}
+
+MainActivity .u.> StatsActivity : <<launches>>
+StatsActivity .> StatsFragment : <<presents>>
+
+StatsFragment -u-> GetLauncherStats
+
+
+hide empty members
+
+@enduml

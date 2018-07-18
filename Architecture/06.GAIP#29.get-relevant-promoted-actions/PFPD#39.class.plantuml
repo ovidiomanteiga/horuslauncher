@@ -1,0 +1,94 @@
+
+@startuml PFPD#39.class
+
+skinparam monochrome true
+
+package Domain {
+
+    class PromotedAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class PromotedActions <<Aggregate>> {
+    }
+
+    class ExecutePromotedAction <<Interactor>> {
+        + PromotedAction action
+        + void perform()
+    }
+
+    class GetHorusList <<Interactor>> {
+        + HorusList horusList
+        + void perform()
+    }
+
+    class GetPromotedActions <<Interactor>> {
+        + PromotedActions actions
+        + void perform()
+    }
+
+    class PromotedActionExecution <<VO>> {
+        + PromotedAction action
+        + Date executionTime
+    }
+
+    interface PromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+        + PromotedActions notifyPromotedActionExecuted(PromotedActionExecution)
+    }
+
+    ExecutePromotedAction -u-> PromotedActionExecution : <<creates>>
+    ExecutePromotedAction -r-> PromotedActionService
+    GetPromotedActions -u-> PromotedActions
+    GetPromotedActions -r-> PromotedActionService
+    PromotedActions o-l-> "*" PromotedAction
+    PromotedActionService .u.> PromotedActionExecution
+
+    ExecutePromotedAction -[hidden]l-> GetHorusList
+
+}
+
+package UI {
+
+    class HorusListPromotedFragment <<Fragment>> {
+    }
+
+    class MainActivity <<Activity>> {
+    }
+
+    MainActivity -u-> "1" HorusListPromotedFragment
+
+}
+
+package Infrastructure {
+
+    class HorusSpotterPromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+        + PromotedActions notifyPromotedActionExecuted(PromotedActionExecution)
+    }
+
+    package HorusSpotterClient {
+
+        class HorusSpotterPromotedActionExecutions <<WebAPIResource>> {
+            + PromotedActionExecutionDTO post()
+        }
+
+    }
+
+    HorusSpotterPromotedActionService .r.> HorusSpotterPromotedActionExecutions
+
+}
+
+HorusListPromotedFragment -u-> ExecutePromotedAction
+HorusListPromotedFragment -u-> GetHorusList
+HorusListPromotedFragment -u-> GetPromotedActions
+
+HorusSpotterPromotedActionService .u.|> PromotedActionService
+
+
+hide empty members
+
+@enduml

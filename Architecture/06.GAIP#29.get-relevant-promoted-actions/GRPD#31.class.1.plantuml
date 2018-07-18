@@ -1,0 +1,98 @@
+
+@startuml GRPD#31.class.1
+
+skinparam monochrome true
+
+package Domain {
+
+    class PromotedAction <<Entity>> {
+        Drawable icon
+        UUID identifier
+        LocalizableString name
+        void perform()
+    }
+
+    class PromotedActions <<Aggregate>> {
+    }
+
+    class GetPromotedActions <<Interactor>> {
+        + PromotedActions actions
+        + void perform()
+    }
+
+    class UserProfile <<VO>> {
+        + Gender gender
+        + Int yearOfBirth
+        + Location currentLocation
+        + List<HorusAction> top10Actions
+    }
+
+    class UserProfileManager {
+        + UserProfile getUserProfile()
+    }
+
+    interface PromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+    }
+
+    interface UserLocationManager {
+        + Location getCurrentLocation()
+    }
+
+    interface ActionExecutionRepository {
+        + List<ActionExecution> getAll()
+    }
+
+    GetPromotedActions -u-> PromotedActions
+    GetPromotedActions -d-> PromotedActionService
+    GetPromotedActions -r-> UserProfileManager
+    UserProfileManager -u-> UserProfile
+    UserProfileManager -d-> UserLocationManager
+    UserProfileManager -r-> ActionExecutionRepository
+    PromotedActions -u-> "*" PromotedAction
+}
+
+package Infrastructure {
+
+    class HorusSpotterPromotedActionService <<Service>> {
+        + PromotedActions getPromotedActionsFor(UserProfile)
+    }
+
+    class FakePromotedActionService <<Mock>> {
+    }
+
+    class AndroidLocationManager {
+        + Location getCurrentLocation()
+    }
+
+    package HorusSpotterClient {
+
+        class HorusSpotterPromotedActions <<WebAPIResource>> {
+            + UserProfileDTO userProfile
+            + PromotedActionsDTO post()
+        }
+
+    }
+
+    HorusSpotterPromotedActionService .d.> HorusSpotterPromotedActions
+
+}
+
+package Android {
+
+    class Context {
+    }
+
+}
+
+FakePromotedActionService -[hidden]r-> HorusSpotterPromotedActionService
+FakePromotedActionService -[hidden]r-> AndroidLocationManager
+AndroidLocationManager .u.|> UserLocationManager
+AndroidLocationManager -r-> Context
+HorusSpotterPromotedActionService .u.|> PromotedActionService
+FakePromotedActionService .u.|> PromotedActionService
+
+
+hide empty members
+
+@enduml

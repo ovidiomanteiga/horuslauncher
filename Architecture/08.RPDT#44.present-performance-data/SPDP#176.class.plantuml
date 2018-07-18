@@ -1,0 +1,91 @@
+
+@startuml PPDT#175.class
+
+skinparam monochrome true
+
+
+package UI {
+
+    class MainActivity <<Activity>> {
+    }
+
+    class SendStatsReceiver <<BroadcastReceiver>> {
+    }
+    
+    class SendStatsScheduler {
+    }
+
+}
+
+
+package Domain {
+
+    class LauncherPresentation <<VO>> {
+        UUID identifier
+        Date launchTime
+        Date actionTime
+        LauncherPresentationResult result
+    }
+
+    class LauncherStats <<VO>> {
+        Float averageActionTimeInSeconds
+        Long averageGettingHorusListTimeInMilliseconds
+        Float horusListAccuracyPercentage
+    }
+
+    class GetLauncherStats <<Interactor>> {
+        + LauncherStats LauncherStats
+        + void perform()
+    }
+
+    class SendStats <<Interactor>> {
+        + LauncherStats LauncherStats
+        + void perform()
+    }
+
+    class LauncherPresentationRepository <<Repository>> {
+        + List<LauncherPresentation> all
+        + add(LauncherPresentation)
+    }
+
+    class LauncherStatsService <<Service>> {
+        + send(LauncherStatsVO)
+    }
+    
+    GetLauncherStats -r-> "1" LauncherStatsService
+    GetLauncherStats -r-> "1" LauncherPresentationRepository
+    GetLauncherStats .u.> "1" LauncherStats : <<creates>>
+    GetLauncherStats .u.> LauncherPresentation
+    LauncherPresentationRepository o-u-> "*" LauncherPresentation
+    SendStats -r-> "1" GetLauncherStats
+    SendStats .u.> "1" LauncherStats
+    SendStats -r-> "1" LauncherStatsService
+    
+}
+
+
+package Infrastructure {
+
+    class DBLauncherPresentationRepository <<Repository>> {
+        + List<LauncherPresentation> all
+        + add(LauncherPresentation)
+    }
+
+    class LauncherStatsWebService <<WebService>> {
+        + send(LauncherStatsVO)
+    }
+
+    DBLauncherPresentationRepository .u.|> LauncherPresentationRepository
+    LauncherStatsWebService .u.|> LauncherStatsService
+
+}
+
+
+MainActivity .d.> SendStatsScheduler : <<delegate>>
+MainActivity -u-> GetLauncherStats
+SendStatsReceiver -u-> SendStats
+
+
+hide empty members
+
+@enduml

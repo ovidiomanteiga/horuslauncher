@@ -1,0 +1,47 @@
+
+@startuml SPDP#176.sequence
+
+skinparam monochrome true
+autonumber
+
+participant MainActivity <<Activity>>
+participant SendStatsScheduler
+participant SendStatsReceiver <<BroadcastReceiver>>
+
+participant SendStats <<Interactor>>
+participant GetStats <<Interactor>>
+participant LauncherPresentationRepository <<Repository>>
+participant SendStatsService <<Service>>
+
+-> MainActivity : onStart(...)
+activate MainActivity
+MainActivity ->> SendStatsScheduler : schedule if needed
+    activate SendStatsScheduler
+    SendStatsScheduler -> SendStatsScheduler : schedule event if needed
+    deactivate SendStatsScheduler
+deactivate MainActivity
+
+......
+
+-> SendStatsReceiver : onReceive(...)
+activate SendStatsReceiver
+SendStatsReceiver -> SendStats : perform
+    activate SendStats
+    SendStats -> GetStats : perform
+        activate GetStats
+        GetStats -> LauncherPresentationRepository : get all
+            activate LauncherPresentationRepository
+            GetStats <-- LauncherPresentationRepository :  : all launcher presentations
+            deactivate LauncherPresentationRepository
+        GetStats -> GetStats : build stats
+        SendStats <-- GetStats : launcher stats
+        deactivate GetStats
+    SendStats -> SendStatsService : send stats
+    activate SendStatsService
+        SendStatsService ->] : post stats to web service
+        SendStatsService <--]
+        SendStats <-- SendStatsService : stats sent
+    deactivate SendStatsService
+    SendStatsReceiver <-- SendStats
+    
+@enduml
