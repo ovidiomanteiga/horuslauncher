@@ -1,13 +1,21 @@
 <resources>
+    <string name="action_stats">Stats</string>
     <string name="app_name">Horus Launcher</string>
     <string name="empty_horus_list">Empty Horus List!</string>
     <string name="promoted">Promoted 📣</string>
     <string name="promoted_action_dialog_confirmation">Do you really want to perform this promoted action?</string>
-    <string name="tab_text_1">Horus List</string>
-    <string name="tab_text_2">All Actions</string>
+    <string name="stats_average_action_time_subtitle">Average time from the moment the launcher is presented until it is dismissed.</string>
+    <string name="stats_average_action_time_title">Average action time (seconds)</string>
+    <string name="stats_average_time_getting_horus_list_subtitle">Average time it takes to compute the Horus List.</string>
+    <string name="stats_average_time_getting_horus_list_title">Average Horus List time (milliseconds)</string>
+    <string name="stats_horus_list_accuracy_subtitle">Percentage of times an action from the Horus List is selected.</string>
+    <string name="stats_horus_list_accuracy_title">Horus List accuracy (%)</string>
+    <string name="tab_text_horus_list">Horus List</string>
+    <string name="tab_text_all_actions">All Actions</string>
     <plurals name="times_launched_so_far_this_week">
         <item quantity="one">Launched once so far this week.</item>
         <item quantity="two">Launched twice so far this week.</item>
         <item quantity="other">Launched %1$d times so far this week.</item>
     </plurals>
+    <string name="title_activity_stats">Launcher Stats</string>
 </resources>

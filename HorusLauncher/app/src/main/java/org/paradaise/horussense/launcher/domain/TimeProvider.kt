@@ -11,6 +11,10 @@ interface TimeProvider {
 }
 
 
+typealias Seconds = Double
+typealias Milliseconds = Long
+
+
 class DefaultTimeProvider: TimeProvider {
 
 	override val now: Date

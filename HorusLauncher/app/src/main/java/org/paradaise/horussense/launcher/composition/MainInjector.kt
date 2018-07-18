@@ -1,6 +1,8 @@
 
 package org.paradaise.horussense.launcher.composition
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import org.paradaise.horussense.launcher.domain.*
@@ -17,6 +19,11 @@ class MainInjector {
 
 		fun inject(target: Fragment) {
 			this.factory.context = target.requireContext()
+			this.injectCommon(target)
+		}
+
+		fun inject(target: BroadcastReceiver, context: Context) {
+			this.factory.context = context
 			this.injectCommon(target)
 		}
 
@@ -44,6 +51,10 @@ class MainInjector {
 					factory.provideGetPromotedActionsInteractor()
 			(target as? NeedsDeviceLockingInteractor)?.deviceLockingInteractor =
 					factory.provideDeviceLockingInteractor()
+			(target as? NeedsGetStatsInteractor)?.getStatsInteractor =
+					factory.provideGetStatsInteractor()
+			(target as? NeedsSendStatsInteractor)?.sendStatsInteractor =
+					factory.provideSendStatsInteractor()
 		}
 
 	}
@@ -72,8 +83,16 @@ interface NeedsGetPromotedActionsInteractor {
 	var getPromotedActionsInteractor: GetPromotedActionsInteractor
 }
 
+interface NeedsGetStatsInteractor {
+	var getStatsInteractor: GetStatsInteractor
+}
+
 interface NeedsDeviceLockingInteractor {
 	var deviceLockingInteractor: DeviceLockingInteractor
+}
+
+interface NeedsSendStatsInteractor {
+	var sendStatsInteractor: SendStatsInteractor
 }
 
 // endregion

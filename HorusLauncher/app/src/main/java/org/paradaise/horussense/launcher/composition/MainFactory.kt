@@ -28,11 +28,17 @@ interface MainFactory {
 
 	fun provideGetPromotedActionsInteractor(): GetPromotedActionsInteractor
 
+	fun provideGetStatsInteractor(): GetStatsInteractor
+
 	fun provideLauncherPresentationRepository(): LauncherPresentationRepository
 
 	fun providePromotedActionsService(): PromotedActionsService
 
 	fun provideUserLocationManager(): UserLocationManager
+
+	fun provideSendStatsInteractor(): SendStatsInteractor
+
+	fun provideStatsService(): StatsService
 
 	fun provideLocalDatabase(): LocalDatabase
 
@@ -105,6 +111,11 @@ class DefaultMainFactory : MainFactory {
 	}
 
 
+	override fun provideGetStatsInteractor(): GetStatsInteractor {
+		return GetStatsInteractor(this.provideLauncherPresentationRepository())
+	}
+
+
 	override fun provideLauncherPresentationRepository(): LauncherPresentationRepository {
 		return DBLauncherPresentationRepository(this.provideLocalDatabase())
 	}
@@ -117,6 +128,17 @@ class DefaultMainFactory : MainFactory {
 
 	override fun provideUserLocationManager(): UserLocationManager {
 		return AndroidLocationManager(this.provideContext())
+	}
+
+
+	override fun provideSendStatsInteractor(): SendStatsInteractor {
+		return SendStatsInteractor(this.provideGetStatsInteractor(),
+				this.provideStatsService())
+	}
+
+
+	override fun provideStatsService(): StatsService {
+		return FakeStatsService()
 	}
 
 
