@@ -44,6 +44,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.paradaise.horussense.launcher.ui.MainActivity" />
         </activity>
+        <receiver
+            android:name=".ui.SendStatsReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
     </application>
 
 </manifest>

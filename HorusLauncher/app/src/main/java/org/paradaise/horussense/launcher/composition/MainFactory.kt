@@ -36,6 +36,10 @@ interface MainFactory {
 
 	fun provideUserLocationManager(): UserLocationManager
 
+	fun provideSendStatsInteractor(): SendStatsInteractor
+
+	fun provideStatsService(): StatsService
+
 	fun provideLocalDatabase(): LocalDatabase
 
 }
@@ -124,6 +128,17 @@ class DefaultMainFactory : MainFactory {
 
 	override fun provideUserLocationManager(): UserLocationManager {
 		return AndroidLocationManager(this.provideContext())
+	}
+
+
+	override fun provideSendStatsInteractor(): SendStatsInteractor {
+		return SendStatsInteractor(this.provideGetStatsInteractor(),
+				this.provideStatsService())
+	}
+
+
+	override fun provideStatsService(): StatsService {
+		return FakeStatsService()
 	}
 
 
