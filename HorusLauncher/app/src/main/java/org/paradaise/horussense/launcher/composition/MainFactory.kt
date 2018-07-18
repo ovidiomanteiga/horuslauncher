@@ -136,7 +136,7 @@ class DefaultMainFactory : MainFactory {
 				this.provideStatsService())
 	}
 
-	
+
 	override fun provideStatsService(): StatsService {
 		return FakeStatsService()
 	}

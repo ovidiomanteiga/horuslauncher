@@ -9,7 +9,7 @@ import org.paradaise.horussense.launcher.domain.StatsService
 class FakeStatsService : StatsService {
 
 	override fun send(stats: LauncherStatsVO?) {
-		Log.d("StatsService.send()", stats.toString())
+		Log.d("STATS_SERVICE_SENT", stats.toString())
 	}
 
 }

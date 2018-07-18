@@ -19,9 +19,7 @@ import org.paradaise.horussense.launcher.composition.NeedsDeviceLockingInteracto
 import org.paradaise.horussense.launcher.composition.NeedsGetPromotedActionsInteractor
 import org.paradaise.horussense.launcher.domain.DeviceLockingInteractor
 import org.paradaise.horussense.launcher.domain.GetPromotedActionsInteractor
-import android.view.MenuInflater
 import android.view.MenuItem
-
 
 
 class MainActivity : AppCompatActivity(), HorusListFragmentListener,
@@ -41,8 +39,8 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 		super.onCreate(savedInstanceState)
 		this.setContentView(R.layout.activity_main)
 		this.setSupportActionBar(this.toolbar)
-		this.mSectionsPagerAdapter = SectionsPagerAdapter(this.supportFragmentManager)
-		this.container.adapter = this.mSectionsPagerAdapter
+		this.sectionsPagerAdapter = SectionsPagerAdapter(this.supportFragmentManager)
+		this.container.adapter = this.sectionsPagerAdapter
 		this.container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(this.tabs))
 		this.tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(this.container))
 	}
@@ -52,6 +50,9 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 		AsyncTask.execute {
 			this.deviceLockingInteractor.locking = false
 			this.deviceLockingInteractor.perform()
+		}
+		AsyncTask.execute {
+			this.sendStatsScheduler.scheduleIfNeeded()
 		}
 	}
 
@@ -93,7 +94,9 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 	// region Private Properties
 
 	private val allActionsTabIndex: Int = 1
-	private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+	private var sectionsPagerAdapter: SectionsPagerAdapter? = null
+	private val sendStatsScheduler: SendStatsScheduler
+		get() = SendStatsScheduler(this)
 
 	// endregion
 	// region Inner Classes
