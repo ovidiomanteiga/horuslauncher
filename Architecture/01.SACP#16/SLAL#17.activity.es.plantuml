@@ -1,0 +1,26 @@
+
+@startuml SLAL#17.activity.es
+
+skinparam monochrome true
+
+|Usuario|
+start
+:Desbloquear dispositivo>
+|Sistema|
+:Desbloquear dispositivo<
+if (**HorusLauncher** es el lanzador por defecto?) then (SI)
+else (NO)
+    |Sistema|
+    :Mostrar el lanzador por defecto>
+    |Usuario|
+    :Mostrar el lanzador por defecto<
+    :Seleccionar **HorusLauncher**;
+endif
+|Sistema|
+:Mostrar **HorusLauncher**;
+|Lanzador|
+:Mostrar lista de todas las aplicaciones lanzables;
+|Lanzador|
+stop
+
+@enduml

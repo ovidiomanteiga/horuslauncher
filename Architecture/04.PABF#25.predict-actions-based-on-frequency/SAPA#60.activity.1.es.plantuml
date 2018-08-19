@@ -1,0 +1,44 @@
+
+@startuml SAPA#60.activity.1.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+start
+|Lanzador|
+:Mostrar lista de acciones predichas\n**Lista Horus**;
+|Usuario|
+:Explorar lista de acciones predichas\n**Lista Horus**;
+if (Acción deseada encontrada?) then (SI)
+    :Seleccionar acción deseade;
+    detach
+else (NO)
+    :Cambiar a la **lista de todas las acciones**;
+    |Lanzador|
+    :Mostrar la **lista de todas las acciones**;
+endif
+|Usuario|
+:Explorar la **lista de todas las acciones**;
+:Seleccionar una acción;
+|Lanzador|
+:Ejecutar la acción seleccionada>
+detach
+:Volver atrás tras la ejecución acción seleccionada<
+:Mostrar la **lista de todas las acciones**;
+|Usuario|
+:Explorar **lista de todas las acciones**;
+if (Quiere ver las acciones predichas?) then (NO)
+    |Usuario|
+    :...;
+else (SI)
+    :Cambiar a la lista de acciones predichas\n**Lista Horus**;
+    |Lanzador|
+    :Mostrar la lista de acciones predichas\n**Lista Horus**;
+    detach
+endif
+
+|Usuario|
+stop
+
+@enduml

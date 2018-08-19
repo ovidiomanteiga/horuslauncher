@@ -1,0 +1,29 @@
+
+@startuml PPDT#175.activity.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+start
+:Desbloquear el dispositivo;
+
+|Lanzador|
+:Mostrar **Horus Launcher**;
+
+|Usuario|
+:Seleccionar botón de estadísticas de rendimiento;
+
+|Lanzador|
+:**Mostrar estadísticas de rentimiento**;
+
+|Usuario|
+:Volver al lanzador **Horus Launcher**;
+
+|Lanzador|
+:Ocultar estadísticas de rendimiento;
+:Mostrar **Horus Launcher**;
+
+stop
+
+@enduml

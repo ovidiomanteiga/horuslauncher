@@ -1,0 +1,48 @@
+
+@startuml MPAA#70.activity.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+start
+:Desbloquear el dispositivo;
+
+|Lanzador|
+:Registrar el instante en el que el dispositivo fue desbloqueado;
+:Mostrar Lista Horus;
+
+|Usuario|
+:Explorar Lista Horus;
+if (Selecciona una acción **PREDICHA**?) then (SI)
+    |Lanzador|
+    :Registrar posición de la acción PREDICHA;
+else (NO)
+endif
+
+|Usuario|
+if (Selecciona una acción **PROMOCIONADA**?) then (SI)
+    |Lanzador|
+    :Registrar posición de la acción PROMOCIONADA;
+else (NO)
+endif
+
+|Usuario|
+:Cambiar a lista de todas las acciones;
+if (Selecciona acción de entre **TODAS LAS ACCIONES**?) then (SI)
+    |Lanzador|
+    :Registrar que se seleccionó acción de TODAS LAS ACCIONES;
+else (NO)
+endif
+
+|Usuario|
+if (Bloquea el dispositivo sin ejecutar ninguna acción?) then (SI)
+    |Lanzador|
+    :Registrar que se bloqueó el dispositivo sin ejecutar ninguna acción;
+else (NO)
+endif
+
+|Usuario|
+stop
+
+@enduml

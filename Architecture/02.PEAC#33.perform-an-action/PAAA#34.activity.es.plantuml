@@ -1,0 +1,19 @@
+
+@startuml PAAA#34.activity.es
+
+skinparam monochrome true
+
+|Usuario|
+|Lanzador|
+start
+:Mostrar lista de todas las aplicaciones lanzables;
+|Usuario|
+:Seleccionar una aplicación>
+|Lanzador|
+:Seleccionar una aplicación<
+:Lanzar aplicación seleccionada;
+|Sistema|
+:Lanzar aplicación;
+stop
+
+@enduml
