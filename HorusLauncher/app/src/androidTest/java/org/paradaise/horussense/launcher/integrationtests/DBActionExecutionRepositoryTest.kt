@@ -13,11 +13,11 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import org.paradaise.horussense.launcher.domain.ActionExecutionVO
-import org.paradaise.horussense.launcher.domain.AllActionsRepository
-import org.paradaise.horussense.launcher.domain.HorusAction
-import org.paradaise.horussense.launcher.infrastructure.DBActionExecutionRepository
-import org.paradaise.horussense.launcher.infrastructure.LocalDatabase
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionVO
+import org.paradaise.horussense.launcher.domain.all_actions.AllActionsRepository
+import org.paradaise.horussense.launcher.domain.action.HorusAction
+import org.paradaise.horussense.launcher.infrastructure.action_execution.DBActionExecutionRepository
+import org.paradaise.horussense.launcher.infrastructure.database.LocalDatabase
 import java.io.IOException
 import java.util.*
 

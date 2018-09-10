@@ -2,8 +2,26 @@
 package org.paradaise.horussense.launcher.composition
 
 import android.content.Context
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.infrastructure.*
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionRepository
+import org.paradaise.horussense.launcher.domain.action_execution.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.all_actions.AllActionsRepository
+import org.paradaise.horussense.launcher.domain.all_actions.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.ExecutePromotedActionInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.GetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.PromotedActionsService
+import org.paradaise.horussense.launcher.domain.stats.*
+import org.paradaise.horussense.launcher.domain.user_profile.UserLocationManager
+import org.paradaise.horussense.launcher.domain.user_profile.UserProfileManager
+import org.paradaise.horussense.launcher.infrastructure.action_execution.DBActionExecutionRepository
+import org.paradaise.horussense.launcher.infrastructure.action_execution.ExecuteAppInteractor
+import org.paradaise.horussense.launcher.infrastructure.all_actions.AllAppsRepository
+import org.paradaise.horussense.launcher.infrastructure.database.Databases
+import org.paradaise.horussense.launcher.infrastructure.database.LocalDatabase
+import org.paradaise.horussense.launcher.infrastructure.promoted_actions.FakePromotedActionsService
+import org.paradaise.horussense.launcher.infrastructure.stats.DBLauncherPresentationRepository
+import org.paradaise.horussense.launcher.infrastructure.stats.FakeStatsService
+import org.paradaise.horussense.launcher.infrastructure.user_profile.AndroidLocationManager
 
 
 interface MainFactory {

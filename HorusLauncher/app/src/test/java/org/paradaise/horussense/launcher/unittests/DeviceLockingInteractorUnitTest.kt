@@ -2,14 +2,17 @@
 package org.paradaise.horussense.launcher.unittests
 
 
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.factory.DomainFactory
+import org.paradaise.horussense.launcher.domain.stats.DeviceLockingInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationManager
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationVO
 
 
 /**

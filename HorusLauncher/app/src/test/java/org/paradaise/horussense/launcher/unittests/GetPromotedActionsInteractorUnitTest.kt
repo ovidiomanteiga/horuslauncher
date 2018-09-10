@@ -9,7 +9,10 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action.PromotedAction
+import org.paradaise.horussense.launcher.domain.promoted_actions.GetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.PromotedActionsService
+import org.paradaise.horussense.launcher.domain.user_profile.UserProfileVO
 
 
 /**

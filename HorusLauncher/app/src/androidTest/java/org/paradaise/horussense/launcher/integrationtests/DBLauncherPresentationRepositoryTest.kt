@@ -13,9 +13,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.infrastructure.DBLauncherPresentationRepository
-import org.paradaise.horussense.launcher.infrastructure.LocalDatabase
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationResult
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationVO
+import org.paradaise.horussense.launcher.infrastructure.stats.DBLauncherPresentationRepository
+import org.paradaise.horussense.launcher.infrastructure.database.LocalDatabase
 import java.io.IOException
 import java.util.*
 

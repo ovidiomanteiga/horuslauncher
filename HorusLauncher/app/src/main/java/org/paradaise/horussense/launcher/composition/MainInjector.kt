@@ -5,7 +5,14 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action_execution.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.all_actions.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.ExecutePromotedActionInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.GetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.stats.DeviceLockingInteractor
+import org.paradaise.horussense.launcher.domain.stats.GetStatsInteractor
+import org.paradaise.horussense.launcher.domain.stats.SendStatsInteractor
 
 
 class MainInjector {

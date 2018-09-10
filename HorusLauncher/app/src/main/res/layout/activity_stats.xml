@@ -5,12 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.StatsActivity">
+    tools:context=".ui.stats.StatsActivity">
 
     <include layout="@layout/appbar" />
 
     <fragment  android:id="@+id/fragment"
-        android:name="org.paradaise.horussense.launcher.ui.StatsFragment"
+        android:name="org.paradaise.horussense.launcher.ui.stats.StatsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"

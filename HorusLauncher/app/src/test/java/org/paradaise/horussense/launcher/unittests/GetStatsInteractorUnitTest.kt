@@ -9,8 +9,12 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.domain.LauncherPresentationResult.*
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationResult.*
+import org.paradaise.horussense.launcher.domain.stats.GetStatsInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationResult
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationVO
+import org.paradaise.horussense.launcher.domain.time.Milliseconds
 import java.util.*
 
 
@@ -99,8 +103,8 @@ class GetStatsInteractorUnitTest {
 	// region Private Methods
 
 	private fun getLauncherPresentationMock(actionTimeDifference: Int,
-	                                         millisecondsTakenToGetHorusList: Milliseconds,
-	                                         result: LauncherPresentationResult):
+	                                        millisecondsTakenToGetHorusList: Milliseconds,
+	                                        result: LauncherPresentationResult):
 			LauncherPresentationVO
 	{
 		val presentationVO = LauncherPresentationVO()

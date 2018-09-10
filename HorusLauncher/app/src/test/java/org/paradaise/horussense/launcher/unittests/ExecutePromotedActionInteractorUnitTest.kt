@@ -8,7 +8,11 @@ import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action.PromotedAction
+import org.paradaise.horussense.launcher.domain.promoted_actions.ExecutePromotedActionInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.PromotedActionExecution
+import org.paradaise.horussense.launcher.domain.promoted_actions.PromotedActionsService
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
 
 
 /**

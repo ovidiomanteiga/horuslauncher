@@ -9,7 +9,11 @@ import org.junit.runner.RunWith
 import org.mockito.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action.HorusAction
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionRepository
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionVO
+import org.paradaise.horussense.launcher.domain.action_execution.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
 
 
 /**
