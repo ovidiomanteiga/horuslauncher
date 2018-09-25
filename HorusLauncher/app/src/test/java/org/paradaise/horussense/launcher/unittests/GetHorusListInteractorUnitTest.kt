@@ -11,7 +11,13 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action.HorusAction
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionRepository
+import org.paradaise.horussense.launcher.domain.action_execution.ActionExecutionVO
+import org.paradaise.horussense.launcher.domain.factory.DomainFactory
+import org.paradaise.horussense.launcher.domain.horus_list.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationManager
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
 import java.util.*
 import java.util.UUID.*
 

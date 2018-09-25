@@ -16,7 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.paradaise.horussense.launcher.ui.AllActionsActivity
+import org.paradaise.horussense.launcher.ui.all_actions.AllActionsActivity
 
 
 /**

@@ -11,7 +11,11 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.action.HorusAction
+import org.paradaise.horussense.launcher.domain.all_actions.AllActions
+import org.paradaise.horussense.launcher.domain.all_actions.AllActionsRepository
+import org.paradaise.horussense.launcher.domain.all_actions.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.all_actions.Paging
 
 
 /**

@@ -1,0 +1,28 @@
+
+@startuml PFPD#39.activity.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+|Lanzador|
+start
+:Mostrar **Lista Horus**\ncon acciones promocionadas;
+|Usuario|
+:Explorar **Lista Horus**\ncon acciones promocionadas;
+:Selecionar una acción promocionada;
+|Lanzador|
+:Solicitar confirmación para la ejecución de la acción promocionada;
+|Usuario|
+if (Confirma la ejecución de la acción promocionada?) then (SI)
+    |Lanzador|
+    :Ejecutar la acción promocionada seleccionada;
+else (NO)
+    |Lanzador|
+    :Descartar y volver a la Lista Horus;
+    :Mostrar **Lista Horus**\ncon acciones promocionadas;
+endif
+|Usuario|
+stop
+
+@enduml

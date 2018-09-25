@@ -1,0 +1,33 @@
+
+@startuml SPDP#176.activity.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+start
+:Desbloquear dispositivo;
+
+|Lanzador|
+if (Se ha programado el evento de enviar estadísticas?) then (NO)
+    :Programar el evento para la próxima noche;
+    |Sistema|
+    :Programar evento;
+endif
+|Lanzador|
+:Mostrar **Horus Launcher**;
+
+|Usuario|
+:Explorar **Horus Launcher**...;
+detach
+
+|Sistema|
+:Disparar evento programado>
+
+|Lanzador|
+:Evento de envío de estadísticas disparado<
+:Enviar estadísticas al servidor;
+
+stop
+
+@enduml

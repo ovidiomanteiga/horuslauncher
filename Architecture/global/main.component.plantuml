@@ -1,0 +1,39 @@
+@startuml main.component
+
+skinparam monochrome true
+
+package "Dominio" as Domain {
+    [Modelo del Dominio] as Core
+    () "Interactor" as Interactor
+    () "Repositorio" as Repo
+    () "Servicio" as Service
+}
+
+package "Interfaz de Usuario" as UI {
+    [Controlador] as Controller
+    [Vista] as View
+}
+
+package "Infraestructura" as IFT {
+    [Acceso a Datos] as DAO
+    [Base de Datos] as DB
+    [Servicio Remoto] as Remote
+}
+
+[Composición] as DI
+
+DI -u-> Domain
+DI -u-> IFT
+DI -u-> UI
+Core -d- Interactor
+Core -( Repo
+Core -[hidden]d-> Repo
+Core -( Service
+Core -[hidden]d-> Service
+DAO -u- Repo
+DAO -d-> DB
+Remote -u- Service
+Controller -u-> Interactor
+Controller -d-> View
+
+@enduml

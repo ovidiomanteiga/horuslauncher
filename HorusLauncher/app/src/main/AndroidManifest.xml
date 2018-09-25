@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.main.MainActivity"
             android:excludeFromRecents="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
@@ -27,25 +27,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.AllActionsActivity"
+            android:name=".ui.all_actions.AllActionsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.HorusListActivity"
+            android:name=".ui.horus_list.HorusListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.HorusListPromotedActivity"
+            android:name=".ui.horus_list.HorusListPromotedActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.StatsActivity"
+            android:name=".ui.stats.StatsActivity"
             android:label="@string/title_activity_stats"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.paradaise.horussense.launcher.ui.MainActivity" />
+                android:value="org.paradaise.horussense.launcher.ui.main.MainActivity" />
         </activity>
         <receiver
-            android:name=".ui.SendStatsReceiver"
+            android:name=".ui.stats.SendStatsReceiver"
             android:enabled="true"
             android:exported="false">
         </receiver>

@@ -1,0 +1,15 @@
+
+@startuml RIAP#62.activity.1.es
+
+skinparam monochrome true
+
+|Lanzador|
+|Sistema|
+start
+:Cada día>
+|Lanzador|
+:Cada día<
+:Eliminar registro de lanzamientos de aplicación\n con más de una semana de antigüedad;
+stop
+
+@enduml

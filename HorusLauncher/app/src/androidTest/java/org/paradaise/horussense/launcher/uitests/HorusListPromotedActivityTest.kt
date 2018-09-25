@@ -18,8 +18,13 @@ import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.ui.HorusListPromotedActivity
+import org.paradaise.horussense.launcher.domain.action.PromotedAction
+import org.paradaise.horussense.launcher.domain.action_execution.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.PredictedHorusListItem
+import org.paradaise.horussense.launcher.domain.promoted_actions.ExecutePromotedActionInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.GetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.ui.horus_list.HorusListPromotedActivity
 import java.util.*
 
 

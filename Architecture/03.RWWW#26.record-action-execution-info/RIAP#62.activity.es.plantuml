@@ -1,0 +1,25 @@
+
+@startuml RIAP#62.activity.es
+
+skinparam monochrome true
+
+|Usuario|
+|Lanzador|
+start
+:Mostrar lista de todas las aplicaciones lanzables;
+
+|Usuario|
+:Seleccionar una aplicación>
+|Lanzador|
+:Seleccionar una aplicación<
+:Lanzar aplicación seleccionada;
+fork
+    :Registrar lanzamiento de la aplicación;
+fork again
+    |Sistema|
+    :Lanzar aplicación;
+end fork
+
+stop
+
+@enduml

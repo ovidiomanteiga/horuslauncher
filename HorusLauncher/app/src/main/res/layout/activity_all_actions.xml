@@ -7,12 +7,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.AllActionsActivity" >
+    tools:context=".ui.all_actions.AllActionsActivity" >
 
     <include layout="@layout/appbar" />
 
     <fragment
-        android:name="org.paradaise.horussense.launcher.ui.AllActionsFragment"
+        android:name="org.paradaise.horussense.launcher.ui.all_actions.AllActionsFragment"
         android:id="@+id/all_apps_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

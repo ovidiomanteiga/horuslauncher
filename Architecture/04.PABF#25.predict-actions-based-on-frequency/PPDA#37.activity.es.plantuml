@@ -1,0 +1,23 @@
+
+@startuml PPDA#37.activity.es
+
+skinparam monochrome true
+skinparam defaultTextAlignment center
+
+|Usuario|
+|Lanzador|
+start
+:Mostrar la lista de acciones predichas\n**Lista Horus**;
+|Usuario|
+:Explorar la lista de acciones predichas\n**Lista Horus**;
+:Seleccionar una acción;
+|Lanzador|
+:Ejecutar la acción seleccionada;
+if (La acción seleccionada es lanzar una aplicación?) then (SI)
+    |Sistema|
+    :Lanzar aplicación;
+endif
+|Lanzador|
+stop
+
+@enduml

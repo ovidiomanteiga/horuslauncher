@@ -22,8 +22,16 @@ import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.ui.MainActivity
+import org.paradaise.horussense.launcher.domain.action.HorusAction
+import org.paradaise.horussense.launcher.domain.action_execution.ExecuteActionInteractor
+import org.paradaise.horussense.launcher.domain.all_actions.GetAllActionsInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.GetHorusListInteractor
+import org.paradaise.horussense.launcher.domain.horus_list.HorusListItem
+import org.paradaise.horussense.launcher.domain.promoted_actions.ExecutePromotedActionInteractor
+import org.paradaise.horussense.launcher.domain.promoted_actions.GetPromotedActionsInteractor
+import org.paradaise.horussense.launcher.domain.stats.DeviceLockingInteractor
+import org.paradaise.horussense.launcher.domain.stats.GetStatsInteractor
+import org.paradaise.horussense.launcher.ui.main.MainActivity
 
 
 /**
@@ -119,6 +127,7 @@ class MainActivityTest {
 	@Test
 	fun testHorusListFirst() {
 		this.activityRule.launchActivity(null)
+		this.device.waitForIdle()
 		val horusListTab = this.device.findObject(this.horusListTabSelector)
 		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
@@ -131,6 +140,7 @@ class MainActivityTest {
 	@Test
 	fun testSwitchFromHorusListToAllActions() {
 		this.activityRule.launchActivity(null)
+		this.device.waitForIdle()
 		val horusListTab = this.device.findObject(this.horusListTabSelector)
 		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())
@@ -146,6 +156,7 @@ class MainActivityTest {
 	@Test
 	fun testSwitchFromHorusListToAllActionsAndBack() {
 		this.activityRule.launchActivity(null)
+		this.device.waitForIdle()
 		val horusListTab = this.device.findObject(this.horusListTabSelector)
 		val allActionsTab = this.device.findObject(this.allActionsTabSelector)
 		assertTrue(horusListTab.exists())

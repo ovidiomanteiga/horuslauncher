@@ -7,11 +7,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.*
-import org.mockito.ArgumentMatchers.*
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.domain.LauncherPresentationResult.*
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationManager
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationRepository
+import org.paradaise.horussense.launcher.domain.stats.LauncherPresentationResult.*
+import org.paradaise.horussense.launcher.domain.time.TimeProvider
 import java.util.*
 
 

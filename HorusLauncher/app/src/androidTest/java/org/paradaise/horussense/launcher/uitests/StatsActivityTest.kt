@@ -18,8 +18,9 @@ import org.mockito.MockitoAnnotations
 import org.paradaise.horussense.launcher.R
 import org.paradaise.horussense.launcher.composition.MainFactory
 import org.paradaise.horussense.launcher.composition.MainInjector
-import org.paradaise.horussense.launcher.domain.*
-import org.paradaise.horussense.launcher.ui.StatsActivity
+import org.paradaise.horussense.launcher.domain.stats.GetStatsInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherStatsVO
+import org.paradaise.horussense.launcher.ui.stats.StatsActivity
 import java.util.*
 
 

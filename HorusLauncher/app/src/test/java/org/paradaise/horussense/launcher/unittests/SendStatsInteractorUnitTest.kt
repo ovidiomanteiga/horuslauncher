@@ -11,7 +11,10 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import org.paradaise.horussense.launcher.domain.*
+import org.paradaise.horussense.launcher.domain.stats.GetStatsInteractor
+import org.paradaise.horussense.launcher.domain.stats.LauncherStatsVO
+import org.paradaise.horussense.launcher.domain.stats.SendStatsInteractor
+import org.paradaise.horussense.launcher.domain.stats.StatsService
 
 
 /**
