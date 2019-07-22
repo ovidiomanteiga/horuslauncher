@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), HorusListFragmentListener,
 		get() = SendStatsScheduler(this)
 
 	// endregion
-	// region Inner Classes
+	// region Private Methods
 
 	private fun showStatsActivity() {
 		val statsIntent = Intent(this, StatsActivity::class.java)
